@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source Highlighter demo</title>
+<style>
+  :root { --ink: #1f2328; --muted: #6b7280; --line: #e5e7eb; --panel: #f9fafb; --accent: #2563eb; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #fff; }
+  body { display: grid; grid-template-rows: auto 1fr; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 15px; margin: 0 8px 0 0; }
+  .group { display: flex; align-items: center; gap: 6px; }
+  .group > span { color: var(--muted); font-size: 12px; }
+  .segmented { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+  .segmented button { border: 0; background: #fff; padding: 5px 10px; font: inherit; cursor: pointer; color: var(--ink); }
+  .segmented button + button { border-left: 1px solid var(--line); }
+  .segmented button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  input[type="color"] { width: 30px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+  main { display: grid; grid-template-columns: var(--sidebar, 280px) 6px 1fr; min-height: 0; }
+  aside { overflow: auto; padding: 12px; background: var(--panel); }
+  aside h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 6px 0 8px; }
+  aside ol { list-style: none; margin: 0 0 16px; padding: 0; }
+  aside li button { width: 100%; text-align: left; border: 1px solid transparent; background: none; padding: 6px 8px; border-radius: 6px; font: inherit; cursor: pointer; color: var(--ink); }
+  aside li button:hover { background: #fff; border-color: var(--line); }
+  aside li small { display: block; color: var(--muted); font-family: ui-monospace, monospace; font-size: 11px; overflow-wrap: anywhere; }
+  .unresolved li { padding: 6px 8px; color: #b45309; }
+  .splitter { cursor: col-resize; background: var(--line); }
+  .splitter:hover, .splitter.dragging { background: var(--accent); }
+  #viewer { overflow: auto; padding: 16px; background: #eef0f3; min-width: 0; }
+  #status { color: var(--muted); font-size: 12px; }
+  @media (max-width: 720px) { main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } .splitter { display: none; } aside { max-height: 30vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Source Highlighter</h1>
+  <div class="group"><span>Source</span><div class="segmented" id="sources"></div></div>
+  <div class="group"><span>Style</span><div class="segmented" id="styles"></div></div>
+  <div class="group"><span>Colour</span><input type="color" id="color" title="Mark colour (resets to the style default when you change style)"></div>
+  <div class="group"><span>Zoom</span><div class="segmented" id="zooms"></div></div>
+  <div class="group"><label><input type="checkbox" id="labels"> labels</label></div>
+  <span id="status"></span>
+</header>
+<main>
+  <aside>
+    <h2>Locations</h2>
+    <ol id="locations"></ol>
+    <h2>Unresolved</h2>
+    <ol id="unresolved" class="unresolved"></ol>
+  </aside>
+  <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+  <div id="viewer"></div>
+</main>
+<script type="module">
+import { highlight, STYLES, STYLE_DEFAULTS } from "./lib/source-highlighter.js";
+
+const PDFJS_URL = new URL("./vendor/pdfjs/pdf.min.mjs", import.meta.url).href;
+const ZOOMS = [["fit", "Fit"], [1, "1×"], [2, "2×"]];
+const remembered = (key, fallback) => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
+const remember = (key, value) => { try { localStorage.setItem(key, value); } catch { /* private window */ } };
+
+const sources = await (await fetch("assets/sources.json")).json();
+const state = {
+  sourceId: remembered("sh-demo-source", sources[0].id),
+  style: remembered("sh-demo-style", "highlight"),
+  zoom: "fit",
+  color: null,
+  labels: false,
+};
+if (!sources.some((source) => source.id === state.sourceId)) state.sourceId = sources[0].id;
+let handle = null;
+let locations = [];
+
+function segmented(container, items, isPressed, onPick) {
+  container.replaceChildren(...items.map(([value, text]) => {
+    const button = document.createElement("button");
+    button.textContent = text;
+    button.dataset.value = String(value);
+    button.setAttribute("aria-pressed", String(isPressed(value)));
+    button.addEventListener("click", () => onPick(value));
+    return button;
+  }));
+}
+
+function currentStyle() {
+  return { name: state.style, color: state.color ?? STYLE_DEFAULTS[state.style].color, label: state.labels };
+}
+
+function drawControls() {
+  segmented(document.getElementById("sources"), sources.map((s) => [s.id, s.id.toUpperCase()]), (v) => v === state.sourceId, (v) => { state.sourceId = v; remember("sh-demo-source", v); load(); });
+  for (const button of document.getElementById("sources").children) button.title = sources.find((s) => s.id === button.dataset.value).title;
+  segmented(document.getElementById("styles"), STYLES.map((s) => [s, s]), (v) => v === state.style, (v) => { state.style = v; state.color = null; remember("sh-demo-style", v); restyle(); });
+  segmented(document.getElementById("zooms"), ZOOMS, (v) => v === state.zoom, (v) => { state.zoom = v; load(); });
+  document.getElementById("color").value = currentStyle().color;
+}
+
+function describe(location) {
+  if (location.box) return `page ${location.page ?? 1} · box [${location.box.map((v) => v.toFixed(3)).join(", ")}]`;
+  if (location.html) return `html · ${location.html.text_quote?.exact ? `"${location.html.text_quote.exact}"` : location.html.xpath}`;
+  return `text · ${location.text.start}–${location.text.end}`;
+}
+
+function showResult({ marks, unresolved }) {
+  const list = document.getElementById("locations");
+  list.replaceChildren(...locations.map((location) => {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.innerHTML = `<span></span><small></small>`;
+    button.firstChild.textContent = location.label || location.id;
+    button.lastChild.textContent = describe(location);
+    button.addEventListener("click", () => handle.focus(location.id, { behavior: "smooth" }));
+    item.appendChild(button);
+    return item;
+  }));
+  const problems = document.getElementById("unresolved");
+  problems.replaceChildren(...(unresolved.length ? unresolved : [{ reason: "none" }]).map((entry) => {
+    const item = document.createElement("li");
+    item.textContent = entry.location ? `${entry.location.id ?? entry.index}: ${entry.reason}` : entry.reason;
+    if (!entry.location) item.style.color = "var(--muted)";
+    return item;
+  }));
+  document.getElementById("status").textContent = `${marks.length} mark${marks.length === 1 ? "" : "s"} · zoom ${handle.zoom.toFixed(2)}`;
+}
+
+async function load() {
+  drawControls();
+  handle?.destroy();
+  const source = sources.find((s) => s.id === state.sourceId);
+  locations = await (await fetch(source.locations)).json();
+  const viewer = document.getElementById("viewer");
+  viewer.scrollTop = 0;
+  document.getElementById("status").textContent = "loading…";
+  handle = highlight(viewer, {
+    source: { kind: source.kind, url: source.url },
+    locations,
+    style: currentStyle(),
+    zoom: state.zoom,
+    pdfjs: PDFJS_URL,
+  });
+  const result = await handle.ready;
+  showResult(result);
+  if (locations[0]) handle.focus(locations[0].id);
+}
+
+async function restyle() {
+  drawControls();
+  showResult(await handle.update(locations, currentStyle()));
+}
+
+document.getElementById("color").addEventListener("input", (event) => { state.color = event.target.value; restyle(); });
+document.getElementById("labels").addEventListener("change", (event) => { state.labels = event.target.checked; restyle(); });
+
+// Draggable sidebar, width remembered.
+const main = document.querySelector("main");
+main.style.setProperty("--sidebar", `${remembered("sh-demo-sidebar", 280)}px`);
+document.getElementById("splitter").addEventListener("pointerdown", (event) => {
+  const splitter = event.currentTarget;
+  splitter.setPointerCapture(event.pointerId);
+  splitter.classList.add("dragging");
+  const move = (moveEvent) => {
+    const width = Math.min(Math.max(moveEvent.clientX, 160), window.innerWidth * 0.6);
+    main.style.setProperty("--sidebar", `${width}px`);
+    remember("sh-demo-sidebar", Math.round(width));
+  };
+  splitter.addEventListener("pointermove", move);
+  splitter.addEventListener("pointerup", () => { splitter.removeEventListener("pointermove", move); splitter.classList.remove("dragging"); }, { once: true });
+});
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+[project]
+name = "source-highlighter"
+version = "0.1.0"
+description = "Source + locations + style in, the source highlighted out (PDF, image, HTML, text)."
+authors = [
+    { name = "Zach Yamaoka", email = "zach.yamaoka@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pillow>=13.0.0",
+    "playwright>=1.64.1",
+    "pypdfium2>=5.14.0",
+]
+
+[project.scripts]
+source-highlighter = "source_highlighter.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/source_highlighter"]
+
+# WHY: one JS file draws the interactive marks AND the static HTML/text renders (driven through Chromium),
+# so both forms share a single implementation. The wheel carries a copy; a checkout reads js/ directly.
+[tool.hatch.build.targets.wheel.force-include]
+"js/source-highlighter.js" = "source_highlighter/source-highlighter.js"
+
+[dependency-groups]
+dev = [
+    "numpy>=2.5.4",
+    "pdfplumber>=0.11.10",
+    "pytest>=9.2.0",
+]

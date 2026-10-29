@@ -1,0 +1,66 @@
+[
+  {
+    "id": "rated-torque-label",
+    "label": "Rated torque (Nm)",
+    "html": {
+      "source_range": {
+        "start": 117550,
+        "end": 117567
+      },
+      "xpath": "/html/body/div[6]/div[1]/div[2]/div[2]/div[2]/div[2]/table[1]/tbody[1]/tr[18]/td[1]",
+      "text_quote": {
+        "exact": "Rated torque (Nm)",
+        "prefix": "ner ring encoder resolution16bit",
+        "suffix": "9Outer ring encoder type/Rated s"
+      }
+    }
+  },
+  {
+    "id": "rated-torque-value",
+    "label": "Rated torque",
+    "html": {
+      "source_range": {
+        "start": 117576,
+        "end": 117577
+      },
+      "xpath": "/html/body/div[6]/div[1]/div[2]/div[2]/div[2]/div[2]/table[1]/tbody[1]/tr[18]/td[2]",
+      "text_quote": {
+        "exact": "9",
+        "prefix": "resolution16bitRated torque (Nm)",
+        "suffix": "Outer ring encoder type/Rated sp"
+      }
+    }
+  },
+  {
+    "id": "peak-torque-label",
+    "label": "Peak torque (Nm)",
+    "html": {
+      "source_range": {
+        "start": 115978,
+        "end": 115994
+      },
+      "xpath": "/html/body/div[6]/div[1]/div[2]/div[2]/div[2]/div[2]/table[1]/tbody[1]/tr[1]/td[3]",
+      "text_quote": {
+        "exact": "Peak torque (Nm)",
+        "prefix": "tionLegged Robot,Exoskeleton,AGV",
+        "suffix": "22Driving wayFOCPeak current (AD"
+      }
+    }
+  },
+  {
+    "id": "peak-torque-value",
+    "label": "Peak torque",
+    "html": {
+      "source_range": {
+        "start": 116003,
+        "end": 116005
+      },
+      "xpath": "/html/body/div[6]/div[1]/div[2]/div[2]/div[2]/div[2]/table[1]/tbody[1]/tr[1]/td[4]",
+      "text_quote": {
+        "exact": "22",
+        "prefix": ",Exoskeleton,AGVPeak torque (Nm)",
+        "suffix": "Driving wayFOCPeak current (ADC)"
+      }
+    }
+  }
+]

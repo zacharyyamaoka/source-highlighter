@@ -1,0 +1,34 @@
+[
+  {
+    "id": "rated-torque-label",
+    "label": "Rated torque (Nm)",
+    "text": {
+      "start": 1312,
+      "end": 1329
+    }
+  },
+  {
+    "id": "rated-torque-value",
+    "label": "Rated torque",
+    "text": {
+      "start": 1332,
+      "end": 1333
+    }
+  },
+  {
+    "id": "peak-torque-label",
+    "label": "Peak torque (Nm)",
+    "text": {
+      "start": 270,
+      "end": 286
+    }
+  },
+  {
+    "id": "peak-torque-value",
+    "label": "Peak torque",
+    "text": {
+      "start": 289,
+      "end": 291
+    }
+  }
+]

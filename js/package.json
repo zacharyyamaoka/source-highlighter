@@ -1,0 +1,26 @@
+{
+  "name": "source-highlighter",
+  "version": "0.1.0",
+  "description": "Draw highlight / box / underline / spotlight / blackout marks over a PDF, image, archived HTML page or text, framework-free.",
+  "type": "module",
+  "main": "./source-highlighter.js",
+  "exports": {
+    ".": "./source-highlighter.js"
+  },
+  "files": [
+    "source-highlighter.js"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "peerDependencies": {
+    "pdfjs-dist": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "pdfjs-dist": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "pdfjs-dist": "^6.4.299"
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "peak-torque-label",
+    "label": "Peak Torque",
+    "page": 2,
+    "box": [
+      0.4555,
+      0.30849,
+      0.54534,
+      0.31948
+    ]
+  },
+  {
+    "id": "peak-torque-j60-6",
+    "label": "J60-6 peak torque",
+    "page": 2,
+    "box": [
+      0.19228,
+      0.30909,
+      0.25651,
+      0.3171
+    ]
+  },
+  {
+    "id": "peak-torque-j60-10",
+    "label": "J60-10 peak torque",
+    "page": 2,
+    "box": [
+      0.73552,
+      0.30879,
+      0.80017,
+      0.31651
+    ]
+  },
+  {
+    "id": "weight-j60-6",
+    "label": "J60-6 weight",
+    "page": 2,
+    "box": [
+      0.20781,
+      0.17518,
+      0.24097,
+      0.18527
+    ]
+  }
+]

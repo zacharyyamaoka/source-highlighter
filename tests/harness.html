@@ -1,0 +1,11 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Source Highlighter test harness</title>
+<style>html, body { margin: 0; background: #fff; } #surface { width: 1000px; }</style></head>
+<body><div id="surface"></div>
+<script type="module">
+// Served from the repo root by tests/conftest.py, so the module and PDF.js load straight from the checkout.
+import * as sourceHighlighter from "/js/source-highlighter.js";
+window.sourceHighlighter = sourceHighlighter;
+window.PDFJS_URL = "/js/node_modules/pdfjs-dist/build/pdf.min.mjs";
+</script>
+</body></html>

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "rated-torque-label",
+    "label": "额定扭矩 (rated torque)",
+    "page": 1,
+    "box": [
+      0.05234,
+      0.28735,
+      0.09531,
+      0.28856
+    ]
+  },
+  {
+    "id": "rated-torque-erob80i-50",
+    "label": "eRob80I-50 rated torque",
+    "page": 1,
+    "box": [
+      0.26797,
+      0.28752,
+      0.30391,
+      0.28839
+    ]
+  },
+  {
+    "id": "model-erob80i-50",
+    "label": "eRob80I-50",
+    "page": 1,
+    "box": [
+      0.25703,
+      0.27998,
+      0.31484,
+      0.28094
+    ]
+  }
+]

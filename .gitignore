@@ -2,3 +2,6 @@
 __pycache__/
 node_modules/
 out/
+demo/lib/
+demo/vendor/
+demo/assets/
