@@ -42,7 +42,7 @@ marks.destroy();
 ```
 
 `js/` is its own npm package (`source-highlighter`, one framework-free file, no runtime dependencies;
-`pdfjs-dist` is an optional peer). React (Clank) calls it from a `useEffect`; RobotParts' static pages import it
+`pdfjs-dist` is an optional peer). A React app calls it from a `useEffect`; RobotParts' static pages import it
 directly.
 
 ## Demo

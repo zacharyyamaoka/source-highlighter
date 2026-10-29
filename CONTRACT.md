@@ -60,7 +60,7 @@ list of `{locations, style}` layers.
 2. **Interactive** — a framework-free ES module that draws the same styles over a rendered source in a web page and
    scrolls to them: `highlight(container, {source, locations, style}) → {update(locations, style), focus(id), destroy()}`.
    PDF via PDF.js; images as `<img>`; HTML via the CSS Custom Highlight API on the archived page (or boxes on its
-   visual twin); text via ranges. Plain JS so React (Clank), vanilla (RobotParts' static site) and anything else can
+   visual twin); text via ranges. Plain JS so a React app, a vanilla static site (RobotParts) and anything else can
    use it.
 
 Both forms take the same three inputs and must draw the same marks in the same places (tested by measuring the drawn

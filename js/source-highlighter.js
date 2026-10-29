@@ -6,7 +6,7 @@
 //   marks.update(locations, style);
 //   marks.destroy();
 //
-// Framework-free on purpose: RobotParts is static HTML, Clank is React, and both call this the same way.
+// Framework-free on purpose: a static HTML page and a React app call this the same way.
 // It renders the source itself (PDF.js canvas, <img>, a sandboxed <iframe> for archived HTML, a <pre> for
 // text) so the marks and the pixels underneath share one coordinate system.
 //
