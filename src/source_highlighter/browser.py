@@ -7,6 +7,7 @@ out, so the static PNG and the interactive overlay draw from one implementation 
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 from importlib import resources
 from pathlib import Path
 from typing import Any
@@ -40,7 +41,17 @@ def _layers_for_js(layers: list[Layer]) -> list[dict[str, Any]]:
     return [{"locations": layer.locations, "style": layer.style.as_dict()} for layer in layers]
 
 
-def render_in_browser(
+def render_in_browser(*args, **kwargs) -> dict[str, Any]:
+    """Run the Chromium render on its own thread.
+
+    WHY: Playwright's sync API refuses to start inside a running asyncio loop (a web server, a notebook, a test
+    that already drives a browser). A fresh thread has no loop, so render() works from any caller.
+    """
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(_render_in_browser, *args, **kwargs).result()
+
+
+def _render_in_browser(
     kind: str,
     source_text: str,
     layers: list[Layer],

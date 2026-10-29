@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from make_fixtures import DEFAULT_SNAP  # noqa: E402
+from make_fixtures import DEFAULT_SNAP
 
 REPO = Path(__file__).resolve().parents[1]
 DEMO = REPO / "demo"

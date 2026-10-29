@@ -269,7 +269,7 @@ def test_browser_rendered_sources_blackout_and_spotlight(tmp_path, source, locat
     outside = ~touching_mask(marked.shape, mark_rects(spotlight))
     error = np.abs(marked[outside] - original[outside] * (1 - a)).max()
     print(f"{suffix} spotlight: outside max error {error:.2f} vs original × {1 - a}")
-    assert error <= 1.5
+    assert error <= 1
 
 
 def test_text_to_html_page(tmp_path):

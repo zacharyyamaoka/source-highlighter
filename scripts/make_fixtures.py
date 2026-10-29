@@ -182,12 +182,12 @@ def cubemars_html_locations(html: str) -> list[dict]:
 
 def cubemars_markdown(html: str) -> tuple[str, list[dict]]:
     """The CubeMars spec table as markdown, plus text Locations (code points) for two label/value pairs."""
-    table = re.search(r'<table class="spaced-table">(.*?)</table>', html, re.S).group(1)
+    table = re.search(r'<table class="spaced-table">(.*?)</table>', html, re.DOTALL).group(1)
     rows = []
-    for row_html in re.findall(r"<tr>(.*?)</tr>", table, re.S):
+    for row_html in re.findall(r"<tr>(.*?)</tr>", table, re.DOTALL):
         cells = [
             html_lib.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<br\s*/?>", " ", cell))).strip()
-            for cell in re.findall(r"<td>(.*?)</td>", row_html, re.S)
+            for cell in re.findall(r"<td>(.*?)</td>", row_html, re.DOTALL)
         ]
         cells = [re.sub(r"\s+", " ", cell) for cell in cells]
         if any(cells):

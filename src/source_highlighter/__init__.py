@@ -4,8 +4,8 @@ from .geometry import STYLE_DEFAULTS, STYLES, Mark, Rect, RenderResult, Style, U
 from .render import render, source_kind
 
 __all__ = [
-    "STYLE_DEFAULTS",
     "STYLES",
+    "STYLE_DEFAULTS",
     "Mark",
     "Rect",
     "RenderResult",

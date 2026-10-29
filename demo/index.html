@@ -139,7 +139,15 @@ async function load() {
     zoom: state.zoom,
     pdfjs: PDFJS_URL,
   });
-  const result = await handle.ready;
+  const current = handle;
+  let result;
+  try {
+    result = await current.ready;
+  } catch (error) {
+    if (current !== handle) return; // replaced by a newer load while this one was still loading
+    document.getElementById("status").textContent = `could not load: ${error.message}`;
+    return;
+  }
   showResult(result);
   if (locations[0]) handle.focus(locations[0].id);
 }

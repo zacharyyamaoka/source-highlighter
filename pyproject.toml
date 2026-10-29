@@ -33,3 +33,6 @@ dev = [
     "pdfplumber>=0.11.10",
     "pytest>=9.2.0",
 ]
+
+[tool.ruff]
+line-length = 130

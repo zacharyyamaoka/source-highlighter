@@ -279,9 +279,12 @@ export function highlight(container, options) {
     frame.style.height = "800px";
     // WHY freeze animation: an archived page is a snapshot. A looping spinner would otherwise make two renders
     // of the same page differ, and the static PNG would depend on when the screenshot happened to fire.
+    // Media cannot load offline (the CSP blocks it), and Chromium then draws its own loading spinner over the
+    // player, which no author CSS can pause — so players keep their box but are not painted.
     const csp =
       `<meta http-equiv="Content-Security-Policy" content="${ARCHIVED_PAGE_CSP}">` +
-      "<style>*, *::before, *::after { animation-play-state: paused !important; animation-delay: 0s !important; transition: none !important; }</style>";
+      "<style>*, *::before, *::after { animation-play-state: paused !important; animation-delay: 0s !important; transition: none !important; }" +
+      " video, audio { visibility: hidden !important; }</style>";
     const doctype = html.match(/^\s*<!doctype[^>]*>/i);
     // WHY after the doctype: anything before it would flip the archived page into quirks mode.
     frame.srcdoc = doctype ? doctype[0] + csp + html.slice(doctype[0].length) : csp + html;

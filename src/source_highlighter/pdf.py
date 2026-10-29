@@ -35,7 +35,7 @@ def _insert_path(page: pdfium.PdfPage, rects: list[Rect], color: tuple[int, int,
     WHY one path, not one object per rectangle: abutting objects each antialias their shared edge, which
     shows as hairline seams through a veil; subpaths of one path are rasterised together, seam-free.
     """
-    left, bottom, right, top = page.get_cropbox()
+    left, _bottom, _right, top = page.get_cropbox()
     rects = [rect for rect in rects if rect.x1 > rect.x0 and rect.y1 > rect.y0]
     if not rects:
         return

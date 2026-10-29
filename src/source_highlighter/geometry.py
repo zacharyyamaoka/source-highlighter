@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from itertools import pairwise
 from typing import Any
 
 # WHY these exact numbers: js/source-highlighter.js STYLE_DEFAULTS holds the same table, and
@@ -136,7 +137,7 @@ def disjoint_cover(rects: list[Rect], width: float, height: float, *, complement
     edges = sorted({0.0, float(height), *(r.y0 for r in rects), *(r.y1 for r in rects)})
     edges = [y for y in edges if 0 <= y <= height]
     cover: list[Rect] = []
-    for band_top, band_bottom in zip(edges, edges[1:]):
+    for band_top, band_bottom in pairwise(edges):
         if band_bottom <= band_top:
             continue
         spans = sorted((r.x0, r.x1) for r in rects if r.y0 < band_bottom and r.y1 > band_top and r.x1 > r.x0)
