@@ -34,7 +34,7 @@ A Location that cannot be resolved on the given source is reported back, never s
 An `html` Location resolves in this order, and never to the first place its text happens to occur (datasheet
 values repeat — the same `30A` in both model columns): (1) `source_range`, when given, mapped to its exact DOM
 position by the HTML parser itself, not by searching for its text — it counts into the pinned bytes, so it wins
-over an `xpath` that points elsewhere (that `xpath` is reported as stale); (2) `xpath` (retried with the `<tbody>`
+over an `xpath` that points elsewhere (that `xpath` is treated as stale); (2) `xpath` (retried with the `<tbody>`
 a parser inserts) → that element; inside it the `text_quote` if exactly one occurrence fits its
 `prefix`/`suffix`, else the whole element; (3) `text_quote` anywhere in the page, only if exactly one place matches
 `exact` + `prefix` + `suffix` — two or more is reported as ambiguous, never picked from.
