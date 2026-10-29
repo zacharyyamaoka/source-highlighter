@@ -42,6 +42,39 @@ const HTML_EXTENSIONS = ["html", "htm", "xhtml"];
 const ARCHIVED_PAGE_CSP =
   "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:; media-src data:";
 
+// WHY freeze animation: an archived page is a snapshot. A looping spinner would otherwise make two renders of the
+// same page differ, and the static PNG would depend on when the screenshot happened to fire. Media cannot load
+// offline (the CSP blocks it), and Chromium then draws its own loading spinner over the player, which no author
+// CSS can pause — so players keep their box but are not painted.
+const ARCHIVED_PAGE_PRELUDE =
+  `<meta http-equiv="Content-Security-Policy" content="${ARCHIVED_PAGE_CSP}">` +
+  "<style>*, *::before, *::after { animation-play-state: paused !important; animation-delay: 0s !important; transition: none !important; }" +
+  " video, audio { visibility: hidden !important; }</style>";
+
+/** The srcdoc an archived page is shown with: the prelude goes right after the doctype. */
+function archivedSrcdoc(html) {
+  const doctype = html.match(/^\s*<!doctype[^>]*>/i);
+  // WHY after the doctype: anything before it would flip the archived page into quirks mode.
+  return doctype ? doctype[0] + ARCHIVED_PAGE_PRELUDE + html.slice(doctype[0].length) : ARCHIVED_PAGE_PRELUDE + html;
+}
+
+const squashSpace = (value) => (value || "").replace(/\s+/g, "");
+const pageTextCache = new WeakMap();
+
+/** The last `count` non-whitespace characters of text before `at`. */
+function nonSpaceBefore(text, at, count) {
+  let collected = "";
+  for (let index = at - 1; index >= 0 && collected.length < count; index -= 1) if (!/\s/.test(text[index])) collected = text[index] + collected;
+  return collected;
+}
+
+/** The first `count` non-whitespace characters of text from `at`. */
+function nonSpaceAfter(text, at, count) {
+  let collected = "";
+  for (let index = at; index < text.length && collected.length < count; index += 1) if (!/\s/.test(text[index])) collected += text[index];
+  return collected;
+}
+
 let instanceCounter = 0;
 
 /** Fill in a style's defaults. Accepts "spotlight" or {name: "spotlight", color, opacity, padding, width, label}. */
@@ -277,17 +310,7 @@ export function highlight(container, options) {
     frame.title = "Archived page";
     frame.style.width = `${width}px`;
     frame.style.height = "800px";
-    // WHY freeze animation: an archived page is a snapshot. A looping spinner would otherwise make two renders
-    // of the same page differ, and the static PNG would depend on when the screenshot happened to fire.
-    // Media cannot load offline (the CSP blocks it), and Chromium then draws its own loading spinner over the
-    // player, which no author CSS can pause — so players keep their box but are not painted.
-    const csp =
-      `<meta http-equiv="Content-Security-Policy" content="${ARCHIVED_PAGE_CSP}">` +
-      "<style>*, *::before, *::after { animation-play-state: paused !important; animation-delay: 0s !important; transition: none !important; }" +
-      " video, audio { visibility: hidden !important; }</style>";
-    const doctype = html.match(/^\s*<!doctype[^>]*>/i);
-    // WHY after the doctype: anything before it would flip the archived page into quirks mode.
-    frame.srcdoc = doctype ? doctype[0] + csp + html.slice(doctype[0].length) : csp + html;
+    frame.srcdoc = archivedSrcdoc(html);
     const scaled = el("div", "sh-scaled");
     scaled.appendChild(frame);
     const holder = addPage(width, 800);
@@ -365,38 +388,189 @@ export function highlight(container, options) {
     return { page, range };
   }
 
+  // An html Location resolves in this order (CONTRACT §2), and never to "the first place this text occurs" —
+  // datasheet values repeat (the same 30A in both model columns), so a first match is wrong half the time:
+  //   1. xpath → the element; inside it the text_quote (unique with its prefix/suffix), else source_range if it
+  //      lands inside that element, else (with neither given) the whole element.
+  //   2. source_range → the exact DOM position, via the browser's own parser (mapSourceRange).
+  //   3. text_quote anywhere in the page, only if exactly one place matches exact + prefix + suffix;
+  //      several matches are reported as ambiguous, never picked from.
   function resolveHtmlRange(htmlLocation) {
     const frameDocument = state.pages[0].frame.contentDocument;
     const quote = htmlLocation.text_quote || {};
-    let exact = quote.exact;
-    if (!exact && htmlLocation.source_range) exact = textOfSourceRange(htmlLocation.source_range);
-    let scope = null;
-    if (htmlLocation.xpath) scope = evaluateXPath(frameDocument, htmlLocation.xpath);
-    if (scope) {
-      if (!exact) {
+    const notes = [];
+    let mapped = null;
+    const fromSourceRange = () => (mapped ??= mapSourceRange(frameDocument, htmlLocation.source_range));
+
+    const element = htmlLocation.xpath ? evaluateXPath(frameDocument, htmlLocation.xpath) : null;
+    if (htmlLocation.xpath && !element) notes.push(`xpath ${htmlLocation.xpath} did not match`);
+    if (element) {
+      if (!quote.exact && !htmlLocation.source_range) {
         const range = frameDocument.createRange();
-        range.selectNodeContents(scope);
+        range.selectNodeContents(element);
         return { range };
       }
-      const range = findQuote(frameDocument, scope, exact, quote.prefix, quote.suffix);
-      if (range) return { range };
+      if (quote.exact) {
+        const matches = quoteMatches(frameDocument, quote, element);
+        if (matches.length === 1) return { range: matches[0] };
+        notes.push(`the xpath element holds ${matches.length} matches of "${quote.exact}" with that prefix/suffix`);
+      }
+      if (htmlLocation.source_range) {
+        const { range } = fromSourceRange();
+        if (range && element.contains(range.commonAncestorContainer)) return { range };
+      }
     }
-    if (exact) {
-      const range = findQuote(frameDocument, frameDocument.body, exact, quote.prefix, quote.suffix);
+    if (htmlLocation.source_range) {
+      // WHY accepted even when an xpath matched elsewhere: source_range counts into these exact bytes, so where
+      // it maps is where the Location is; a matching-but-wrong xpath is the stale signal.
+      const { range, reason } = fromSourceRange();
       if (range) return { range };
-      return { reason: `text "${exact}" not found in the page${htmlLocation.xpath ? ` (xpath ${scope ? "matched but did not contain it" : "did not match"})` : ""}` };
+      notes.push(reason);
     }
-    return { reason: htmlLocation.xpath ? `xpath ${htmlLocation.xpath} did not match and there is no text to search for` : "html Location has no xpath, text_quote or source_range" };
+    if (quote.exact) {
+      const matches = quoteMatches(frameDocument, quote, frameDocument.body || frameDocument.documentElement);
+      if (matches.length === 1) return { range: matches[0] };
+      notes.push(
+        matches.length
+          ? `ambiguous: "${quote.exact}" with that prefix/suffix occurs ${matches.length} times in the page`
+          : `"${quote.exact}" with that prefix/suffix is not in the page`,
+      );
+    }
+    if (!htmlLocation.xpath && !htmlLocation.source_range && !quote.exact) notes.push("html Location has no xpath, text_quote or source_range");
+    return { reason: notes.join("; ") };
   }
 
-  function textOfSourceRange({ start, end }) {
+  /** The page's text nodes concatenated (scripts and styles left out), with each node's start offset. */
+  function pageText(frameDocument) {
+    if (pageTextCache.has(frameDocument)) return pageTextCache.get(frameDocument);
+    // WHY no TreeWalker filter callback: inside a script-disabled (sandboxed) document Chromium refuses to run one.
+    const walker = frameDocument.createTreeWalker(frameDocument.body || frameDocument.documentElement, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    let text = "";
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (node.parentElement?.closest("script, style, noscript, template")) continue;
+      nodes.push({ node, start: text.length });
+      text += node.data;
+    }
+    const entry = { nodes, text };
+    pageTextCache.set(frameDocument, entry);
+    return entry;
+  }
+
+  function pointAt(nodes, offset, isEnd) {
+    for (let index = nodes.length - 1; index >= 0; index -= 1) {
+      const entry = nodes[index];
+      if (isEnd ? entry.start < offset : entry.start <= offset) return { node: entry.node, offset: offset - entry.start };
+    }
+    return null;
+  }
+
+  /** Every place `quote.exact` occurs inside `scope` whose surroundings agree with its prefix and suffix. */
+  function quoteMatches(frameDocument, quote, scope) {
+    const { nodes, text } = pageText(frameDocument);
+    // WHY whitespace-insensitive context: a quote's prefix/suffix comes from rendered text, the DOM keeps the
+    // source's whitespace (or none) between cells.
+    const prefix = squashSpace(quote.prefix);
+    const suffix = squashSpace(quote.suffix);
+    const matches = [];
+    for (let at = text.indexOf(quote.exact); at !== -1; at = text.indexOf(quote.exact, at + 1)) {
+      const end = at + quote.exact.length;
+      if (prefix && !nonSpaceBefore(text, at, prefix.length).endsWith(prefix)) continue;
+      if (suffix && !nonSpaceAfter(text, end, suffix.length).startsWith(suffix)) continue;
+      const startPoint = pointAt(nodes, at, false);
+      const endPoint = pointAt(nodes, end, true);
+      if (!scope.contains(startPoint.node) || !scope.contains(endPoint.node)) continue;
+      const range = frameDocument.createRange();
+      range.setStart(startPoint.node, startPoint.offset);
+      range.setEnd(endPoint.node, endPoint.offset);
+      matches.push(range);
+    }
+    return matches;
+  }
+
+  /**
+   * source_range (code points into the decoded HTML string) → a Range on the rendered page, exactly.
+   *
+   * WHY markers instead of a second parser library: two comments spliced into the HTML at the range's ends are
+   * placed by the browser's own HTML parser, in a detached parse of the same srcdoc, so tree construction is
+   * the one that built the page on screen. Each end is then carried over to the rendered page as
+   * (element path, text offset) — the two parses differ only by the markers. Both sides are checked against
+   * the decoded source text, so a range inside a tag, attribute, comment, script or misnested table text is
+   * reported instead of guessed.
+   */
+  function mapSourceRange(frameDocument, sourceRange) {
     const html = state.rawHtml;
-    const startUnit = codePointToUtf16(html, start);
-    const endUnit = codePointToUtf16(html, end);
-    if (startUnit < 0 || endUnit < 0 || end <= start) return null;
-    // WHY via DOMParser: the range may straddle tags or hold entities; what the reader sees is the decoded text.
-    const fragment = new DOMParser().parseFromString(`<body>${html.slice(startUnit, endUnit)}`, "text/html");
-    return fragment.body.textContent.trim() || null;
+    const { start, end } = sourceRange || {};
+    let startUnit = Number.isInteger(start) && start >= 0 ? codePointToUtf16(html, start) : -1;
+    let endUnit = Number.isInteger(end) ? codePointToUtf16(html, end) : -1;
+    if (startUnit < 0 || endUnit < 0 || end <= start) return { reason: `source_range ${start}–${end} is outside the HTML or empty` };
+    // An end that falls inside a character reference (&amp;) widens to cover the whole reference.
+    const referenceBefore = (unit) => /&[#a-zA-Z0-9]{0,31}$/.exec(html.slice(Math.max(0, unit - 32), unit));
+    const referenceRest = (unit) => /^[#a-zA-Z0-9]*;/.exec(html.slice(unit, unit + 32));
+    if (referenceBefore(startUnit) && referenceRest(startUnit)) startUnit -= referenceBefore(startUnit)[0].length;
+    if (referenceBefore(endUnit) && referenceRest(endUnit)) endUnit += referenceRest(endUnit)[0].length;
+
+    const marker = `sh-source-range-${Math.random().toString(36).slice(2)}`;
+    const instrumented =
+      html.slice(0, startUnit) + `<!--${marker}:start-->` + html.slice(startUnit, endUnit) + `<!--${marker}:end-->` + html.slice(endUnit);
+    const parsed = new DOMParser().parseFromString(archivedSrcdoc(instrumented), "text/html");
+    const walker = parsed.createTreeWalker(parsed, NodeFilter.SHOW_COMMENT);
+    let startMarker = null;
+    let endMarker = null;
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (node.data === `${marker}:start`) startMarker = node;
+      if (node.data === `${marker}:end`) endMarker = node;
+    }
+    const notText = `source_range ${start}–${end} does not point into the page's text (it falls inside a tag, attribute, comment, script or style)`;
+    if (!startMarker || !endMarker || !(startMarker.compareDocumentPosition(endMarker) & Node.DOCUMENT_POSITION_FOLLOWING)) return { reason: notText };
+
+    const decoded = new DOMParser().parseFromString(`<body>${html.slice(startUnit, endUnit)}`, "text/html").body.textContent;
+    const expected = squashSpace(decoded);
+    const parsedRange = parsed.createRange();
+    parsedRange.setStartAfter(startMarker);
+    parsedRange.setEndBefore(endMarker);
+    if (squashSpace(parsedRange.toString()) !== expected) return { reason: `source_range ${start}–${end} does not cover one contiguous run of page text` };
+
+    const startPoint = carryOver(startMarker, frameDocument, false);
+    const endPoint = carryOver(endMarker, frameDocument, true);
+    const range = frameDocument.createRange();
+    if (startPoint && endPoint) {
+      range.setStart(startPoint.node, startPoint.offset);
+      range.setEnd(endPoint.node, endPoint.offset);
+    }
+    if (!startPoint || !endPoint || squashSpace(range.toString()) !== expected) {
+      return { reason: `source_range ${start}–${end} could not be carried over to the rendered page` };
+    }
+    return { range };
+  }
+
+  /** A marker's position as (element path from <html>, text offset inside that element), replayed in `target`. */
+  function carryOver(markerNode, targetDocument, isEnd) {
+    const parent = markerNode.parentNode;
+    if (!parent || parent.nodeType !== Node.ELEMENT_NODE) return null;
+    const path = [];
+    for (let node = parent; node.parentElement; node = node.parentElement) path.unshift(Array.prototype.indexOf.call(node.parentElement.children, node));
+    let offset = 0;
+    const before = parent.ownerDocument.createTreeWalker(parent, NodeFilter.SHOW_TEXT);
+    for (let node = before.nextNode(); node; node = before.nextNode()) {
+      if (!(node.compareDocumentPosition(markerNode) & Node.DOCUMENT_POSITION_FOLLOWING)) break;
+      offset += node.data.length;
+    }
+    let element = targetDocument.documentElement;
+    for (const index of path) {
+      element = element?.children[index];
+      if (!element) return null;
+    }
+    if (element.localName !== parent.localName) return null;
+    let seen = 0;
+    const texts = targetDocument.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    for (let node = texts.nextNode(); node; node = texts.nextNode()) {
+      const length = node.data.length;
+      // At a boundary between two text nodes a start belongs to the next node, an end to the previous one.
+      if (isEnd ? seen + length >= offset : seen + length > offset) return { node, offset: offset - seen };
+      seen += length;
+    }
+    return seen === offset ? { node: element, offset: element.childNodes.length } : null;
   }
 
   function evaluateXPath(frameDocument, xpath) {
@@ -409,52 +583,10 @@ export function highlight(container, options) {
         const node = frameDocument.evaluate(candidate, frameDocument, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         if (node) return node;
       } catch {
-        // malformed xpath: fall through to the text quote
+        // malformed xpath: fall through to source_range and the text quote
       }
     }
     return null;
-  }
-
-  function findQuote(frameDocument, scope, exact, prefix, suffix) {
-    // WHY no TreeWalker filter callback: inside a script-disabled (sandboxed) document Chromium refuses to run one.
-    const walker = frameDocument.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    let text = "";
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (node.parentElement?.closest("script, style, noscript, template")) continue;
-      nodes.push({ node, start: text.length });
-      text += node.data;
-    }
-    const squash = (value) => (value || "").replace(/\s+/g, "");
-    const wantedPrefix = squash(prefix);
-    const wantedSuffix = squash(suffix);
-    let best = null;
-    for (let at = text.indexOf(exact); at !== -1; at = text.indexOf(exact, at + 1)) {
-      // WHY whitespace-insensitive context: a quote's prefix/suffix comes from rendered text, the DOM keeps
-      // the source's whitespace between cells.
-      const before = squash(text.slice(Math.max(0, at - 4 * wantedPrefix.length - 64), at));
-      const after = squash(text.slice(at + exact.length, at + exact.length + 4 * wantedSuffix.length + 64));
-      let score = 0;
-      while (score < wantedPrefix.length && before[before.length - 1 - score] === wantedPrefix[wantedPrefix.length - 1 - score]) score += 1;
-      let suffixScore = 0;
-      while (suffixScore < wantedSuffix.length && after[suffixScore] === wantedSuffix[suffixScore]) suffixScore += 1;
-      score += suffixScore;
-      if (!best || score > best.score) best = { at, score };
-    }
-    if (!best) return null;
-    const locate = (offset, isEnd) => {
-      for (let index = nodes.length - 1; index >= 0; index -= 1) {
-        const entry = nodes[index];
-        if (isEnd ? entry.start < offset : entry.start <= offset) return { node: entry.node, offset: offset - entry.start };
-      }
-      return null;
-    };
-    const startPoint = locate(best.at, false);
-    const endPoint = locate(best.at + exact.length, true);
-    const range = frameDocument.createRange();
-    range.setStart(startPoint.node, startPoint.offset);
-    range.setEnd(endPoint.node, endPoint.offset);
-    return range;
   }
 
   /** Rectangles of a DOM Range, in the page's source units (CSS px at zoom 1). */

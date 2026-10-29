@@ -68,9 +68,12 @@ scale `s` multiplies them by `s`.
 - Defaults (`STYLE_DEFAULTS`, the same table in Python and JS, test-enforced): highlight `#ffe600` at 0.45,
   box/underline `#e5322d` 2 units wide, spotlight black at 0.6, blackout black at 1.
 
-HTML Locations resolve in this order: `xpath` (retried with `<tbody>` inserted, since parsers add it) and the
-`text_quote.exact` inside it → the quote anywhere in the page, ranked by prefix/suffix match → the decoded text of
-`source_range` searched as a quote. Anything left is reported in `unresolved` with a reason, never dropped.
+HTML Locations resolve in the order CONTRACT §2 fixes — xpath (with a `<tbody>` retry) → `source_range` →
+a `text_quote` that matches exactly once — and never by first textual occurrence; a quote that fits two places is
+reported as ambiguous. `source_range` is mapped exactly: two marker comments are spliced in at its ends and the
+browser's own HTML parser places them (in a detached parse of the same srcdoc), then each end is carried over to
+the rendered page as element path + text offset and checked against the decoded source text. A range inside a
+tag, attribute, comment, script or style is reported, not guessed.
 
 Archived HTML is shown with no scripts (`sandbox="allow-same-origin"`, never `allow-scripts`), a CSP that blocks
 every network fetch, animations paused and media players unpainted, so it never phones home and renders the same

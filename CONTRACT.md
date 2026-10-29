@@ -31,6 +31,14 @@ Exactly one of:
 Optional on any Location: `id`, `label` (shown on hover / beside the mark).
 A Location that cannot be resolved on the given source is reported back, never silently skipped.
 
+An `html` Location resolves in this order, and never to the first place its text happens to occur (datasheet
+values repeat — the same `30A` in both model columns): (1) `xpath` (retried with the `<tbody>` a parser
+inserts) → that element; inside it the `text_quote` if exactly one occurrence fits its `prefix`/`suffix`, else
+`source_range` if it lands inside the element, else — with neither given — the whole element; (2) `source_range`
+mapped to its exact DOM position by the HTML parser itself, not by searching for its text; (3) `text_quote`
+anywhere in the page, only if exactly one place matches `exact` + `prefix` + `suffix` — two or more is reported
+as ambiguous, never picked from.
+
 ## 3. Style
 
 | Style | Effect | Like |

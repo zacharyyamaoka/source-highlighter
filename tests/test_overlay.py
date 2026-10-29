@@ -146,7 +146,7 @@ def test_html_marks_match_the_cells_and_use_the_highlight_api(harness):
     assert sandbox == "allow-same-origin"  # never allow-scripts
 
 
-def test_html_location_falls_back_from_a_stale_xpath_to_the_text_quote(harness):
+def test_html_location_falls_back_from_a_stale_xpath(harness):
     location = load_locations("cubemars-ak80-9.html.locations.json")[1]  # the "9" next to Rated torque
     stale = {**location, "html": {**location["html"], "xpath": "/html/body/div[99]/table/tr[1]/td[1]"}}
     quote_only = {"id": "quote-only", "html": {"text_quote": location["html"]["text_quote"]}}
@@ -154,10 +154,8 @@ def test_html_location_falls_back_from_a_stale_xpath_to_the_text_quote(harness):
     missing = {"id": "missing", "html": {"text_quote": {"exact": "Flux capacitor"}}}
     drawn = draw(harness, {"kind": "html", "url": "/tests/fixtures/cubemars-ak80-9.html"}, [location, stale, quote_only, missing, range_only], "box")
     marks = {mark["id"]: mark["rect"] for mark in drawn["drawn"]}
-    assert marks[stale["id"]] == marks[location["id"]] == marks["quote-only"]
-    # source_range alone: "9" appears many times, so without the quote's context the first "9" on the page wins —
-    # it resolves, but not necessarily to the same cell (a documented v0 limit).
-    assert "range-only" in marks
+    # "9" occurs many times on the page; every path must still land on the Rated-torque cell.
+    assert marks[stale["id"]] == marks[location["id"]] == marks["quote-only"] == marks["range-only"]
     assert [entry["location"]["id"] for entry in drawn["result"]["unresolved"]] == ["missing"]
 
 
