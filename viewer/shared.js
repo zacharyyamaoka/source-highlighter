@@ -87,7 +87,7 @@ export function chain(ref, state, showing) {
   const files = state.files?.[ref.id] || {};
   const status = statusOf(ref, state);
   const nodes = [];
-  if (!ref.source.vault) nodes.push({ level: "live", kept: Boolean(ref.source.url), detail: status.word === "unchecked" ? "not checked" : status.label, when: day(status.checkedAt) && `checked ${day(status.checkedAt)}` });
+  if (!ref.source.vault) nodes.push({ level: "live", kept: Boolean(ref.source.url), detail: status.word === "unchecked" ? "not checked" : status.word, when: day(status.checkedAt) && `checked ${day(status.checkedAt)}` });
   const levels = ref.source.vault ? ["vault"] : LEVELS;
   for (const level of levels) {
     const file = files[level];
