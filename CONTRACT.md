@@ -28,6 +28,7 @@ Exactly one of:
 {"text": {"start": 840, "end": 846}}                     // code points into a text source (markdown, plain text)
 {"page": 78, "quote": "Mixed paper 23.4%"}               // a page, and text to find on it (no box measured yet)
 {"page": 33}                                             // a whole page (a slide, a drawing): shown and outlined, no finer mark
+{"quote": "Rated torque (Nm) 9"}                         // only the cited text: found anywhere in the source, exactly once or reported
 {"note": {"heading": "Pricing", "block": "ab12cd"}}      // a markdown / vault note: a heading and/or a ^block id
 ```
 
@@ -116,7 +117,7 @@ Its result uses Wikipedia's `url-status` words, the existing practice (prior art
 |---|---|---|
 | `live` | the live page or file **exactly** matches what was cited: the same sha256 for a file; for a web page every location resolves by §2 and the `quote` is found exactly once | the stored copy marked, plus *live · unchanged since <retrieved_at>* and a live link that the browser itself highlights (a Text Fragment `#:~:text=` for HTML, `#page=N` for a PDF) |
 | `deviated` | reachable but no longer an exact match (the quote is gone, appears twice, or the file changed) | the best stored copy (html → snapshot → archive → pdf) marked, *page changed since <retrieved_at>*, and what changed when it can tell |
-| `dead` | unreachable after three checks spread over time (InternetArchiveBot's rule) | the stored copy marked, *page unreachable* |
+| `dead` | unreachable after three checks at least a day apart (InternetArchiveBot's rule); one or two failures read *unreachable (n of 3)*, and a robots.txt refusal reads *not checked* and never counts | the stored copy marked, *page unreachable* |
 | `link-only` | nothing stored and no exact live match | the URL and quote, *nothing stored; can't show where* — never a guessed mark |
 
 - **Never re-render a live page inside the viewer:** the mark is always drawn on a stored copy; the live side is a link
