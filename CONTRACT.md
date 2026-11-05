@@ -104,16 +104,18 @@ the same linked-source model serves datasheets, the Tycoon CRM and ObjectDB, so 
 
 ## 6. Showing a reference — live first, stored copy as fallback
 
-Mode `auto` (default):
-1. **Live:** fetch the URL now. If it still matches — the same sha256 for a file; for a web page, every location
-   still resolves by §2's rules, or the `quote` is found exactly once — show the live page, status
-   *live · unchanged since <retrieved_at>*.
-2. **Stored:** otherwise show the best stored copy, in the order html → snapshot → archive → pdf, with status
-   *page changed since <retrieved_at>* or *page unreachable*, plus what changed when it can tell (the quote is gone, or
-   appears twice).
-3. **Link only:** nothing stored and the live page doesn't match → status *nothing stored; can't show where*. Never
-   pretend.
+The check runs on the viewer's server (polite: robots.txt, one request per second per host), never in the browser.
+Its result uses Wikipedia's `url-status` words, the existing practice (prior art note, 2026-11-05):
 
-Always offer both links, live and stored (the Robust Links practice: an original URL plus a dated copy). Modes `live`
-and `stored` force one side. A live fetch runs on the viewer's server (polite: robots.txt, one request per second
-per host), never from the browser, because a cross-origin page can't be highlighted in place.
+| status | means | the viewer shows |
+|---|---|---|
+| `live` | the live page or file **exactly** matches what was cited: the same sha256 for a file; for a web page every location resolves by §2 and the `quote` is found exactly once | the stored copy marked, plus *live · unchanged since <retrieved_at>* and a live link that the browser itself highlights (a Text Fragment `#:~:text=` for HTML, `#page=N` for a PDF) |
+| `deviated` | reachable but no longer an exact match (the quote is gone, appears twice, or the file changed) | the best stored copy (html → snapshot → archive → pdf) marked, *page changed since <retrieved_at>*, and what changed when it can tell |
+| `dead` | unreachable after three checks spread over time (InternetArchiveBot's rule) | the stored copy marked, *page unreachable* |
+| `link-only` | nothing stored and no exact live match | the URL and quote, *nothing stored; can't show where* — never a guessed mark |
+
+- **Never re-render a live page inside the viewer:** the mark is always drawn on a stored copy; the live side is a link
+  the browser highlights natively. WHY: a cross-origin page can't be marked in place, and a re-render could drift
+  from what was cited.
+- **Always both links** (Robust Links / Perma.cc practice): the original URL and the dated stored copy.
+- Modes `auto` (default), `live`, `stored`.
