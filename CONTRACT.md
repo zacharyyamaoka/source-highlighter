@@ -27,6 +27,7 @@ Exactly one of:
           "text_quote": {"exact": "20 Nm", "prefix": "Rated torque ", "suffix": " Peak"}}}
 {"text": {"start": 840, "end": 846}}                     // code points into a text source (markdown, plain text)
 {"page": 78, "quote": "Mixed paper 23.4%"}               // a page, and text to find on it (no box measured yet)
+{"page": 33}                                             // a whole page (a slide, a drawing): shown and outlined, no finer mark
 {"note": {"heading": "Pricing", "block": "ab12cd"}}      // a markdown / vault note: a heading and/or a ^block id
 ```
 
@@ -90,7 +91,7 @@ the same linked-source model serves datasheets, the Tycoon CRM and ObjectDB, so 
 
 - **Only `source` is required.** `locations` may be empty and `stored` may be `{}`: a quote-only reference
   (most CRM evidence today) is valid; §6 then finds the `quote` best-effort and says how sure it is.
-- `source.url` may be a web URL, a file path, or a vault note (`"vault": "Projects/X.md"` in place of `url`, cited
+- `source.url` may be a web URL, an absolute local file path (no `file://` needed), or a vault note (`"vault": "Projects/X.md"` in place of `url`, cited
   by a §2 `note` location — vault notes are always "stored": the vault is the copy).
 - `where` (optional) is the human locator as the source prints it ("App. C p.78 row 23"), shown beside the mark.
 - **Ids belong to the caller**, unique within its own store; never reuse an id for a different citation. Many fields
