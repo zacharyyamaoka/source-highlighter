@@ -65,3 +65,40 @@ list of `{locations, style}` layers.
 
 Both forms take the same three inputs and must draw the same marks in the same places (tested by measuring the drawn
 rectangles, not by checking that elements exist).
+
+## 5. Reference — what a caller stores (draft, 2026-11-05)
+
+A Reference is one cited thing: the source, what was kept of it, and where in it. The **caller** decides what to
+cite (an AI extraction, a CRM note, an ObjectDB record); the highlighter never decides WHAT, only shows it.
+WHY (Zach, 2026-11-05): "source highlight is not in charge of WHAT gets highlighted, that's up to the AI etc." — and
+the same linked-source model serves datasheets, the Tycoon CRM and ObjectDB, so it is defined once, here.
+
+```jsonc
+{"id": "ref-1", "label": "Rated torque — CubeMars AK80-9",
+ "source": {"url": "https://www.cubemars.com/product/ak80-9-v3-0-robotic-actuator.html",
+            "retrieved_at": "2026-10-29T19:44:27Z", "sha256": "…", "media_type": "text/html",
+            "stored": {"html": "/abs/source.html", "snapshot": "/abs/snapshot.jpg", "archive": "/abs/source.wacz"}},
+ "locations": [ /* §2 Locations */ ],
+ "quote": "Rated torque (Nm) 9"}            // optional: the cited text, used to re-find it on a changed page
+```
+
+- `stored` holds whatever capture kept — any subset of markdownify CONTRACT §2.1's levels (`html`, `snapshot`, `pdf`,
+  `archive`), or nothing at all (a link-only reference). Save with `mdify capture <url> --keep …`; a file source
+  (PDF, image) is stored as itself.
+- A list of References is a reference set (`refs.json`): the input of the standalone viewer.
+
+## 6. Showing a reference — live first, stored copy as fallback
+
+Mode `auto` (default):
+1. **Live:** fetch the URL now. If it still matches — the same sha256 for a file; for a web page, every location
+   still resolves by §2's rules, or the `quote` is found exactly once — show the live page, status
+   *live · unchanged since <retrieved_at>*.
+2. **Stored:** otherwise show the best stored copy, in the order html → snapshot → archive → pdf, with status
+   *page changed since <retrieved_at>* or *page unreachable*, plus what changed when it can tell (the quote is gone, or
+   appears twice).
+3. **Link only:** nothing stored and the live page doesn't match → status *nothing stored; can't show where*. Never
+   pretend.
+
+Always offer both links, live and stored (the Robust Links practice: an original URL plus a dated copy). Modes `live`
+and `stored` force one side. A live fetch runs on the viewer's server (polite: robots.txt, one request per second
+per host), never from the browser, because a cross-origin page can't be highlighted in place.
