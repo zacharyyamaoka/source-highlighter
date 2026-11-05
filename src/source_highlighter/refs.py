@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 from typing import Any
 
 # CONTRACT §6: the stored copy a deviated or dead reference falls back on, best first.
@@ -55,7 +56,11 @@ def is_local(url: str | None) -> bool:
 
 
 def local_path(url: str) -> Path:
-    return Path(url.removeprefix("file://"))
+    """A file:// URL is percent-encoded (RFC 8089), so its path is decoded; a bare absolute path is taken literally.
+    WHY: ObjectDB's vault refs (`file:///…/Apple%20Notes/…`) read as missing while the files existed."""
+    if url.startswith("file://"):
+        return Path(unquote(urlparse(url).path))
+    return Path(url)
 
 
 def kept_levels(ref: dict, base: Path) -> list[str]:
