@@ -26,7 +26,13 @@ Exactly one of:
           "xpath": "/html/body/main/table[2]/tr[3]/td[2]",
           "text_quote": {"exact": "20 Nm", "prefix": "Rated torque ", "suffix": " Peak"}}}
 {"text": {"start": 840, "end": 846}}                     // code points into a text source (markdown, plain text)
+{"page": 78, "quote": "Mixed paper 23.4%"}               // a page, and text to find on it (no box measured yet)
+{"note": {"heading": "Pricing", "block": "ab12cd"}}      // a markdown / vault note: a heading and/or a ^block id
 ```
+
+The last two are best-effort locations: the highlighter finds the quote on that page, or the heading/block in the
+note, and marks it; found more than once, or not at all, it says so. WHY (2026-11-05, from the Tycoon CRM and ObjectDB
+agents): most real citations today are "page 78, this sentence" or "[[Note#Heading]]", with no measured box.
 
 Optional on any Location: `id`, `label` (shown on hover / beside the mark).
 A Location that cannot be resolved on the given source is reported back, never silently skipped.
@@ -82,6 +88,14 @@ the same linked-source model serves datasheets, the Tycoon CRM and ObjectDB, so 
  "quote": "Rated torque (Nm) 9"}            // optional: the cited text, used to re-find it on a changed page
 ```
 
+- **Only `source` is required.** `locations` may be empty and `stored` may be `{}`: a quote-only reference
+  (most CRM evidence today) is valid; §6 then finds the `quote` best-effort and says how sure it is.
+- `source.url` may be a web URL, a file path, or a vault note (`"vault": "Projects/X.md"` in place of `url`, cited
+  by a §2 `note` location — vault notes are always "stored": the vault is the copy).
+- `where` (optional) is the human locator as the source prints it ("App. C p.78 row 23"), shown beside the mark.
+- **Ids belong to the caller**, unique within its own store; never reuse an id for a different citation. Many fields
+  may cite one Reference (CRM: `evidence[field].ref = "<id>"`). A caller may keep References as Python records and
+  project them to this JSON (Zach's rule: Python is the ground truth).
 - `stored` holds whatever capture kept — any subset of markdownify CONTRACT §2.1's levels (`html`, `snapshot`, `pdf`,
   `archive`), or nothing at all (a link-only reference). Save with `mdify capture <url> --keep …`; a file source
   (PDF, image) is stored as itself.
