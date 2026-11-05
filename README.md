@@ -43,7 +43,50 @@ marks.destroy();
 
 `js/` is its own npm package (`source-highlighter`, one framework-free file, no runtime dependencies;
 `pdfjs-dist` is an optional peer). A React app calls it from a `useEffect`; RobotParts' static pages import it
-directly.
+directly. Exact Locations need only that file; the approximate quote find loads `vendor/match-quote.js` beside it
+on demand (pinned in `js/vendor/VENDOR.json`) and, where it can't, stays exact-only and says so.
+
+Locations (CONTRACT §2): `{page, box}`, `{html}`, `{text}`, and the best-effort ones —
+`{note: {heading, block}}` (a markdown section or `^block` paragraph), `{page, quote}` (a quote on a PDF page),
+`{quote}` (a quote anywhere: a reference that kept only its quote) and `{page}` (the whole page, outlined just
+inside its edge, never filled). A quote is found exactly first (whitespace never counts), then approximately
+(approx-string-match through Hypothesis's `matchQuote` scoring, within a fifth of its length); found in two or
+more places it is reported as ambiguous, never picked from. Marks of a found quote carry `found: {exact, errors,
+text}`. `focus(id)` scrolls the mark to the middle of its own scroll boxes and window, never a parent frame's.
+
+## Check a reference set (CONTRACT §6)
+
+```bash
+uv run source-highlighter check refs.json --out statuses.json
+```
+
+Each Reference gets `live` (same sha256; or, for a page, every html Location resolves and the quote is found
+exactly once), `deviated` (and why), `unreachable (n of 3)` → `dead` (three failures at least a day apart, carried
+in the `--out` file), or `link-only` (nothing stored, no exact live match), with `checked_at` and the live link
+the browser highlights itself (`#:~:text=` for HTML, `#page=N` for a PDF). Polite: robots.txt and one request per
+second per host (rules copied from markdownify's `fetch.py`), one request per URL. `--vault DIR` resolves
+`source.vault` notes. Stored paths in refs.json may be absolute or relative to the refs.json.
+
+## View a reference set
+
+```bash
+uv run source-highlighter view refs.json --port 0
+```
+
+Serves on 127.0.0.1, prints the URL, opens no browser. `/` is **Lens**: one Reference full page (`#ref=<id>`),
+its stored copy marked (html → snapshot → pdf, or the vault note), ‹ › and ← → through the set, the status pill
+and both links up top, and a folding, resizable **Details** panel (status and why, links, the fallback chain with
+sizes, the Locations and any that did not resolve). Statuses come from `--statuses` or a `statuses.json` beside
+the refs; `--vault DIR` for vault notes. **Peek** embeds the same in any page:
+
+```html
+<script type="module" src="http://127.0.0.1:PORT/peek.js" data-refs="http://127.0.0.1:PORT/refs.json"></script>
+…rated at <span data-ref="ref-1">9 N·m</span>
+```
+
+Hover shows a crop at the mark with its status; click pins a panel (move by its header, resize by its corner, both
+remembered); "Open full" goes to Lens. The server answers CORS only for localhost origins and hands out only the
+files the set names; an archived page opened from it runs under a sandbox CSP.
 
 ## Demo
 
@@ -78,7 +121,9 @@ tag, attribute, comment, script or style is reported, not guessed.
 
 Archived HTML is shown with no scripts (`sandbox="allow-same-origin"`, never `allow-scripts`), a CSP that blocks
 every network fetch, animations paused and media players unpainted, so it never phones home and renders the same
-way every time.
+way every time. Before injection its `<script>`s, `<link>`s and every fetching attribute (`src`, `srcset`,
+`poster`, `on…`, CSS `url()`) are disabled — tags and attributes only, never text — so a shop page logs nothing
+instead of hundreds of blocked-asset errors, and `source_range` stays exact.
 
 ## Tests
 
@@ -88,7 +133,9 @@ uv run pytest -q
 
 They measure, not assert presence: predicted pixel values for every static style, `getBoundingClientRect` of
 every drawn mark against rectangles computed outside the module (pdfium page sizes, Pillow image sizes, the
-test's own DOM ranges) at two zoom levels, and Python-vs-JS rectangles for the same input. The eRob80 and
+test's own DOM ranges, pdfplumber's character boxes for PDF quotes) at two zoom levels, and Python-vs-JS
+rectangles for the same input. The check runs against a local fixture server; the viewer tests drag every panel
+boundary and re-measure it after a reload. The eRob80 and
 CubeMars screenshots are not committed (1.2–1.4 MB); their tests skip unless `SOURCE_HIGHLIGHTER_SNAP` points at
 them. `scripts/make_fixtures.py` regenerates the Locations.
 
@@ -103,6 +150,9 @@ them. `scripts/make_fixtures.py` regenerates the Locations.
 | [CSS Custom Highlight API](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API) | painting html/text highlight + underline without touching the DOM | web platform |
 | SVG `<mask>` | the spotlight / blackout veil with location-shaped holes | web platform |
 | `<iframe sandbox srcdoc>` + CSP | showing an archived page offline and script-free | web platform |
+| [approx-string-match](https://github.com/robertknight/approx-string-match-js) 2.0.1 (vendored) | the approximate quote find | MIT |
+| Hypothesis [`matchQuote`](https://github.com/hypothesis/client/blob/main/src/annotator/anchoring/match-quote.ts) (vendored, wrapped so ambiguity is reported) | scoring approximate quote matches | BSD-2-Clause |
+| [Text Fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) | the live link: the browser highlights the quote itself | web platform |
 | numpy, pdfplumber, pytest (dev only) | pixel measurements, fixture generation, tests | BSD-3 / MIT / MIT |
 
 PyMuPDF (AGPL) is deliberately not used. rough-notation (MIT) would give box/underline a hand-drawn look; v0

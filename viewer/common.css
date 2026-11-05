@@ -1,0 +1,29 @@
+/* What Lens and Peek draw the same way: the status pill, both links, the "nothing stored" state.
+   WHY calm: one neutral answer first; amber only for deviated, red only for dead. */
+.sh-v-pill, .sh-v-links, .sh-v-empty, .sh-v-error {
+  --sh-v-fg: #1f2328; --sh-v-mute: #59636e; --sh-v-faint: #8c959f; --sh-v-line: #d8dee4; --sh-v-soft: #f6f8fa;
+  --sh-v-acc: #0969da; --sh-v-ok: #1a7f37; --sh-v-warn: #8a5a00; --sh-v-warn-bg: #fff8e1; --sh-v-warn-line: #e3b341;
+  --sh-v-bad: #b42318; --sh-v-bad-bg: #fdecea; --sh-v-bad-line: #f1a39b;
+  font: 12px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.sh-v-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 8px; border-radius: 999px;
+  font-weight: 600; color: var(--sh-v-mute); background: var(--sh-v-soft); border: 1px solid var(--sh-v-line); white-space: nowrap; }
+.sh-v-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--sh-v-faint); flex: none; }
+.sh-v-pill.sh-v-ok i { background: var(--sh-v-ok); }
+.sh-v-pill.sh-v-warn { color: var(--sh-v-warn); background: var(--sh-v-warn-bg); border-color: var(--sh-v-warn-line); }
+.sh-v-pill.sh-v-warn i { background: var(--sh-v-warn); }
+.sh-v-pill.sh-v-bad { color: var(--sh-v-bad); background: var(--sh-v-bad-bg); border-color: var(--sh-v-bad-line); }
+.sh-v-pill.sh-v-bad i { background: var(--sh-v-bad); }
+.sh-v-links { display: inline-flex; gap: 12px; align-items: center; white-space: nowrap; }
+.sh-v-links a { color: var(--sh-v-acc); text-decoration: none; }
+.sh-v-links a:hover { text-decoration: underline; }
+.sh-v-muted { color: var(--sh-v-faint); }
+.sh-v-empty { display: flex; align-items: center; justify-content: center; min-height: 100%; box-sizing: border-box; padding: 20px;
+  background: repeating-linear-gradient(135deg, #fafbfc 0 10px, #f3f5f7 10px 20px); }
+.sh-v-empty-in { max-width: 420px; background: #fff; border: 1px dashed var(--sh-v-faint); border-radius: 10px; padding: 14px 16px;
+  display: grid; gap: 8px; color: var(--sh-v-fg); }
+.sh-v-empty-in b { font-size: 13px; }
+.sh-v-empty-in q { font: 14px/1.45 ui-serif, Georgia, serif; }
+.sh-v-empty-in p { margin: 0; color: var(--sh-v-mute); }
+.sh-v-error { padding: 16px; color: var(--sh-v-bad); }
+html.sh-v-dragging, html.sh-v-dragging * { user-select: none !important; }

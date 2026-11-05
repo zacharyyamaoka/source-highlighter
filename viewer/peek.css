@@ -1,0 +1,32 @@
+@import url("common.css");
+/* Peek: citations in someone else's page. Every class is prefixed so the host's own styles are left alone. */
+.shp-cite { cursor: pointer; border-bottom: 1.5px dotted #9a6700; border-radius: 2px; outline-offset: 2px; }
+.shp-cite:hover, .shp-cite.shp-on, .shp-cite:focus-visible { background: #fdf3df; }
+.shp-cite.shp-missing { border-bottom-color: #8c959f; cursor: help; }
+.shp-n { font: 700 10px/1 system-ui, sans-serif; color: #9a6700; margin-left: 1px; vertical-align: super; }
+.shp-card, .shp-pin { --shp-line: #d8dee4; position: fixed; z-index: 2147483000; background: #fff; color: #1f2328;
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; text-align: left; box-sizing: border-box; }
+.shp-card *, .shp-pin * { box-sizing: border-box; }
+.shp-card { width: 380px; border: 1px solid var(--shp-line); border-radius: 10px; box-shadow: 0 10px 32px rgba(31,35,40,.2); padding: 10px; display: grid; gap: 8px; }
+.shp-title { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.shp-title b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shp-num { flex: none; font: 700 11px/18px system-ui, sans-serif; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; text-align: center;
+  background: #f6f8fa; border: 1px solid var(--shp-line); color: #59636e; }
+.shp-crop { height: 180px; overflow: auto; scrollbar-width: none; background: #eef1f4; border: 1px solid var(--shp-line); border-radius: 6px; position: relative; }
+.shp-crop::-webkit-scrollbar { display: none; }
+.shp-crop .sh-root { padding: 10px; }
+.shp-foot { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.shp-hint { font-size: 11px; color: #8c959f; }
+.shp-pin { border: 1px solid #c9ccd1; border-radius: 10px; box-shadow: 0 14px 44px rgba(31,35,40,.26); display: flex; flex-direction: column; overflow: hidden; }
+.shp-pin-head { flex: none; display: flex; align-items: center; gap: 8px; padding: 7px 8px 7px 10px; border-bottom: 1px solid var(--shp-line); background: #fbfbfc; cursor: move; touch-action: none; }
+.shp-pin-head b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shp-full { font-size: 12px; color: #0969da; text-decoration: none; white-space: nowrap; }
+.shp-full:hover { text-decoration: underline; }
+.shp-close { border: 0; background: none; font: inherit; cursor: pointer; color: #59636e; padding: 2px 6px; border-radius: 4px; }
+.shp-close:hover { background: #f6f8fa; }
+.shp-pin-meta { flex: none; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 6px 10px; border-bottom: 1px solid #eef1f4; }
+.shp-pin-body { flex: 1; min-height: 0; overflow: auto; background: #eef1f4; position: relative; }
+.shp-pin-body .sh-root { padding: 12px; }
+.shp-resize { position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; cursor: nwse-resize; touch-action: none;
+  background: linear-gradient(135deg, transparent 50%, #9a6700 50%, #9a6700 58%, transparent 58%, transparent 70%, #9a6700 70%, #9a6700 78%, transparent 78%); }
+@media (max-width: 720px) { .shp-card { width: calc(100vw - 16px); } }

@@ -27,6 +27,7 @@ packages = ["src/source_highlighter"]
 [tool.hatch.build.targets.wheel.force-include]
 "js/source-highlighter.js" = "source_highlighter/js/source-highlighter.js"
 "js/vendor" = "source_highlighter/js/vendor"
+"viewer" = "source_highlighter/viewer"
 
 [dependency-groups]
 dev = [

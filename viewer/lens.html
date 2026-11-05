@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source Lens</title>
+<link rel="stylesheet" href="viewer.css">
+</head>
+<body class="sh-lens">
+<header class="l-head">
+  <nav class="l-nav" aria-label="References">
+    <button type="button" class="l-btn l-prev" title="Previous reference (←)" aria-label="Previous reference">‹</button>
+    <label class="l-pick"><span class="l-pos">–</span><select class="l-select" aria-label="Reference"></select></label>
+    <button type="button" class="l-btn l-next" title="Next reference (→)" aria-label="Next reference">›</button>
+  </nav>
+  <div class="l-what"><b class="l-label"></b><q class="l-quote" hidden></q></div>
+  <div class="l-state"><span class="l-pill"></span><span class="l-links"></span></div>
+  <button type="button" class="l-btn l-details-toggle" aria-expanded="false" title="Show or hide the details">Details</button>
+</header>
+<main class="l-body">
+  <div class="l-stage" tabindex="-1"></div>
+  <div class="l-split" role="separator" aria-orientation="vertical" title="Drag to resize the details"></div>
+  <aside class="l-details" aria-label="Details">
+    <section><h4>Status</h4><div class="l-status"></div></section>
+    <section><h4>Links</h4><div class="l-both"></div></section>
+    <section class="l-where-section"><h4>Where</h4><p class="l-where"></p></section>
+    <section><h4>What was kept</h4><ol class="l-chain"></ol><p class="l-chain-note">Shown: the first kept copy that can be drawn (html → snapshot → pdf). Pick another to compare.</p></section>
+    <section><h4>Locations</h4><ul class="l-locations"></ul></section>
+    <section><h4>Mark</h4><select class="l-style" aria-label="Mark style"><option>spotlight</option><option>highlight</option><option>box</option><option>underline</option><option>blackout</option></select></section>
+  </aside>
+</main>
+<script type="module" src="lens.js"></script>
+</body>
+</html>

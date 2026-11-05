@@ -73,6 +73,11 @@ list of `{locations, style}` layers.
 Both forms take the same three inputs and must draw the same marks in the same places (tested by measuring the drawn
 rectangles, not by checking that elements exist).
 
+3. **Check and view** (§5–§6) — `source-highlighter check refs.json [--out statuses.json]` gives each Reference its §6
+   status (`live` / `deviated` / `dead` / `link-only`, or `unreachable (n of 3)` before it is dead), why, when, and
+   the live link; `source-highlighter view refs.json [--port 0]` serves Lens (one Reference, full page, `#ref=<id>`)
+   and `peek.js` (`<script type="module" src="…/peek.js" data-refs="refs.json">` + `<span data-ref="id">`) on 127.0.0.1.
+
 ## 5. Reference — what a caller stores (draft, 2026-11-05)
 
 A Reference is one cited thing: the source, what was kept of it, and where in it. The **caller** decides what to

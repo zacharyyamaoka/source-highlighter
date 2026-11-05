@@ -1,0 +1,55 @@
+@import url("common.css");
+/* Lens: header, the stage (the stored copy), a draggable boundary and the folding Details panel. */
+:root { --fg: #1f2328; --mute: #59636e; --faint: #8c959f; --line: #d8dee4; --soft: #f6f8fa; --acc: #0969da; --stage: #eef1f4; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body.sh-lens { display: flex; flex-direction: column; font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); background: #fff; overflow: hidden; }
+button, select { font: inherit; color: inherit; }
+a { color: var(--acc); }
+.l-head { flex: none; display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-bottom: 1px solid var(--line); min-width: 0; }
+.l-nav { display: flex; align-items: center; gap: 4px; flex: none; }
+.l-btn { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.l-btn:hover { background: var(--soft); }
+.l-btn[disabled] { opacity: .4; cursor: default; }
+.l-prev, .l-next { width: 28px; padding: 3px 0; font-size: 15px; line-height: 1.2; }
+.l-pick { position: relative; display: inline-flex; }
+.l-pos { font-variant-numeric: tabular-nums; font-weight: 600; padding: 3px 8px; border: 1px solid var(--line); border-radius: 6px; min-width: 56px; text-align: center; }
+.l-select { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.l-what { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; overflow: hidden; white-space: nowrap; }
+.l-label { font-size: 14px; overflow: hidden; text-overflow: ellipsis; }
+.l-quote { color: var(--mute); font: 14px/1.4 ui-serif, Georgia, serif; overflow: hidden; text-overflow: ellipsis; }
+.l-state { display: flex; align-items: center; gap: 12px; flex: none; }
+.l-details-toggle[aria-expanded="true"] { background: var(--soft); border-color: var(--faint); }
+.l-body { flex: 1; min-height: 0; display: flex; }
+.l-stage { flex: 1; min-width: 0; overflow: auto; background: var(--stage); position: relative; outline: none; }
+.l-stage .sh-root { padding: 18px; }
+.l-split { flex: none; width: 7px; cursor: col-resize; background: var(--soft); border-left: 1px solid var(--line); border-right: 1px solid var(--line); touch-action: none; position: relative; }
+.l-split::after { content: ""; position: absolute; left: 2px; top: 50%; height: 28px; margin-top: -14px; border-left: 1px solid var(--faint); border-right: 1px solid var(--faint); width: 1px; }
+.l-split:hover { background: #dde4ec; }
+.l-details { flex: none; width: 340px; overflow: auto; padding: 4px 16px 16px; background: #fff; }
+.l-details h4 { margin: 16px 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); }
+.l-details p { margin: 4px 0; }
+.l-why { color: var(--mute); }
+.l-faint { color: var(--faint); font-size: 12px; }
+.l-problem { color: #8a5a00; font-size: 12px; }
+.l-linklist { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.l-linklist a { word-break: break-all; }
+.l-chain { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; }
+.l-node { display: grid; grid-template-columns: 74px 1fr auto; gap: 8px; align-items: baseline; padding: 5px 6px; border-left: 2px solid var(--line); }
+.l-node.not { color: var(--faint); }
+.l-node.shown { border-left-color: var(--fg); background: var(--soft); font-weight: 600; }
+.l-node-pick { border: 0; background: none; padding: 0; color: var(--acc); cursor: pointer; text-align: left; font-weight: 600; }
+.l-chain-note { color: var(--faint); font-size: 11.5px; }
+.l-locations { margin: 0; padding-left: 16px; color: var(--mute); }
+.l-locations code { font-size: 11px; background: var(--soft); padding: 0 4px; border-radius: 3px; }
+.l-style { padding: 2px 6px; }
+body.l-folded .l-details, body.l-folded .l-split { display: none; }
+@media (max-width: 720px) {
+  .l-head { flex-wrap: wrap; gap: 8px; }
+  .l-what { order: 3; flex-basis: 100%; white-space: normal; flex-wrap: wrap; }
+  .l-state { order: 4; flex-basis: 100%; flex-wrap: wrap; }
+  .l-body { flex-direction: column; }
+  .l-split { display: none; }
+  .l-details { width: auto !important; max-height: 45vh; border-top: 1px solid var(--line); }
+}

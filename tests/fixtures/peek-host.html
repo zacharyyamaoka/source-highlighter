@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actuator shortlist (a host page for Peek)</title>
+<style>
+  body { margin: 0; background: #f4f5f7; font: 15px/1.7 Georgia, serif; color: #24292f; }
+  main { max-width: 760px; margin: 40px auto; padding: 0 20px; }
+  .record { background: #fff; border: 1px solid #d8dee4; border-radius: 10px; padding: 16px 22px; margin-bottom: 18px; }
+  .kind { font: 600 11px/1 system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #8c959f; }
+  h1 { font: 600 22px/1.3 system-ui, sans-serif; margin: 8px 0 10px; }
+  table { border-collapse: collapse; width: 100%; font: 14px/1.5 system-ui, sans-serif; }
+  th { text-align: left; font-weight: 500; color: #59636e; width: 40%; padding: 6px 0; border-bottom: 1px solid #eef1f4; }
+  td { padding: 6px 0; border-bottom: 1px solid #eef1f4; font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <section class="record">
+    <div class="kind">CRM · supplier note</div>
+    <h1>CubeMars</h1>
+    <p>The AK80-9 is rated at <span data-ref="ref-1">9 N·m</span> and peaks at <span data-ref="ref-6">22 N·m</span>.
+      Against the eRob80I-50's <span data-ref="ref-4">21 N·m</span> rated, it is the wrist option, not the shoulder.</p>
+  </section>
+  <section class="record">
+    <div class="kind">ObjectDB · part record</div>
+    <h1>Mean Well LRS-350-24</h1>
+    <table>
+      <tr><th>Rated power</th><td><span data-ref="ref-2">350.4 W</span></td></tr>
+      <tr><th>Efficiency</th><td><span data-ref="ref-3">88 %</span></td></tr>
+      <tr><th>Alternative</th><td>mjbots qdd100 beta 3, <span data-ref="ref-5">peak torque —</span></td></tr>
+    </table>
+  </section>
+  <section class="record">
+    <div class="kind">Any page · a plain sentence</div>
+    <p>The shoulder takes the eRob80I-50; the reasoning is in <span data-ref="ref-7">the bench notes</span>.</p>
+  </section>
+</main>
+<script type="module" src="__VIEWER__peek.js" data-refs="__VIEWER__refs.json"></script>
+</body>
+</html>
