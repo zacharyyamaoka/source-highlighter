@@ -80,11 +80,17 @@ def normalize_layers(locations: Any, style: str | dict | Style | None = None) ->
     return [Layer(list(locations or []), normalize_style(style))]
 
 
+LOCATION_SHAPES = 'a Location needs exactly one of "box" (with "page"), "html", "text", "note" or "quote" — or only "page"'
+
+
 def location_kind(location: Any) -> str | None:
-    """'page', 'html' or 'text' — or None when the Location is not exactly one of them."""
+    """'page' (a box), 'html', 'text', 'note', 'quote' (with or without a page) or 'page-only' — the same rule as
+    the JS module's locationKind — or None when the Location is none of them."""
     if not isinstance(location, dict):
         return None
-    kinds = [key for key in ("box", "html", "text") if key in location]
+    kinds = [key for key in ("box", "html", "text", "note", "quote") if key in location]
+    if not kinds:
+        return "page-only" if "page" in location else None
     if len(kinds) != 1:
         return None
     return "page" if kinds[0] == "box" else kinds[0]

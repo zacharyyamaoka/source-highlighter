@@ -11,6 +11,8 @@ from PIL import Image
 
 from .browser import render_in_browser, write_text_page
 from .geometry import (
+    LOCATION_SHAPES,
+    STYLE_DEFAULTS,
     Layer,
     Mark,
     Rect,
@@ -20,6 +22,7 @@ from .geometry import (
     is_valid_box,
     location_kind,
     normalize_layers,
+    normalize_style,
     page_box_rect,
 )
 from .paint import paint_layer
@@ -69,18 +72,23 @@ def _resolve_page_boxes(
     source_label: str,
     result: RenderResult,
 ) -> list[tuple[Style, dict[int, list[tuple[Rect, str | None, str]]]]]:
-    """Page/box Locations → rectangles in source units, per layer and page; the rest go to result.unresolved."""
+    """Page/box and page-only Locations → rectangles in source units, per layer and page, as
+    (rect, label, id, whole); the rest go to result.unresolved."""
     resolved_layers = []
     for layer_index, layer in enumerate(layers):
-        by_page: dict[int, list[tuple[Rect, str | None, str]]] = {}
+        by_page: dict[int, list[tuple[Rect, str | None, str, bool]]] = {}
         for index, location in enumerate(layer.locations):
             kind = location_kind(location)
             reason = None
             if kind is None:
-                reason = 'a Location needs exactly one of "box" (with "page"), "html" or "text"'
-            elif kind != "page":
+                reason = LOCATION_SHAPES
+            elif kind == "quote" and source_label == "a PDF source":
+                reason = "a quote on a PDF is found by the interactive form only; the static form needs a page/box Location"
+            elif kind == "quote":
+                reason = "an image has no text to find a quote in; give a page/box Location"
+            elif kind not in ("page", "page-only"):
                 reason = f"a{'n' if kind == 'html' else ''} {kind} Location cannot address {source_label}"
-            elif not is_valid_box(location["box"]):
+            elif kind == "page" and not is_valid_box(location["box"]):
                 reason = "box must be [x0, y0, x1, y1] within 0–1 with x0 < x1 and y0 < y1"
             else:
                 page_number = location.get("page", 1)
@@ -91,11 +99,25 @@ def _resolve_page_boxes(
                 continue
             page_number = location.get("page", 1)
             width, height = page_sizes[page_number - 1]
-            rect = page_box_rect(location["box"], width, height, layer.style.padding)
+            whole = kind == "page-only"
+            rect = Rect(0.0, 0.0, float(width), float(height)) if whole else page_box_rect(location["box"], width, height, layer.style.padding)
             location_id = str(location.get("id", f"{layer_index}:{index}"))
-            by_page.setdefault(page_number, []).append((rect, location.get("label"), location_id))
+            by_page.setdefault(page_number, []).append((rect, location.get("label"), location_id, whole))
         resolved_layers.append((layer.style, by_page))
     return resolved_layers
+
+
+def whole_page_outline(style: Style, rect: Rect) -> tuple[Style, Rect]:
+    """A page-only Location is outlined just inside the page edge, never filled: a box style and the rect it circles.
+
+    WHY the same rule as the JS module: the box colour unless the layer is itself a box/underline, at least the
+    default box width, drawn inside so the page edge does not clip it.
+    """
+    stroke = max(style.width, STYLE_DEFAULTS["box"]["width"])
+    color = style.color if style.name in ("box", "underline") else STYLE_DEFAULTS["box"]["color"]
+    opacity = style.opacity if style.name in ("box", "underline") else STYLE_DEFAULTS["box"]["opacity"]
+    outline = normalize_style({"name": "box", "color": color, "opacity": opacity, "width": stroke})
+    return outline, Rect(rect.x0 + stroke, rect.y0 + stroke, rect.x1 - stroke, rect.y1 - stroke)
 
 
 def _paint_page(image: Image.Image, page_number: int, resolved_layers, scale: float, result: RenderResult) -> Image.Image:
@@ -103,10 +125,15 @@ def _paint_page(image: Image.Image, page_number: int, resolved_layers, scale: fl
         entries = by_page.get(page_number, [])
         if not entries and style.name not in ("spotlight", "blackout"):
             continue
-        pixel_rects = [(rect.scaled(scale), label) for rect, label, _ in entries]
-        image = paint_layer(image, pixel_rects, style, scale)
-        for (rect, label, location_id), (pixel_rect, _) in zip(entries, pixel_rects):
-            result.marks.append(Mark(location_id, page_number, style.name, pixel_rect, label))
+        # A whole page is a hole in a spotlight/blackout veil, but never a page-sized fill, bar or box.
+        painted = [(rect.scaled(scale), label) for rect, label, _, whole in entries if not whole or style.name in ("spotlight", "blackout")]
+        if painted or style.name in ("spotlight", "blackout"):
+            image = paint_layer(image, painted, style, scale)
+        for rect, label, location_id, whole in entries:
+            if whole:
+                outline, inset = whole_page_outline(style, rect)
+                image = paint_layer(image, [(inset.scaled(scale), label)], outline, scale)
+            result.marks.append(Mark(location_id, page_number, style.name, rect.scaled(scale), label))
     return image
 
 
@@ -130,14 +157,21 @@ def _render_pdf(source_path, layers, out_path, page, scale, pdf_out, result) -> 
     if pdf_out or wants_pdf:
         target = out_path if wants_pdf else Path(pdf_out)
         target.parent.mkdir(parents=True, exist_ok=True)
-        vector_layers = [(style, {number: [rect for rect, _, _ in entries] for number, entries in by_page.items()}) for style, by_page in resolved_layers]
+        vector_layers = []
+        for style, by_page in resolved_layers:
+            vector_layers.append((style, {number: [rect for rect, _, _, whole in entries if not whole or style.name in ("spotlight", "blackout")] for number, entries in by_page.items()}))
+            for number, entries in by_page.items():
+                for rect, _, _, whole in entries:
+                    if whole:
+                        outline, inset = whole_page_outline(style, rect)
+                        vector_layers.append((outline, {number: [inset]}))
         for skipped_page in save_marked_pdf(Path(source_path), vector_layers, target):
             result.unresolved.append(Unresolved(-1, -1, {"page": skipped_page}, "rotated page: v0 marks it in PNG output only, not in the PDF"))
         result.outputs.append(str(target))
         if wants_pdf:
             for style, by_page in resolved_layers:
                 for number, entries in by_page.items():
-                    result.marks.extend(Mark(location_id, number, style.name, rect, label) for rect, label, location_id in entries)
+                    result.marks.extend(Mark(location_id, number, style.name, rect, label) for rect, label, location_id, _ in entries)
             document.close()
             return
     if page is not None:

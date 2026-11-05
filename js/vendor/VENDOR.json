@@ -1,0 +1,35 @@
+{
+  "_why": "The quote find (CONTRACT §2 page + quote, quote-only references) adopts the stock parts the prior-art note recommends (Linked Sources — Off-the-Shelf Citation Viewers, 2026-11-05) instead of a home-grown fuzzy matcher. They are pinned copies loaded on demand by source-highlighter.js, so the module still needs no build step and no network. tests/test_vendor.py re-hashes every file against this record. To update one: copy the new file, then change its version, origin and sha256 here together.",
+  "files": {
+    "approx-string-match.js": {
+      "project": "approx-string-match",
+      "version": "2.0.1",
+      "origin": "https://registry.npmjs.org/approx-string-match/-/approx-string-match-2.0.1.tgz build/src/index.js",
+      "tarball_sha256": "40e15b29233972ff5f91feafdb4cfe039a926c56d0437d61c0e5135f022e52f3",
+      "license": "MIT (LICENSE.approx-string-match)",
+      "changes": "none (verbatim)",
+      "sha256": "fbd6c74401c41678c08eef10cb791758dc852b138a81b8e59b96dcb549143873"
+    },
+    "match-quote.js": {
+      "project": "hypothesis/client",
+      "version": "commit a7b7400d0d706d4357ec37c2a3610b25dcca89d5 (main, 2026-10-15)",
+      "origin": "https://raw.githubusercontent.com/hypothesis/client/a7b7400d0d706d4357ec37c2a3610b25dcca89d5/src/annotator/anchoring/match-quote.ts",
+      "upstream_sha256": "2817a702c0ae692d92690e4ae0d151b59b7b2b6a0d4bb777688461257883e9d2",
+      "license": "BSD-2-Clause (LICENSE.hypothesis)",
+      "changes": "TypeScript types stripped; imports ./approx-string-match.js; matchQuote's ranking split out as matchQuoteAll, which returns every scored candidate with its errors (matchQuote still returns the top one). source-highlighter.js wraps matchQuoteAll so two or more places are reported as ambiguous, never picked from.",
+      "sha256": "ac9709cd103057367eaad5c9160ce92b8579fba978408b6fbabca9e4e39f7e3f"
+    },
+    "LICENSE.approx-string-match": {
+      "project": "approx-string-match",
+      "version": "2.0.1",
+      "origin": "https://registry.npmjs.org/approx-string-match/-/approx-string-match-2.0.1.tgz LICENSE",
+      "sha256": "c53b354b17e69239363ae9f0e4c119975c18666367ad52df18f4d58f0bbf4758"
+    },
+    "LICENSE.hypothesis": {
+      "project": "hypothesis/client",
+      "version": "commit a7b7400d0d706d4357ec37c2a3610b25dcca89d5",
+      "origin": "https://raw.githubusercontent.com/hypothesis/client/a7b7400d0d706d4357ec37c2a3610b25dcca89d5/LICENSE",
+      "sha256": "8000e9f55b3ea757318f072c8fae3640a4f9e2e3b578c6a271ae98b1598eee7f"
+    }
+  }
+}

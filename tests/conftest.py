@@ -99,10 +99,13 @@ def harness(chromium, static_server):
     context = chromium.new_context(viewport={"width": 1200, "height": 900}, device_scale_factor=1)
     page = context.new_page()
     errors: list[str] = []
+    console: list[str] = []
     page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on("console", lambda message: console.append(f"{message.type}: {message.text}"))
     page.goto(f"{static_server}/tests/harness.html")
     page.wait_for_function("window.sourceHighlighter !== undefined")
     page.errors = errors
+    page.console = console
     yield page
     context.close()
 

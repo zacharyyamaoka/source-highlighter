@@ -25,7 +25,8 @@ packages = ["src/source_highlighter"]
 # WHY: one JS file draws the interactive marks AND the static HTML/text renders (driven through Chromium),
 # so both forms share a single implementation. The wheel carries a copy; a checkout reads js/ directly.
 [tool.hatch.build.targets.wheel.force-include]
-"js/source-highlighter.js" = "source_highlighter/source-highlighter.js"
+"js/source-highlighter.js" = "source_highlighter/js/source-highlighter.js"
+"js/vendor" = "source_highlighter/js/vendor"
 
 [dependency-groups]
 dev = [

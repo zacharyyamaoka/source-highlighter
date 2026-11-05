@@ -8,7 +8,8 @@
     ".": "./source-highlighter.js"
   },
   "files": [
-    "source-highlighter.js"
+    "source-highlighter.js",
+    "vendor/"
   ],
   "license": "UNLICENSED",
   "private": true,

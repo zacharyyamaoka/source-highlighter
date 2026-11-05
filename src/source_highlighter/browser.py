@@ -18,13 +18,26 @@ from .geometry import Layer
 HARNESS_ORIGIN = "https://source-highlighter.invalid/"
 
 
-def js_module_source() -> str:
-    """The ES module: the copy inside an installed wheel, else js/ in a checkout."""
-    packaged = resources.files("source_highlighter").joinpath("source-highlighter.js")
+def js_file(name: str = "source-highlighter.js") -> str:
+    """A file of the ES module (`source-highlighter.js`, `vendor/…`): the copy inside an installed wheel, else js/
+    in a checkout."""
+    packaged = resources.files("source_highlighter").joinpath("js", name)
     if packaged.is_file():
         return packaged.read_text(encoding="utf-8")
-    checkout = Path(__file__).resolve().parents[2] / "js" / "source-highlighter.js"
+    checkout = Path(__file__).resolve().parents[2] / "js" / name
     return checkout.read_text(encoding="utf-8")
+
+
+def js_module_source() -> str:
+    """The ES module itself."""
+    return js_file("source-highlighter.js")
+
+
+def js_vendor_names() -> list[str]:
+    """The vendored modules the ES module loads on demand (vendor/*.js)."""
+    packaged = resources.files("source_highlighter").joinpath("js", "vendor")
+    folder = packaged if packaged.is_dir() else Path(__file__).resolve().parents[2] / "js" / "vendor"
+    return sorted(entry.name for entry in folder.iterdir() if entry.name.endswith(".js"))
 
 
 def _harness_html(width: int) -> str:
@@ -67,6 +80,7 @@ def _render_in_browser(
     from playwright.sync_api import sync_playwright
 
     module_source = js_module_source()
+    vendor = {HARNESS_ORIGIN + "vendor/" + name: js_file("vendor/" + name) for name in js_vendor_names()}
 
     def serve(route):
         url = route.request.url
@@ -74,6 +88,8 @@ def _render_in_browser(
             route.fulfill(status=200, content_type="text/html; charset=utf-8", body=_harness_html(width))
         elif url == HARNESS_ORIGIN + "source-highlighter.js":
             route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=module_source)
+        elif url in vendor:
+            route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=vendor[url])
         else:
             # Archived pages reference their live CSS, fonts and trackers; none of it is fetched.
             route.abort()
