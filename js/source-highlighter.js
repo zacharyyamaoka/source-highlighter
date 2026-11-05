@@ -390,42 +390,35 @@ export function highlight(container, options) {
 
   // An html Location resolves in this order (CONTRACT §2), and never to "the first place this text occurs" —
   // datasheet values repeat (the same 30A in both model columns), so a first match is wrong half the time:
-  //   1. xpath → the element; inside it the text_quote (unique with its prefix/suffix), else source_range if it
-  //      lands inside that element, else (with neither given) the whole element.
-  //   2. source_range → the exact DOM position, via the browser's own parser (mapSourceRange).
+  //   1. source_range → the exact DOM position, via the browser's own parser (mapSourceRange).
+  //   2. xpath → the element; inside it the text_quote (unique with its prefix/suffix), else (with no quote) the
+  //      whole element.
   //   3. text_quote anywhere in the page, only if exactly one place matches exact + prefix + suffix;
   //      several matches are reported as ambiguous, never picked from.
   function resolveHtmlRange(htmlLocation) {
     const frameDocument = state.pages[0].frame.contentDocument;
     const quote = htmlLocation.text_quote || {};
     const notes = [];
-    let mapped = null;
-    const fromSourceRange = () => (mapped ??= mapSourceRange(frameDocument, htmlLocation.source_range));
 
+    if (htmlLocation.source_range) {
+      // WHY first, and accepted even when an xpath points elsewhere: source_range counts into these exact bytes,
+      // so where it maps is where the Location is; an xpath that disagrees is the stale one — even when it holds
+      // the same quote (the other "30A" cell).
+      const { range, reason } = mapSourceRange(frameDocument, htmlLocation.source_range);
+      if (range) return { range };
+      notes.push(reason);
+    }
     const element = htmlLocation.xpath ? evaluateXPath(frameDocument, htmlLocation.xpath) : null;
     if (htmlLocation.xpath && !element) notes.push(`xpath ${htmlLocation.xpath} did not match`);
     if (element) {
-      if (!quote.exact && !htmlLocation.source_range) {
+      if (!quote.exact) {
         const range = frameDocument.createRange();
         range.selectNodeContents(element);
         return { range };
       }
-      if (quote.exact) {
-        const matches = quoteMatches(frameDocument, quote, element);
-        if (matches.length === 1) return { range: matches[0] };
-        notes.push(`the xpath element holds ${matches.length} matches of "${quote.exact}" with that prefix/suffix`);
-      }
-      if (htmlLocation.source_range) {
-        const { range } = fromSourceRange();
-        if (range && element.contains(range.commonAncestorContainer)) return { range };
-      }
-    }
-    if (htmlLocation.source_range) {
-      // WHY accepted even when an xpath matched elsewhere: source_range counts into these exact bytes, so where
-      // it maps is where the Location is; a matching-but-wrong xpath is the stale signal.
-      const { range, reason } = fromSourceRange();
-      if (range) return { range };
-      notes.push(reason);
+      const matches = quoteMatches(frameDocument, quote, element);
+      if (matches.length === 1) return { range: matches[0] };
+      notes.push(`the xpath element holds ${matches.length} matches of "${quote.exact}" with that prefix/suffix`);
     }
     if (quote.exact) {
       const matches = quoteMatches(frameDocument, quote, frameDocument.body || frameDocument.documentElement);

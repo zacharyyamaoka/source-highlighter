@@ -141,3 +141,18 @@ def test_real_page_source_range_alone_matches_the_full_location(harness):
     marks = drawn_by_id(drawn)
     for location in full:
         assert_same_rect(marks[f"{location['id']}/range"], marks[location["id"]])
+
+
+def test_source_range_wins_over_a_stale_xpath_that_holds_the_same_quote(harness, tmp_path):
+    """CONTRACT §2: source_range resolves first. A stale xpath that points at the OTHER "30A" cell (where the quote is
+    unique) must not win — both in the interactive form and in the static form."""
+    second = cell_source_range("30A", ROW, 3)
+    location = {"id": "stale", "html": {"xpath": "/html/body/table/tbody/tr[4]/td[1]", "text_quote": {"exact": "30A"}, "source_range": second}}
+    drawn = draw(harness, {"kind": "html", "url": URL}, [location], STYLE, width=1280)
+    assert drawn["result"]["unresolved"] == []
+    second_cell, first_cell = cell_rect(harness, ROW, 3), cell_rect(harness, ROW, 1)
+    assert abs(first_cell[0] - second_cell[0]) > 100
+    assert_same_rect(drawn_by_id(drawn)["stale"], second_cell)
+    result = render(PAGE, [location], STYLE, tmp_path / "out.png")
+    assert result.unresolved == []
+    assert_same_rect(result.marks[0].rect.as_list(), second_cell)
