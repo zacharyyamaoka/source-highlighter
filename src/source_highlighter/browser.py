@@ -117,6 +117,63 @@ def _render_in_browser(
     return result
 
 
+def resolve_in_browser(jobs: list[tuple[str, str, list[dict]]], *, width: int = 1280) -> list[dict[str, Any]]:
+    """Resolve each job's Locations on its source with the module, in one headless Chromium, without a screenshot.
+
+    jobs: (kind "html" | "text", source text, Locations). Returns each job's {marks, unresolved} in order.
+    WHY the module and not a Python resolver: CONTRACT §2's html rules (the parser's own source_range mapping, the
+    tbody retry, the ambiguity rule) and the quote find live there once; the §6 check asks the same question.
+    """
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(_resolve_in_browser, jobs, width).result()
+
+
+def _resolve_in_browser(jobs, width: int) -> list[dict[str, Any]]:
+    from playwright.sync_api import sync_playwright
+
+    module_source = js_module_source()
+    vendor = {HARNESS_ORIGIN + "vendor/" + name: js_file("vendor/" + name) for name in js_vendor_names()}
+
+    def serve(route):
+        url = route.request.url
+        if url == HARNESS_ORIGIN:
+            route.fulfill(status=200, content_type="text/html; charset=utf-8", body=_harness_html(width))
+        elif url == HARNESS_ORIGIN + "source-highlighter.js":
+            route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=module_source)
+        elif url in vendor:
+            route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=vendor[url])
+        else:
+            route.abort()
+
+    results = []
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch()
+        try:
+            page = browser.new_page(viewport={"width": width, "height": 900})
+            page.route("**/*", serve)
+            page.goto(HARNESS_ORIGIN)
+            page.wait_for_function("window.sourceHighlighter !== undefined")
+            for kind, source_text, locations in jobs:
+                results.append(
+                    page.evaluate(
+                        """async ({kind, sourceText, locations, width}) => {
+                            const surface = document.getElementById("surface");
+                            surface.replaceChildren();
+                            const handle = window.sourceHighlighter.highlight(surface, {
+                                source: {kind, [kind === "html" ? "html" : "text"]: sourceText}, locations, style: "box", zoom: 1, width,
+                            });
+                            const result = await handle.ready;
+                            handle.destroy();
+                            return result;
+                        }""",
+                        {"kind": kind, "sourceText": source_text, "locations": locations, "width": width},
+                    )
+                )
+        finally:
+            browser.close()
+    return results
+
+
 def write_text_page(source_text: str, layers: list[Layer], *, width: int, out_html: Path) -> None:
     """A self-contained HTML page (module inlined) showing the text with its ranges marked."""
     payload = json.dumps({"text": source_text, "layers": _layers_for_js(layers), "width": width})

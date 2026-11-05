@@ -132,7 +132,9 @@ export function quoteCandidates(text, quote, matchQuoteAll) {
   if (exact.length || !needle || !matchQuoteAll) return { exact, approximate: [] };
   const approximate = [];
   const ranked = matchQuoteAll(squashed, needle).filter((match) => match.end > match.start && 1 - match.errors / needle.length >= QUOTE_MIN_SIMILARITY);
-  ranked.sort((a, b) => a.errors - b.errors || b.score - a.score);
+  // Fewest edits first; between equals, the one as long as the quote (a changed digit, not a dropped one).
+  const lengthOff = (match) => Math.abs(match.end - match.start - needle.length);
+  ranked.sort((a, b) => a.errors - b.errors || lengthOff(a) - lengthOff(b) || b.score - a.score);
   for (const match of ranked) {
     // The matcher reports one region several times (shifted ends); keep the best of each, so "two" means two places.
     if (approximate.some((kept) => match.start < kept.squashedEnd && match.end > kept.squashedStart)) continue;

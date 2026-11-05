@@ -1,16 +1,72 @@
-"""`source-highlighter <source> --locations locations.json --style spotlight --out marked.png`"""
+"""`source-highlighter <source> --locations locations.json --style spotlight --out marked.png`
+
+Also `source-highlighter check refs.json [--out statuses.json]` (the CONTRACT §6 status of each Reference) and
+`source-highlighter view refs.json [--port 0]` (the standalone viewer, on 127.0.0.1).
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from .geometry import STYLES
 from .render import render
 
 
 def main(argv: list[str] | None = None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "check":
+        return _check(argv[1:])
+    if argv and argv[0] == "view":
+        return _view(argv[1:])
+    return _render(argv)
+
+
+def _check(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="source-highlighter check",
+        description="Check each Reference against its live source (CONTRACT §6): live, deviated, dead or link-only. "
+        "Polite: robots.txt, at most one request per second per host. An earlier --out file carries the failure "
+        "history, so 'dead' needs three failures spread over time.",
+    )
+    parser.add_argument("refs", help="a reference set: a JSON list of References (CONTRACT §5)")
+    parser.add_argument("--out", help="write the statuses here (and read the failure history from it, if it exists)")
+    parser.add_argument("--vault", help="the vault root that source.vault paths are relative to")
+    args = parser.parse_args(argv)
+    from .check import run
+
+    try:
+        result = run(Path(args.refs), Path(args.out) if args.out else None, Path(args.vault) if args.vault else None)
+    except (OSError, ValueError) as error:
+        print(f"source-highlighter check: {error}", file=sys.stderr)
+        return 1
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
+def _view(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="source-highlighter view",
+        description="Serve the standalone viewer for a reference set on 127.0.0.1: Lens (one reference, full page, "
+        "#ref=<id>) at /, and peek.js for embedding citations in any page. Prints the URL; opens no browser.",
+    )
+    parser.add_argument("refs", help="a reference set: a JSON list of References (CONTRACT §5)")
+    parser.add_argument("--port", type=int, default=0, help="port to listen on (default 0: any free port)")
+    parser.add_argument("--statuses", help="statuses from `source-highlighter check` (default: statuses.json beside the refs, if any)")
+    parser.add_argument("--vault", help="the vault root that source.vault paths are relative to")
+    args = parser.parse_args(argv)
+    from .view import serve
+
+    try:
+        return serve(Path(args.refs), port=args.port, statuses=Path(args.statuses) if args.statuses else None, vault=Path(args.vault) if args.vault else None)
+    except (OSError, ValueError) as error:
+        print(f"source-highlighter view: {error}", file=sys.stderr)
+        return 1
+
+
+def _render(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="source-highlighter",
         description="Burn highlight / box / underline / spotlight / blackout marks into a copy of a PDF, image, HTML page or text.",
