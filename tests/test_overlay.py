@@ -12,7 +12,7 @@ from PIL import Image
 
 from source_highlighter import STYLE_DEFAULTS, STYLES
 
-from .conftest import EROB_JPG, J60_PDF, draw, load_locations, requires
+from .conftest import EROB_JPG, EROB_LOCATIONS, J60_PDF, draw, load_locations
 
 TOLERANCE_PX = 1.0
 
@@ -72,18 +72,11 @@ def test_spotlight_mask_holes_match_the_marks(harness):
     assert page_one == 1
 
 
-@requires(EROB_JPG)
 @pytest.mark.parametrize("zoom", [0.5, 1.5])
 def test_image_marks_land_on_their_boxes(harness, static_server, zoom):
-    # The screenshot lives outside the repo; the static server only serves the checkout, so copy it in.
-    served = J60_PDF.parent.parent / ".erob80-served.jpg"
-    served.write_bytes(EROB_JPG.read_bytes())
-    try:
-        locations = load_locations("erob80.locations.json")
-        width, height = Image.open(EROB_JPG).size
-        drawn = draw(harness, {"kind": "image", "url": "/tests/.erob80-served.jpg"}, locations, "box", zoom=zoom)
-    finally:
-        served.unlink()
+    locations = load_locations(EROB_LOCATIONS)
+    width, height = Image.open(EROB_JPG).size
+    drawn = draw(harness, {"kind": "image", "url": f"/tests/fixtures/{EROB_JPG.name}"}, locations, "box", zoom=zoom)
     marks = {mark["id"]: mark for mark in drawn["drawn"]}
     for location in locations:
         expected = expected_page_box(location, width, height, STYLE_DEFAULTS["box"]["padding"], zoom)

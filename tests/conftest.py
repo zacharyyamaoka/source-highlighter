@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import functools
 import json
-import os
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -15,27 +14,19 @@ from PIL import Image
 
 REPO = Path(__file__).resolve().parents[1]
 FIXTURES = REPO / "tests" / "fixtures"
-SNAP = Path(
-    os.environ.get(
-        "SOURCE_HIGHLIGHTER_SNAP",
-        "/tmp/claude-1000/-home-bam-zach-brain--claude-worktrees-datasheet-ingestion-parser-e51022/"
-        "af9ade88-bf96-4801-9b31-49dc0f495b6a/scratchpad/snap",
-    )
-)
 J60_PDF = FIXTURES / "j60-joint.pdf"
 CUBEMARS_HTML = FIXTURES / "cubemars-ak80-9.html"
 CUBEMARS_MD = FIXTURES / "cubemars-ak80-9-spec.md"
-# The two page screenshots are 1.2–1.4 MB each — too big to commit, so their tests skip when they are absent.
-EROB_JPG = SNAP / "eRob80.html.jpg"
-CUBEMARS_TWIN_JPG = SNAP / "ak80-9-v3-0-robotic-actuator.html.jpg"
+# The two real page screenshots are 1.2–1.4 MB each, so an 800-px band of each is committed instead (with its Locations
+# re-expressed on the band): scripts/crop_snapshots.py. WHY: a skipped test is not green — they run in every clone.
+EROB_JPG = FIXTURES / "erob80-band.jpg"
+EROB_LOCATIONS = "erob80-band.locations.json"
+CUBEMARS_TWIN_JPG = FIXTURES / "cubemars-ak80-9-twin-band.jpg"
+CUBEMARS_TWIN_LOCATIONS = "cubemars-ak80-9.twin-band.locations.json"
 
 
 def load_locations(name: str) -> list[dict]:
     return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
-
-
-def requires(path: Path):
-    return pytest.mark.skipif(not path.exists(), reason=f"test source not present: {path}")
 
 
 def pixels(path_or_image) -> np.ndarray:

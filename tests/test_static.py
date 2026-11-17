@@ -22,12 +22,13 @@ from .conftest import (
     CUBEMARS_HTML,
     CUBEMARS_MD,
     CUBEMARS_TWIN_JPG,
+    CUBEMARS_TWIN_LOCATIONS,
     EROB_JPG,
+    EROB_LOCATIONS,
     J60_PDF,
     inside_mask,
     load_locations,
     pixels,
-    requires,
     touching_mask,
 )
 
@@ -203,13 +204,12 @@ def test_cli_prints_the_result_and_reports_unresolved(tmp_path, capsys):
     assert np.abs(marked[outside] - expected[outside]).max() <= 1
 
 
-# ---- image (eRob80 page screenshot) and visual twin (CubeMars) ---------------------------------------------------
+# ---- image (a band of the eRob80 page screenshot) and visual twin (a band of CubeMars') ---------------------------------------------------
 
 
-@requires(EROB_JPG)
 def test_image_blackout_and_highlight(tmp_path):
     original = pixels(EROB_JPG)
-    locations = load_locations("erob80.locations.json")
+    locations = load_locations(EROB_LOCATIONS)
     result = render(EROB_JPG, locations, "blackout", tmp_path / "erob-blackout.png")
     marked = pixels(tmp_path / "erob-blackout.png")
     assert marked.shape == original.shape
@@ -225,10 +225,9 @@ def test_image_blackout_and_highlight(tmp_path):
     assert np.abs(marked[inside] - expected[inside]).max() <= 1
 
 
-@requires(CUBEMARS_TWIN_JPG)
 def test_html_with_visual_twin_draws_boxes_on_the_screenshot(tmp_path):
     original = pixels(CUBEMARS_TWIN_JPG)
-    twin_locations = load_locations("cubemars-ak80-9.twin.locations.json")
+    twin_locations = load_locations(CUBEMARS_TWIN_LOCATIONS)
     html_locations = load_locations("cubemars-ak80-9.html.locations.json")
     result = render(CUBEMARS_HTML, twin_locations + html_locations[:1], "box", tmp_path / "twin-box.png", twin=CUBEMARS_TWIN_JPG)
     marked = pixels(tmp_path / "twin-box.png")

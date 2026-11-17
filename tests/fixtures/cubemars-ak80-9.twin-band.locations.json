@@ -1,0 +1,24 @@
+[
+  {
+    "id": "rated-torque-label",
+    "label": "Rated torque (Nm)",
+    "page": 1,
+    "box": [
+      0.17344,
+      0.489988,
+      0.28125,
+      0.510075
+    ]
+  },
+  {
+    "id": "rated-torque-value",
+    "label": "Rated torque",
+    "page": 1,
+    "box": [
+      0.31406,
+      0.489988,
+      0.31953,
+      0.505002
+    ]
+  }
+]

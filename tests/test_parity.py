@@ -3,13 +3,11 @@ JS overlay's getBoundingClientRect, matched by Location id, at the same scale.""
 
 from __future__ import annotations
 
-import shutil
-
 import pytest
 
 from source_highlighter import STYLE_DEFAULTS, STYLES, render
 
-from .conftest import CUBEMARS_HTML, CUBEMARS_MD, EROB_JPG, J60_PDF, REPO, draw, load_locations, requires
+from .conftest import CUBEMARS_HTML, CUBEMARS_MD, EROB_JPG, EROB_LOCATIONS, J60_PDF, draw, load_locations
 
 TOLERANCE_PX = 1.0
 
@@ -42,16 +40,10 @@ def test_pdf_both_forms_draw_the_same_rectangles(harness, tmp_path, style):
     compare(python_result, js_drawn, f"pdf/{style}")
 
 
-@requires(EROB_JPG)
 def test_image_both_forms_draw_the_same_rectangles(harness, tmp_path):
-    served = REPO / "tests" / ".erob80-parity.jpg"
-    shutil.copyfile(EROB_JPG, served)
-    try:
-        locations = load_locations("erob80.locations.json")
-        python_result = render(EROB_JPG, locations, "spotlight", tmp_path / "out.png")
-        js_drawn = draw(harness, {"kind": "image", "url": "/tests/.erob80-parity.jpg"}, locations, "spotlight", zoom=1)
-    finally:
-        served.unlink()
+    locations = load_locations(EROB_LOCATIONS)
+    python_result = render(EROB_JPG, locations, "spotlight", tmp_path / "out.png")
+    js_drawn = draw(harness, {"kind": "image", "url": f"/tests/fixtures/{EROB_JPG.name}"}, locations, "spotlight", zoom=1)
     compare(python_result, js_drawn, "image/spotlight")
 
 
