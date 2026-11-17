@@ -239,7 +239,6 @@ def test_paint_box_locations_are_visibly_marked_and_nothing_else(tmp_path, case,
 # ---- 2. anchor: a quote on a born-digital PDF lands on its true glyphs, CJK included; a repeated one is refused ------
 
 
-@pytest.mark.xfail(strict=True, reason="BUG 1 (2026-11-16): PDF quote marks land 3.7-8.2 pt off the true glyphs (letter spacing spread evenly); remove this mark when fixed")
 @pytest.mark.parametrize("seed", SEEDS)
 @pytest.mark.parametrize("case", ["04-multi-model", "11-mixed-chinese", "12-full-datasheet"])
 def test_anchor_pdf_page_quote_lands_on_the_true_glyphs(harness, case, seed):
@@ -277,7 +276,6 @@ def overlap(a, b) -> float:
     return w * h / min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
 
 
-@pytest.mark.xfail(strict=True, reason="BUG 2 (2026-11-16): CJK quote (减速比) refused on Chromium-printed PDFs whose text layer uses Kangxi-radical lookalikes; remove this mark when fixed")
 def test_anchor_cjk_quote_is_found_where_the_text_layer_uses_lookalike_code_points(harness):
     """Chromium printed case 11 with Kangxi radicals in the text layer (⽐ U+2F50 for 比, ⼈ for 人; the harness's
     selfcheck lists 5). A reader's quote uses the ordinary character; NFKC folds one into the other."""

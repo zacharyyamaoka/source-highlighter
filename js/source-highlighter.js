@@ -106,16 +106,35 @@ const pageTextCache = new WeakMap();
 // different sentence, so only one within a fifth of the quote's length counts as found.
 export const QUOTE_MIN_SIMILARITY = 0.8;
 
-/** `text` with whitespace removed, and the index in `text` each kept character came from. */
+// WHY fold both sides before matching (acceptance BUG 2, 2026-11-16): Chromium-printed PDFs emit Kangxi-radical and
+// CJK-compatibility lookalikes (⽐ U+2F50 for 比), so a reader's quote never matched the text layer. NFKC folds the
+// Kangxi Radicals block (U+2F00–2FD5) and the compatibility ideographs; the CJK Radicals Supplement (U+2E80–2EF3)
+// has no decompositions, so its variant forms that share a Kangxi radical's name map to that radical's ideograph
+// (derived from the Unicode names; tests/test_quote_fold.py checks this table against unicodedata).
+// Only the comparison is folded: the offsets map back to the source's own characters, and nothing stored or shown changes.
+const RADICAL_VARIANTS = new Map([..."⺁⺇⺊⺋⺘⺙⺜⺝⺞⺣⺧⺨⺩⺪⺫⺮⺯⺶⺹⺼⺽⻁⻂⻇⻊⻏⻗⻘⻡⻣⻤⻱"].map((variant, index) => [variant, [..."厂几卜卩手攴日月歹火牛犬玉疋目竹糸羊老肉臼虍衣角足邑雨靑首骨鬼龜"][index]]));
+const foldCluster = (cluster) => cluster.replace(/[\u2E80-\u2EFF]/gu, (char) => RADICAL_VARIANTS.get(char) ?? char).normalize("NFKC");
+
+/**
+ * `text` folded (foldCluster, per character with its combining marks) and stripped of whitespace, plus where each
+ * kept folded character came from in `text`: `map[i]` is the UTF-16 index it starts at, `ends[i]` where it ends
+ * (one source character can fold to several, and several to one).
+ */
 function squashWithMap(text) {
   let squashed = "";
   const map = [];
-  for (let index = 0; index < text.length; index += 1) {
-    if (/\s/.test(text[index])) continue;
-    squashed += text[index];
-    map.push(index);
+  const ends = [];
+  for (const match of text.matchAll(/\P{M}\p{M}*|\p{M}+/gu)) {
+    for (const char of foldCluster(match[0])) {
+      if (/\s/.test(char)) continue;
+      for (let unit = 0; unit < char.length; unit += 1) {
+        squashed += char[unit];
+        map.push(match.index);
+        ends.push(match.index + match[0].length);
+      }
+    }
   }
-  return { squashed, map };
+  return { squashed, map, ends };
 }
 
 /**
@@ -124,9 +143,9 @@ function squashWithMap(text) {
  * matchQuote scoring) within QUOTE_MIN_SIMILARITY, one per stretch of text.
  */
 export function quoteCandidates(text, quote, matchQuoteAll) {
-  const needle = squashSpace(quote);
-  const { squashed, map } = squashWithMap(text);
-  const toText = (start, end, errors) => ({ start: map[start], end: map[end - 1] + 1, errors });
+  const needle = squashWithMap(quote).squashed;
+  const { squashed, map, ends } = squashWithMap(text);
+  const toText = (start, end, errors) => ({ start: map[start], end: ends[end - 1], errors });
   const exact = [];
   if (needle) for (let at = squashed.indexOf(needle); at !== -1; at = squashed.indexOf(needle, at + 1)) exact.push(toText(at, at + needle.length, 0));
   if (exact.length || !needle || !matchQuoteAll) return { exact, approximate: [] };
@@ -319,6 +338,141 @@ function translucent(color, opacity) {
   return `color-mix(in srgb, ${color} ${Math.round(opacity * 1000) / 10}%, transparent)`;
 }
 
+// ---- PDF glyph positions: where each character of a text item really sits ----
+
+const matrixProduct = (m, n) => [
+  m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1],
+  m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3],
+  m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5],
+];
+
+/**
+ * Every glyph a page paints, in content-stream order, from PDF.js's operator list: its text, where it starts along its
+ * baseline and how far it advances (user-space units; only differences along one baseline are meaningful). This
+ * follows the text state the way PDF.js's own canvas does (text matrix, character/word spacing, horizontal scale, the
+ * adjustments of a TJ array), so a character placed by an individual move — as Chromium prints every glyph — keeps its
+ * true place. A glyph of a vertical font, or of a font PDF.js could not measure, is `null`.
+ */
+export function pdfGlyphRun(operatorList, OPS) {
+  const glyphs = [];
+  let ctm = [1, 0, 0, 1, 0, 0];
+  const saved = [];
+  let textMatrix = [1, 0, 0, 1, 0, 0];
+  let x = 0, y = 0, lineX = 0, lineY = 0, leading = 0, charSpacing = 0, wordSpacing = 0, hScale = 1, fontSize = 0, rise = 0;
+  const move = (dx, dy) => { x = lineX += dx; y = lineY += dy; };
+  const show = (run) => {
+    const full = matrixProduct(ctm, textMatrix);
+    const scale = Math.hypot(full[0], full[1]);
+    const along = (textX, textY) => ((full[0] * textX + full[2] * textY + full[4]) * full[0] + (full[1] * textX + full[3] * textY + full[5]) * full[1]) / (scale || 1);
+    let offset = 0;
+    for (const glyph of run) {
+      if (typeof glyph === "number") { offset -= (glyph * fontSize) / 1000; continue; }
+      const advance = (glyph.width * fontSize) / 1000;
+      const usable = !glyph.vmetric && Number.isFinite(advance) && scale > 0;
+      glyphs.push(usable ? { text: String(glyph.unicode ?? ""), start: along(x + offset * hScale, y + rise), advance: advance * hScale * scale } : null);
+      offset += advance + (glyph.isSpace ? wordSpacing : 0) + charSpacing;
+    }
+    x += offset * hScale;
+  };
+  const { fnArray, argsArray } = operatorList;
+  for (let index = 0; index < fnArray.length; index += 1) {
+    const args = argsArray[index];
+    switch (fnArray[index]) {
+      case OPS.save: saved.push(ctm); break;
+      case OPS.restore: ctm = saved.pop() || ctm; break;
+      case OPS.transform: ctm = matrixProduct(ctm, args); break;
+      case OPS.paintFormXObjectBegin: saved.push(ctm); if (args && args[0]) ctm = matrixProduct(ctm, args[0]); break;
+      case OPS.paintFormXObjectEnd: ctm = saved.pop() || ctm; break;
+      case OPS.beginText: textMatrix = [1, 0, 0, 1, 0, 0]; x = y = lineX = lineY = 0; break;
+      case OPS.setFont: fontSize = args[1]; break;
+      case OPS.setCharSpacing: charSpacing = args[0]; break;
+      case OPS.setWordSpacing: wordSpacing = args[0]; break;
+      case OPS.setHScale: hScale = args[0] / 100; break;
+      case OPS.setLeading: leading = args[0]; break;
+      case OPS.setTextRise: rise = args[0]; break;
+      case OPS.setTextMatrix: textMatrix = Array.from(args[0] || args); x = y = lineX = lineY = 0; break;
+      case OPS.moveText: move(args[0], args[1]); break;
+      case OPS.setLeadingMoveText: leading = -args[1]; move(args[0], args[1]); break;
+      case OPS.nextLine: move(0, leading); break;
+      case OPS.showText: show(args[0]); break;
+      case OPS.nextLineShowText: move(0, leading); show(args[0]); break;
+      default: break;
+    }
+  }
+  return glyphs;
+}
+
+/**
+ * Where each UTF-16 unit of each text item starts and ends, in em of the item (0 … its width), found by laying the
+ * item's text over the glyph run (pdfGlyphRun): `edges.get(itemIndex) = {left: [...], right: [...]}`. An item whose
+ * text is not found in the run (a ligature PDF.js spelled differently, right-to-left text, a vertical font) has no
+ * entry and keeps the font-measured fallback. Unit i is a space PDF.js inserted, or a real one: it spans the gap
+ * between its neighbours.
+ */
+export function alignItemGlyphs(items, glyphs) {
+  let runText = "";
+  const owners = []; // index into `glyphs` of each character of runText
+  glyphs.forEach((glyph, glyphIndex) => {
+    if (!glyph) return;
+    for (const char of glyph.text.normalize("NFKC")) {
+      if (/\s/.test(char)) continue;
+      for (let unit = 0; unit < char.length; unit += 1) { runText += char[unit]; owners.push(glyphIndex); }
+    }
+  });
+  const edges = new Map();
+  let cursor = 0;
+  items.forEach((item, itemIndex) => {
+    if (typeof item.str !== "string" || !item.str.trim() || !(item.width > 0)) return;
+    const transform = item.transform;
+    const emWidth = item.width / (Math.hypot(transform[0], transform[1]) || 1);
+    let needle = "";
+    const unitAt = []; // per character of the needle: the unit of item.str it came from
+    for (let unit = 0; unit < item.str.length; unit += 1) {
+      if (/\s/.test(item.str[unit])) continue;
+      for (const char of item.str[unit].normalize("NFKC")) { needle += char; unitAt.push(unit); }
+    }
+    const at = runText.indexOf(needle, cursor);
+    if (at < 0) return;
+    cursor = at + needle.length;
+    const shares = new Map(); // glyph → the units of this item it paints (more than one for a ligature)
+    unitAt.forEach((unit, k) => {
+      const list = shares.get(owners[at + k]) || [];
+      if (!list.includes(unit)) list.push(unit);
+      shares.set(owners[at + k], list);
+    });
+    const left = new Array(item.str.length).fill(null);
+    const right = new Array(item.str.length).fill(null);
+    for (const [glyphIndex, units] of shares) {
+      const { start, advance } = glyphs[glyphIndex];
+      units.forEach((unit, share) => {
+        left[unit] = start + (advance * share) / units.length;
+        right[unit] = start + (advance * (share + 1)) / units.length;
+      });
+    }
+    const placed = left.map((value, unit) => (value === null ? -1 : unit)).filter((unit) => unit >= 0);
+    const first = left[placed[0]];
+    const span = right[placed[placed.length - 1]] - first;
+    if (!(span > 0)) return;
+    const toEm = (value) => (emWidth * (value - first)) / span;
+    let previousRight = 0;
+    const edge = { left: [], right: [] };
+    for (let unit = 0; unit < item.str.length; unit += 1) {
+      if (left[unit] !== null) {
+        edge.left.push(toEm(left[unit]));
+        previousRight = toEm(right[unit]);
+        edge.right.push(previousRight);
+        continue;
+      }
+      // a space: from the end of the glyph before it to the start of the next glyph
+      const next = placed.find((other) => other > unit);
+      edge.left.push(previousRight);
+      edge.right.push(next === undefined ? emWidth : toEm(left[next]));
+    }
+    edges.set(itemIndex, edge);
+  });
+  return edges;
+}
+
 async function loadPdfJs(pdfjs) {
   if (pdfjs && typeof pdfjs === "object" && pdfjs.getDocument) return pdfjs;
   const moduleUrl = typeof pdfjs === "string" ? pdfjs : "pdfjs-dist";
@@ -467,6 +621,7 @@ export function highlight(container, options) {
 
   async function renderPdf(source) {
     const pdfjs = await loadPdfJs(options.pdfjs);
+    state.pdfOps = pdfjs.OPS;
     const documentSource = source.data ? { data: source.data } : { url: source.url };
     state.pdfTask = pdfjs.getDocument(documentSource);
     const pdf = await state.pdfTask.promise;
@@ -671,10 +826,37 @@ export function highlight(container, options) {
   }
 
   /**
+   * Where character i of a text item sits along its baseline, in em of the item (0 … emWidth): `left(i)` is the x of
+   * its start, `right(i)` of its end. Exact when the glyph run lays over the item (alignItemGlyphs: each glyph's own
+   * place from the content stream). Otherwise the item's own width, which is exact, is shared out by each prefix's
+   * width in the item's font — the embedded font PDF.js loaded under the item's fontName while rendering the page —
+   * and failing that in equal shares.
+   */
+  function itemEdges(page, itemIndex, item, style, emWidth) {
+    const placed = page.glyphEdges?.get(itemIndex);
+    if (placed) return { left: (index) => placed.left[index], right: (index) => placed.right[index] };
+    const length = item.str.length || 1;
+    let edge = (index) => (emWidth * index) / length;
+    const context = (state.measure ||= document.createElement("canvas").getContext("2d"));
+    if (context) {
+      context.font = `100px "${item.fontName}", ${style.fontFamily || "sans-serif"}`;
+      const whole = context.measureText(item.str).width;
+      if (whole > 0) {
+        const edges = [];
+        for (let index = 0; index <= item.str.length; index += 1) edges.push((emWidth * context.measureText(item.str.slice(0, index)).width) / whole);
+        edge = (index) => (index <= 0 ? 0 : index >= edges.length ? emWidth : edges[index]);
+      }
+    }
+    return { left: edge, right: (index) => edge(index + 1) };
+  }
+
+  /**
    * [start, end) of a page's text → one rectangle per text item it touches, merged per line, in PDF points.
    * A glyph box spans the font's descent to descent + 1 em (pdfminer's rule), mapped through the item's text matrix
-   * and the page viewport, so rotated and flipped text works too. WHY evenly spaced characters inside one item:
-   * PDF.js reports an item's width, not each glyph's; a quote that is a whole item (a table cell) is exact.
+   * and the page viewport, so rotated and flipped text works too. WHY each glyph's own place (itemEdges), not
+   * an even share of the item's width: PDF.js reports an item's width, not each glyph's, and an even share put
+   * marks 4–8 pt off the glyphs in proportional text, a font-measured share still 2.5 pt off where Chromium snaps
+   * every glyph to its own position (acceptance BUG 1, 2026-11-16).
    */
   function pdfTextRects(page, start, end) {
     const { owners } = pdfPageText(page);
@@ -691,11 +873,14 @@ export function highlight(container, options) {
     const lines = [];
     for (const [itemIndex, { from, to }] of spans) {
       const item = items[itemIndex];
+      // WHY skip a whitespace-only item: it is a gap, not ink, and PDF.js can report its width as longer than the
+      // gap (a 89 pt " " running under the next word), which would stretch the mark past the quote's last glyph.
+      if (!item.str.slice(from, to).trim()) continue;
       const style = page.textContent.styles[item.fontName] || {};
       const descent = Number.isFinite(style.descent) ? style.descent : 0;
       const [a, b, c, d, e, f] = item.transform;
       const emWidth = item.width / (Math.hypot(a, b) || 1);
-      const length = item.str.length || 1;
+      const edge = itemEdges(page, itemIndex, item, style, emWidth);
       const [va, vb, vc, vd, ve, vf] = page.naturalViewport.transform;
       const toPage = (x, y) => {
         const px = a * x + c * y + e;
@@ -703,10 +888,10 @@ export function highlight(container, options) {
         return [va * px + vc * py + ve, vb * px + vd * py + vf];
       };
       const corners = [
-        toPage((emWidth * from) / length, descent),
-        toPage((emWidth * to) / length, descent),
-        toPage((emWidth * from) / length, 1 + descent),
-        toPage((emWidth * to) / length, 1 + descent),
+        toPage(edge.left(from), descent),
+        toPage(edge.right(to - 1), descent),
+        toPage(edge.left(from), 1 + descent),
+        toPage(edge.right(to - 1), 1 + descent),
       ];
       const rect = {
         x0: Math.min(...corners.map(([x]) => x)),
@@ -729,6 +914,13 @@ export function highlight(container, options) {
     if (state.kind === "pdf") {
       for (const page of state.pages) {
         if (!page.textContent) page.textContent = await page.pdfPage.getTextContent();
+        if (page.glyphEdges === undefined) {
+          try {
+            page.glyphEdges = alignItemGlyphs(page.textContent.items, pdfGlyphRun(await page.pdfPage.getOperatorList(), state.pdfOps));
+          } catch {
+            page.glyphEdges = null; // the operator list is a refinement: without it the font-measured edges still work
+          }
+        }
       }
     }
   }

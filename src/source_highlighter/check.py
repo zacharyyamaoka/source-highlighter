@@ -21,6 +21,7 @@ import hashlib
 import json
 import re
 import time
+import unicodedata
 import urllib.parse
 from datetime import UTC, datetime
 from pathlib import Path
@@ -78,8 +79,27 @@ def live_link(ref: dict, media_type: str | None) -> str | None:
     return text_fragment_link(url, quote) if quote else url
 
 
+def radical_variants() -> dict[str, str]:
+    """CJK Radicals Supplement (U+2E80–2EF3) characters with no NFKC decomposition → the Kangxi radical's ideograph that
+    shares their Unicode name; js/source-highlighter.js carries the same table (tests/test_quote_fold.py pins them equal)."""
+    kangxi = {unicodedata.name(chr(code))[len("KANGXI RADICAL "):]: unicodedata.normalize("NFKC", chr(code)) for code in range(0x2F00, 0x2FD6)}
+    variants = {}
+    for code in range(0x2E80, 0x2EF4):
+        name = unicodedata.name(chr(code), "")
+        if unicodedata.normalize("NFKC", chr(code)) == chr(code) and name[len("CJK RADICAL "):] in kangxi:
+            variants[chr(code)] = kangxi[name[len("CJK RADICAL "):]]
+    return variants
+
+
+_RADICAL_VARIANTS = radical_variants()
+
+
 def _squash(text: str) -> str:
-    return re.sub(r"\s+", "", text)
+    """`text` folded for matching (NFKC + radical variants, as the JS quote find does) and without whitespace.
+    WHY fold: Chromium-printed PDFs put Kangxi-radical lookalikes in the text layer (⽐ for 比); counting a quote without
+    the fold said 'gone' for text that is on the page. Comparison only: nothing stored or shown is folded."""
+    folded = unicodedata.normalize("NFKC", "".join(_RADICAL_VARIANTS.get(char, char) for char in text))
+    return re.sub(r"\s+", "", folded)
 
 
 def pdf_quote_count(data: bytes, quote: str, page: int | None = None) -> int:
