@@ -11,7 +11,8 @@ groundings and the extractor's `values.json` groundings are Locations.
 
 ## 1. Source
 
-A file: PDF, image (PNG/JPEG/WebP), HTML, or text (markdown / plain). Optionally a *visual twin* for HTML: a
+A file: PDF, image (PNG/JPEG/WebP), HTML, or text (markdown / plain). In Python it is the frozen `Source` type
+(`source_msgs`, PEP 0001), whose `to_dict()` is the §5 `source` object. Optionally a *visual twin* for HTML: a
 full-page screenshot taken when the page was fetched, so an archived page can be shown without its live CSS and
 images (raw HTML alone does not render faithfully offline).
 
@@ -38,6 +39,9 @@ agents): most real citations today are "page 78, this sentence" or "[[Note#Headi
 
 Optional on any Location: `id`, `label` (shown on hover / beside the mark).
 A Location that cannot be resolved on the given source is reported back, never silently skipped.
+
+An `html` Location may also name its element by `"css": "table.spec td.value"` (added 2026-11-16, PEP 0001); it is
+used when there is no `xpath` or the `xpath` misses, and only if it matches exactly one element.
 
 An `html` Location resolves in this order, and never to the first place its text happens to occur (datasheet
 values repeat — the same `30A` in both model columns): (1) `source_range`, when given, mapped to its exact DOM

@@ -7,6 +7,8 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    # WHY a git direct reference: source-msgs (PEP 0001) is not on PyPI; uv uses the workspace copy below instead.
+    "source-msgs @ git+https://github.com/zacharyyamaoka/source-highlighter#subdirectory=packages/source_msgs",
     "pillow>=13.0.0",
     "playwright>=1.64.1",
     "pypdfium2>=5.14.0",
@@ -18,6 +20,15 @@ source-highlighter = "source_highlighter.cli:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv.workspace]
+members = ["packages/source_msgs"]
+
+[tool.uv.sources]
+source-msgs = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/source_highlighter"]

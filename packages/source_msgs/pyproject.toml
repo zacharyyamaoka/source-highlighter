@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "source-msgs"
+version = "0.1.0"
+description = "Source, its location selectors and Highlighted: the stdlib-only types the source apps (mdify, the Sources app, source-highlighter) share."
+license = "MIT"
+authors = [{ name = "Zach Yamaoka" }]
+requires-python = ">=3.12"
+# WHY zero runtime dependencies (PEP 0001, C1): markdownify, datasheet-extractor and source-highlighter all import
+# this, so it must pull in none of them and nothing heavy. The verbs that need a sibling import it lazily.
+dependencies = []
+
+[project.optional-dependencies]
+# mdify and source-highlighter are not on PyPI yet: both install from their public GitHub repos.
+capture = ["mdify @ git+https://github.com/zacharyyamaoka/markdownify"]
+markdown = ["mdify @ git+https://github.com/zacharyyamaoka/markdownify"]
+show = ["source-highlighter @ git+https://github.com/zacharyyamaoka/source-highlighter"]
+test = ["pytest>=8"]
+
+[project.urls]
+Source = "https://github.com/zacharyyamaoka/source-highlighter/tree/main/packages/source_msgs"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/source_msgs"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.uv.sources]
+# Inside this repo's uv workspace the [show] extra is the checkout itself.
+source-highlighter = { workspace = true }

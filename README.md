@@ -11,6 +11,28 @@ One job: **source + locations + style in → the source, highlighted, out.** The
 | HTML | PNG of the page laid out by headless Chromium, or of its visual twin (`--twin`) | sandboxed `<iframe srcdoc>`; CSS Custom Highlight API |
 | Text / markdown | PNG, or a self-contained `.html` page | `<pre>`; CSS Custom Highlight API |
 
+**Landing page, with the API and a gallery: <https://zacharyyamaoka.github.io/source-highlighter/>**
+
+## The `Source` API (PEP 0001)
+
+```python
+from source_highlighter import Source, PageBox, TableCell
+
+src = Source.from_file("tests/fixtures/j60-joint.pdf")            # or Source.from_url(url).capture(), from_text(...)
+src.highlight("page=2&xywh=percent:19.2,30.9,6.4,0.8", "box").show()  # opens it; headless under pytest / no display
+src.highlight(PageBox(2, 0.19, 0.31, 0.07, 0.01), "spotlight").save("marked.png")
+```
+
+`Source` is one frozen type however it is made (`from_url`, `from_file`, `from_text`, `from_bundle` for an
+`mdify capture` folder, `from_dict`); its verbs are `.capture()`, `.to_markdown()` and `.highlight(locations, style)`
+→ `Highlighted`, which `.show()`s (browser, notebook, or nothing: `SOURCE_HIGHLIGHTER_BACKEND=none`) or `.save()`s.
+Locations are eight selectors in two families — text-anchored `TextQuote`, `TextPosition`, `XPath`, `Css`,
+`TableCell`, `Note`; geometry-anchored `PageBox`, `Page` — each with a compact string (`text=…`, `char=…`,
+`page=…&xywh=percent:…`) and a CONTRACT §2 dict. The types live in `packages/source_msgs`, a stdlib-only package the
+other source apps can import without this one; why and how: [docs/peps/0001-the-source-type.md](docs/peps/0001-the-source-type.md).
+The landing page is built by `uv run python scripts/build_site.py --gim DIR` into `site/` and deployed by
+`.github/workflows/pages.yml`.
+
 ## Use it
 
 ```bash

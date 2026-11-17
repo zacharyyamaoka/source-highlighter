@@ -736,7 +736,7 @@ export function highlight(container, options) {
   // An html Location resolves in this order (CONTRACT §2), and never to "the first place this text occurs" —
   // datasheet values repeat (the same 30A in both model columns), so a first match is wrong half the time:
   //   1. source_range → the exact DOM position, via the browser's own parser (mapSourceRange).
-  //   2. xpath → the element; inside it the text_quote (unique with its prefix/suffix), else (with no quote) the
+  //   2. xpath (else css, matching exactly one element) → the element; inside it the text_quote (unique with its prefix/suffix), else (with no quote) the
   //      whole element.
   //   3. text_quote anywhere in the page, only if exactly one place matches exact + prefix + suffix;
   //      several matches are reported as ambiguous, never picked from.
@@ -753,8 +753,21 @@ export function highlight(container, options) {
       if (range) return { range };
       notes.push(reason);
     }
-    const element = htmlLocation.xpath ? evaluateXPath(frameDocument, htmlLocation.xpath) : null;
+    let element = htmlLocation.xpath ? evaluateXPath(frameDocument, htmlLocation.xpath) : null;
     if (htmlLocation.xpath && !element) notes.push(`xpath ${htmlLocation.xpath} did not match`);
+    if (!element && htmlLocation.css) {
+      // A CSS selector (W3C CssSelector, PEP 0001) names its element only when exactly one matches — like a quote,
+      // several matches are reported, never picked from.
+      let found = null;
+      try {
+        found = [...frameDocument.querySelectorAll(htmlLocation.css)];
+      } catch {
+        notes.push(`css ${htmlLocation.css} is not a valid selector`);
+      }
+      if (found?.length === 1) element = found[0];
+      else if (found?.length > 1) notes.push(`css ${htmlLocation.css} matched ${found.length} elements`);
+      else if (found) notes.push(`css ${htmlLocation.css} matched no element`);
+    }
     if (element) {
       if (!quote.exact) {
         const range = frameDocument.createRange();
@@ -774,7 +787,9 @@ export function highlight(container, options) {
           : `"${quote.exact}" with that prefix/suffix is not in the page`,
       );
     }
-    if (!htmlLocation.xpath && !htmlLocation.source_range && !quote.exact) notes.push("html Location has no xpath, text_quote or source_range");
+    if (!htmlLocation.xpath && !htmlLocation.css && !htmlLocation.source_range && !quote.exact) {
+      notes.push("html Location has no xpath, css, text_quote or source_range");
+    }
     return { reason: notes.join("; ") };
   }
 

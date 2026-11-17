@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from PIL import Image
+from source_msgs import Source
 
 from .browser import render_in_browser, write_text_page
 from .geometry import (
@@ -225,7 +226,7 @@ def _render_browser(kind, source_path, layers, out_path, scale, width, result) -
 
 
 def render(
-    source_path: str | Path,
+    source_path: str | Path | Source,
     locations: Any,
     style: str | dict | Style | None = "highlight",
     out_path: str | Path = "marked.png",
@@ -245,7 +246,10 @@ def render(
     when given. Text/markdown → PNG, or a self-contained .html page.
     scale: output pixels per source unit (PDF default 2 = 144 dpi). width: layout width for HTML/text.
     Locations that cannot be placed are listed in result.unresolved, never dropped silently.
+    source_path may also be a `Source` (PEP 0001): its saved bytes are drawn, captured first if it is a link only.
     """
+    if isinstance(source_path, Source):
+        source_path = (source_path if source_path.is_saved else source_path.capture()).path
     source_path = Path(source_path)
     out_path = Path(out_path)
     layers = normalize_layers(_load_locations(locations), style)
