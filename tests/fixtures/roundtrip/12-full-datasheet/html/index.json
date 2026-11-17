@@ -1,0 +1,2517 @@
+{
+ "schema": "markdownify/index@0",
+ "tool": {
+  "name": "harness-truth",
+  "version": "0",
+  "pipeline": "truth"
+ },
+ "source": {
+  "sha256": "6d62868407dab675a2601c0ab6a632062d61233019dbf885f9c2bd86935a2966",
+  "media_type": "text/html"
+ },
+ "markdown_sha256": "8358b1c8628a42518a6157bf7124ced9e7dee23bbc8ede7e2335c275a294d935",
+ "range_units": "unicode_codepoints",
+ "pages": [],
+ "blocks": [
+  {
+   "id": "heading-1",
+   "type": "heading",
+   "range": {
+    "start": 0,
+    "end": 30
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1107,
+       "end": 1178
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h1[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-1",
+   "type": "paragraph",
+   "range": {
+    "start": 32,
+    "end": 133
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1185,
+       "end": 1293
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "heading-2",
+   "type": "heading",
+   "range": {
+    "start": 135,
+    "end": 152
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1301,
+       "end": 1344
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h2[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "table-1",
+   "type": "table",
+   "range": {
+    "start": 154,
+    "end": 354
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1345,
+       "end": 1825
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "children": [
+    "table_cell-1",
+    "table_cell-2",
+    "table_cell-3",
+    "table_cell-4",
+    "table_cell-5",
+    "table_cell-6",
+    "table_cell-7",
+    "table_cell-8",
+    "table_cell-9",
+    "table_cell-10",
+    "table_cell-11",
+    "table_cell-12",
+    "table_cell-13",
+    "table_cell-14"
+   ]
+  },
+  {
+   "id": "table_cell-1",
+   "type": "table_cell",
+   "range": {
+    "start": 156,
+    "end": 165
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1381,
+       "end": 1399
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "stubHead"
+  },
+  {
+   "id": "table_cell-2",
+   "type": "table_cell",
+   "range": {
+    "start": 168,
+    "end": 173
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1400,
+       "end": 1414
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-3",
+   "type": "table_cell",
+   "range": {
+    "start": 200,
+    "end": 213
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1455,
+       "end": 1477
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-4",
+   "type": "table_cell",
+   "range": {
+    "start": 216,
+    "end": 220
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1478,
+       "end": 1491
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-5",
+   "type": "table_cell",
+   "range": {
+    "start": 225,
+    "end": 243
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1516,
+       "end": 1549
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-6",
+   "type": "table_cell",
+   "range": {
+    "start": 252,
+    "end": 259
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1550,
+       "end": 1566
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-7",
+   "type": "table_cell",
+   "range": {
+    "start": 264,
+    "end": 275
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1590,
+       "end": 1610
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-8",
+   "type": "table_cell",
+   "range": {
+    "start": 278,
+    "end": 285
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1611,
+       "end": 1627
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-9",
+   "type": "table_cell",
+   "range": {
+    "start": 290,
+    "end": 301
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1652,
+       "end": 1672
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-10",
+   "type": "table_cell",
+   "range": {
+    "start": 304,
+    "end": 311
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1673,
+       "end": 1689
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-11",
+   "type": "table_cell",
+   "range": {
+    "start": 316,
+    "end": 326
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1713,
+       "end": 1732
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-12",
+   "type": "table_cell",
+   "range": {
+    "start": 329,
+    "end": 333
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1733,
+       "end": 1746
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-13",
+   "type": "table_cell",
+   "range": {
+    "start": 338,
+    "end": 344
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1771,
+       "end": 1786
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-14",
+   "type": "table_cell",
+   "range": {
+    "start": 347,
+    "end": 352
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1787,
+       "end": 1801
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "heading-3",
+   "type": "heading",
+   "range": {
+    "start": 356,
+    "end": 365
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1826,
+       "end": 1853
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h2[2]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-1",
+   "type": "list_item",
+   "range": {
+    "start": 367,
+    "end": 386
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1865,
+       "end": 1904
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-2",
+   "type": "list_item",
+   "range": {
+    "start": 387,
+    "end": 399
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1905,
+       "end": 1937
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[2]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-3",
+   "type": "list_item",
+   "range": {
+    "start": 400,
+    "end": 415
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1938,
+       "end": 1973
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[3]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-4",
+   "type": "list_item",
+   "range": {
+    "start": 416,
+    "end": 430
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1974,
+       "end": 2008
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[4]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-2",
+   "type": "paragraph",
+   "range": {
+    "start": 432,
+    "end": 526
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2028,
+       "end": 2129
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "footnote-1",
+   "type": "footnote",
+   "range": {
+    "start": 528,
+    "end": 605
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2143,
+       "end": 2227
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  }
+ ],
+ "words": [
+  {
+   "range": {
+    "start": 2,
+    "end": 9
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1145,
+      "end": 1152
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "KM45-10",
+      "prefix": "",
+      "suffix": " Compact Joint Module The KM45-1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 10,
+    "end": 17
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1153,
+      "end": 1160
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Compact",
+      "prefix": "KM45-10 ",
+      "suffix": " Joint Module The KM45-10 is the"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 18,
+    "end": 23
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1161,
+      "end": 1166
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Joint",
+      "prefix": "KM45-10 Compact ",
+      "suffix": " Module The KM45-10 is the small"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 24,
+    "end": 30
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1167,
+      "end": 1173
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Module",
+      "prefix": "KM45-10 Compact Joint ",
+      "suffix": " The KM45-10 is the smallest mod"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 32,
+    "end": 35
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1188,
+      "end": 1191
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "The",
+      "prefix": "KM45-10 Compact Joint Module ",
+      "suffix": " KM45-10 is the smallest module"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 36,
+    "end": 43
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1192,
+      "end": 1199
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "KM45-10",
+      "prefix": "M45-10 Compact Joint Module The ",
+      "suffix": " is the smallest module in the K"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 44,
+    "end": 46
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1200,
+      "end": 1202
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "is",
+      "prefix": "ompact Joint Module The KM45-10 ",
+      "suffix": " the smallest module in the KM s"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 47,
+    "end": 50
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1203,
+      "end": 1206
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "act Joint Module The KM45-10 is ",
+      "suffix": " smallest module in the KM serie"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 51,
+    "end": 59
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1207,
+      "end": 1215
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "smallest",
+      "prefix": "Joint Module The KM45-10 is the ",
+      "suffix": " module in the KM series, built"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 60,
+    "end": 66
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1216,
+      "end": 1222
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "module",
+      "prefix": "ule The KM45-10 is the smallest ",
+      "suffix": " in the KM series, built for gri"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 67,
+    "end": 69
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1223,
+      "end": 1225
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "in",
+      "prefix": "KM45-10 is the smallest module ",
+      "suffix": " the KM series, built for grippe"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 70,
+    "end": 73
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1226,
+      "end": 1229
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "45-10 is the smallest module in ",
+      "suffix": " KM series, built for grippers,"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 74,
+    "end": 76
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1230,
+      "end": 1232
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "KM",
+      "prefix": "0 is the smallest module in the ",
+      "suffix": " series, built for grippers, wri"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 77,
+    "end": 84
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1233,
+      "end": 1240
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "series,",
+      "prefix": "s the smallest module in the KM ",
+      "suffix": " built for grippers, wrists and"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 85,
+    "end": 90
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1241,
+      "end": 1246
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "built",
+      "prefix": "allest module in the KM series, ",
+      "suffix": " for grippers, wrists and small"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 91,
+    "end": 94
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1247,
+      "end": 1250
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "for",
+      "prefix": "module in the KM series, built ",
+      "suffix": " grippers, wrists and small quad"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 95,
+    "end": 104
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1251,
+      "end": 1260
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "grippers,",
+      "prefix": "ule in the KM series, built for ",
+      "suffix": " wrists and small quadrupeds. Sp"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 105,
+    "end": 111
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1261,
+      "end": 1267
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "wrists",
+      "prefix": "KM series, built for grippers, ",
+      "suffix": " and small quadrupeds. Specifica"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 112,
+    "end": 115
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1268,
+      "end": 1271
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "and",
+      "prefix": "ies, built for grippers, wrists ",
+      "suffix": " small quadrupeds. Specification"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 116,
+    "end": 121
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1272,
+      "end": 1277
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "small",
+      "prefix": "built for grippers, wrists and ",
+      "suffix": " quadrupeds. Specifications Para"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 122,
+    "end": 133
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1278,
+      "end": 1289
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "quadrupeds.",
+      "prefix": "for grippers, wrists and small ",
+      "suffix": " Specifications Parameter Value"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 138,
+    "end": 152
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1325,
+      "end": 1339
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h2[1]",
+     "text_quote": {
+      "exact": "Specifications",
+      "prefix": "s, wrists and small quadrupeds. ",
+      "suffix": " Parameter Value Rated voltage 2"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 156,
+    "end": 165
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1385,
+      "end": 1394
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]",
+     "text_quote": {
+      "exact": "Parameter",
+      "prefix": "mall quadrupeds. Specifications ",
+      "suffix": " Value Rated voltage 24 V Rated"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 168,
+    "end": 173
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1404,
+      "end": 1409
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]",
+     "text_quote": {
+      "exact": "Value",
+      "prefix": "upeds. Specifications Parameter ",
+      "suffix": " Rated voltage 24 V Rated torque"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 200,
+    "end": 205
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1459,
+      "end": 1464
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "Specifications Parameter Value ",
+      "suffix": " voltage 24 V Rated torque1 1.6"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 206,
+    "end": 213
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1465,
+      "end": 1472
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "voltage",
+      "prefix": "fications Parameter Value Rated ",
+      "suffix": " 24 V Rated torque1 1.6 N·m Peak"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 216,
+    "end": 218
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1482,
+      "end": 1484
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "24",
+      "prefix": "s Parameter Value Rated voltage ",
+      "suffix": " V Rated torque1 1.6 N·m Peak to"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 219,
+    "end": 220
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1485,
+      "end": 1486
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "arameter Value Rated voltage 24 ",
+      "suffix": " Rated torque1 1.6 N·m Peak torq"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 225,
+    "end": 230
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1520,
+      "end": 1525
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "ameter Value Rated voltage 24 V ",
+      "suffix": " torque1 1.6 N·m Peak torque 4.8"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 231,
+    "end": 237
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1526,
+      "end": 1532
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "Value Rated voltage 24 V Rated ",
+      "suffix": "1 1.6 N·m Peak torque 4.8 N·m Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 242,
+    "end": 243
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1537,
+      "end": 1538
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]/sup[1]",
+     "text_quote": {
+      "exact": "1",
+      "prefix": "Rated voltage 24 V Rated torque",
+      "suffix": " 1.6 N·m Peak torque 4.8 N·m Rat"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 252,
+    "end": 255
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1554,
+      "end": 1557
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "1.6",
+      "prefix": "ated voltage 24 V Rated torque1 ",
+      "suffix": " N·m Peak torque 4.8 N·m Rated s"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 256,
+    "end": 259
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1558,
+      "end": 1561
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "voltage 24 V Rated torque1 1.6 ",
+      "suffix": " Peak torque 4.8 N·m Rated speed"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 264,
+    "end": 268
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1594,
+      "end": 1598
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "Peak",
+      "prefix": "tage 24 V Rated torque1 1.6 N·m ",
+      "suffix": " torque 4.8 N·m Rated speed 260"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 269,
+    "end": 275
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1599,
+      "end": 1605
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "24 V Rated torque1 1.6 N·m Peak ",
+      "suffix": " 4.8 N·m Rated speed 260 rpm Gea"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 278,
+    "end": 281
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1615,
+      "end": 1618
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "4.8",
+      "prefix": "ted torque1 1.6 N·m Peak torque ",
+      "suffix": " N·m Rated speed 260 rpm Gear ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 282,
+    "end": 285
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1619,
+      "end": 1622
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "torque1 1.6 N·m Peak torque 4.8 ",
+      "suffix": " Rated speed 260 rpm Gear ratio"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 290,
+    "end": 295
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1656,
+      "end": 1661
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "ue1 1.6 N·m Peak torque 4.8 N·m ",
+      "suffix": " speed 260 rpm Gear ratio 10:1 W"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 296,
+    "end": 301
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1662,
+      "end": 1667
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "speed",
+      "prefix": "6 N·m Peak torque 4.8 N·m Rated ",
+      "suffix": " 260 rpm Gear ratio 10:1 Weight"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 304,
+    "end": 307
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1677,
+      "end": 1680
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "260",
+      "prefix": "Peak torque 4.8 N·m Rated speed ",
+      "suffix": " rpm Gear ratio 10:1 Weight 185"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 308,
+    "end": 311
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1681,
+      "end": 1684
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "torque 4.8 N·m Rated speed 260 ",
+      "suffix": " Gear ratio 10:1 Weight 185 g Wi"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 316,
+    "end": 320
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1717,
+      "end": 1721
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "Gear",
+      "prefix": "que 4.8 N·m Rated speed 260 rpm ",
+      "suffix": " ratio 10:1 Weight 185 g Wiring"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 321,
+    "end": 326
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1722,
+      "end": 1727
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "ratio",
+      "prefix": ".8 N·m Rated speed 260 rpm Gear ",
+      "suffix": " 10:1 Weight 185 g Wiring Red: V"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 329,
+    "end": 333
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1737,
+      "end": 1741
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]",
+     "text_quote": {
+      "exact": "10:1",
+      "prefix": "Rated speed 260 rpm Gear ratio ",
+      "suffix": " Weight 185 g Wiring Red: V+ (18"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 338,
+    "end": 344
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1775,
+      "end": 1781
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]",
+     "text_quote": {
+      "exact": "Weight",
+      "prefix": "d speed 260 rpm Gear ratio 10:1 ",
+      "suffix": " 185 g Wiring Red: V+ (18–28 V)"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 347,
+    "end": 350
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1791,
+      "end": 1794
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "185",
+      "prefix": "260 rpm Gear ratio 10:1 Weight ",
+      "suffix": " g Wiring Red: V+ (18–28 V) Blac"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 351,
+    "end": 352
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1795,
+      "end": 1796
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "rpm Gear ratio 10:1 Weight 185 ",
+      "suffix": " Wiring Red: V+ (18–28 V) Black:"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 359,
+    "end": 365
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1842,
+      "end": 1848
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h2[2]",
+     "text_quote": {
+      "exact": "Wiring",
+      "prefix": "pm Gear ratio 10:1 Weight 185 g ",
+      "suffix": " Red: V+ (18–28 V) Black: GND Ye"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 369,
+    "end": 373
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1875,
+      "end": 1879
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "Red:",
+      "prefix": "ratio 10:1 Weight 185 g Wiring ",
+      "suffix": " V+ (18–28 V) Black: GND Yellow:"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 374,
+    "end": 376
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1880,
+      "end": 1882
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "V+",
+      "prefix": "o 10:1 Weight 185 g Wiring Red: ",
+      "suffix": " (18–28 V) Black: GND Yellow: CA"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 377,
+    "end": 383
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1883,
+      "end": 1889
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "(18–28",
+      "prefix": "0:1 Weight 185 g Wiring Red: V+ ",
+      "suffix": " V) Black: GND Yellow: CAN H Gre"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 384,
+    "end": 386
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1890,
+      "end": 1892
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "V)",
+      "prefix": "ght 185 g Wiring Red: V+ (18–28 ",
+      "suffix": " Black: GND Yellow: CAN H Green:"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 389,
+    "end": 395
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1915,
+      "end": 1921
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[2]/div[1]",
+     "text_quote": {
+      "exact": "Black:",
+      "prefix": "185 g Wiring Red: V+ (18–28 V) ",
+      "suffix": " GND Yellow: CAN H Green: CAN L"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 396,
+    "end": 399
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1922,
+      "end": 1925
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[2]/div[1]",
+     "text_quote": {
+      "exact": "GND",
+      "prefix": "Wiring Red: V+ (18–28 V) Black: ",
+      "suffix": " Yellow: CAN H Green: CAN L The"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 402,
+    "end": 409
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1948,
+      "end": 1955
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "Yellow:",
+      "prefix": "ng Red: V+ (18–28 V) Black: GND ",
+      "suffix": " CAN H Green: CAN L The module s"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 410,
+    "end": 413
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1956,
+      "end": 1959
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "CAN",
+      "prefix": "V+ (18–28 V) Black: GND Yellow: ",
+      "suffix": " H Green: CAN L The module ships"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 414,
+    "end": 415
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1960,
+      "end": 1961
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "H",
+      "prefix": "18–28 V) Black: GND Yellow: CAN ",
+      "suffix": " Green: CAN L The module ships w"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 418,
+    "end": 424
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1984,
+      "end": 1990
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "Green:",
+      "prefix": "–28 V) Black: GND Yellow: CAN H ",
+      "suffix": " CAN L The module ships with CAN"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 425,
+    "end": 428
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1991,
+      "end": 1994
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "CAN",
+      "prefix": "Black: GND Yellow: CAN H Green: ",
+      "suffix": " L The module ships with CAN ID"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 429,
+    "end": 430
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1995,
+      "end": 1996
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "L",
+      "prefix": "k: GND Yellow: CAN H Green: CAN ",
+      "suffix": " The module ships with CAN ID 1."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 432,
+    "end": 435
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2031,
+      "end": 2034
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "The",
+      "prefix": "GND Yellow: CAN H Green: CAN L ",
+      "suffix": " module ships with CAN ID 1. Cha"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 436,
+    "end": 442
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2035,
+      "end": 2041
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "module",
+      "prefix": "Yellow: CAN H Green: CAN L The ",
+      "suffix": " ships with CAN ID 1. Change it"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 443,
+    "end": 448
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2042,
+      "end": 2047
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "ships",
+      "prefix": ": CAN H Green: CAN L The module ",
+      "suffix": " with CAN ID 1. Change it over t"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 449,
+    "end": 453
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2048,
+      "end": 2052
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "with",
+      "prefix": "H Green: CAN L The module ships ",
+      "suffix": " CAN ID 1. Change it over the bu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 454,
+    "end": 457
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2053,
+      "end": 2056
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "CAN",
+      "prefix": "en: CAN L The module ships with ",
+      "suffix": " ID 1. Change it over the bus be"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 458,
+    "end": 460
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2057,
+      "end": 2059
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "ID",
+      "prefix": "CAN L The module ships with CAN ",
+      "suffix": " 1. Change it over the bus befor"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 461,
+    "end": 463
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2060,
+      "end": 2062
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "1.",
+      "prefix": "L The module ships with CAN ID ",
+      "suffix": " Change it over the bus before y"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 464,
+    "end": 470
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2063,
+      "end": 2069
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "Change",
+      "prefix": "The module ships with CAN ID 1. ",
+      "suffix": " it over the bus before you dais"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 471,
+    "end": 473
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2070,
+      "end": 2072
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "it",
+      "prefix": "ule ships with CAN ID 1. Change ",
+      "suffix": " over the bus before you daisy-c"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 474,
+    "end": 478
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2073,
+      "end": 2077
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "over",
+      "prefix": "ships with CAN ID 1. Change it ",
+      "suffix": " the bus before you daisy-chain"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 479,
+    "end": 482
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2078,
+      "end": 2081
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "s with CAN ID 1. Change it over ",
+      "suffix": " bus before you daisy-chain a se"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 483,
+    "end": 486
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2082,
+      "end": 2085
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "bus",
+      "prefix": "th CAN ID 1. Change it over the ",
+      "suffix": " before you daisy-chain a second"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 487,
+    "end": 493
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2086,
+      "end": 2092
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "before",
+      "prefix": "AN ID 1. Change it over the bus ",
+      "suffix": " you daisy-chain a second module"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 494,
+    "end": 497
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2093,
+      "end": 2096
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "you",
+      "prefix": ". Change it over the bus before ",
+      "suffix": " daisy-chain a second module. 1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 498,
+    "end": 509
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2097,
+      "end": 2108
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "daisy-chain",
+      "prefix": "ange it over the bus before you ",
+      "suffix": " a second module. 1 At 25 °C amb"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 510,
+    "end": 511
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2109,
+      "end": 2110
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "a",
+      "prefix": "the bus before you daisy-chain ",
+      "suffix": " second module. 1 At 25 °C ambie"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 512,
+    "end": 518
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2111,
+      "end": 2117
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "second",
+      "prefix": "he bus before you daisy-chain a ",
+      "suffix": " module. 1 At 25 °C ambient with"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 519,
+    "end": 526
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2118,
+      "end": 2125
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[3]/p[1]",
+     "text_quote": {
+      "exact": "module.",
+      "prefix": "before you daisy-chain a second ",
+      "suffix": " 1 At 25 °C ambient with the hou"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 533,
+    "end": 534
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2151,
+      "end": 2152
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]/sup[1]",
+     "text_quote": {
+      "exact": "1",
+      "prefix": "ou daisy-chain a second module. ",
+      "suffix": " At 25 °C ambient with the housi"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 541,
+    "end": 543
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2159,
+      "end": 2161
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "At",
+      "prefix": "daisy-chain a second module. 1 ",
+      "suffix": " 25 °C ambient with the housing"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 544,
+    "end": 546
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2162,
+      "end": 2164
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "25",
+      "prefix": "isy-chain a second module. 1 At ",
+      "suffix": " °C ambient with the housing mou"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 547,
+    "end": 549
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2165,
+      "end": 2167
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "°C",
+      "prefix": "-chain a second module. 1 At 25 ",
+      "suffix": " ambient with the housing mounte"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 550,
+    "end": 557
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2168,
+      "end": 2175
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "ambient",
+      "prefix": "ain a second module. 1 At 25 °C ",
+      "suffix": " with the housing mounted on an"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 558,
+    "end": 562
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2176,
+      "end": 2180
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "with",
+      "prefix": "cond module. 1 At 25 °C ambient ",
+      "suffix": " the housing mounted on an alumi"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 563,
+    "end": 566
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2181,
+      "end": 2184
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "module. 1 At 25 °C ambient with ",
+      "suffix": " housing mounted on an aluminium"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 567,
+    "end": 574
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2185,
+      "end": 2192
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "housing",
+      "prefix": "le. 1 At 25 °C ambient with the ",
+      "suffix": " mounted on an aluminium plate."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 575,
+    "end": 582
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2193,
+      "end": 2200
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "mounted",
+      "prefix": "25 °C ambient with the housing ",
+      "suffix": " on an aluminium plate."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 583,
+    "end": 585
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2201,
+      "end": 2203
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "on",
+      "prefix": "mbient with the housing mounted ",
+      "suffix": " an aluminium plate."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 586,
+    "end": 588
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2204,
+      "end": 2206
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "an",
+      "prefix": "ent with the housing mounted on ",
+      "suffix": " aluminium plate."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 589,
+    "end": 598
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2207,
+      "end": 2216
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "aluminium",
+      "prefix": "with the housing mounted on an ",
+      "suffix": " plate."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 599,
+    "end": 605
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2217,
+      "end": 2223
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "plate.",
+      "prefix": "housing mounted on an aluminium ",
+      "suffix": ""
+     }
+    }
+   },
+   "score": 1.0
+  }
+ ],
+ "dropped": []
+}

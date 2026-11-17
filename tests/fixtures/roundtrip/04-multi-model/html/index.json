@@ -1,0 +1,3079 @@
+{
+ "schema": "markdownify/index@0",
+ "tool": {
+  "name": "harness-truth",
+  "version": "0",
+  "pipeline": "truth"
+ },
+ "source": {
+  "sha256": "9cf2e4a500f7cdc08bf808a44168b9cda17fccf6e46e1045faafa89251df01d1",
+  "media_type": "text/html"
+ },
+ "markdown_sha256": "0b6b3518cd54dc9b26565dd7d9f291d6011bc3448d419bb4fa332e5f57bd01fe",
+ "range_units": "unicode_codepoints",
+ "pages": [],
+ "blocks": [
+  {
+   "id": "heading-1",
+   "type": "heading",
+   "range": {
+    "start": 0,
+    "end": 22
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1099,
+       "end": 1154
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h1[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-1",
+   "type": "paragraph",
+   "range": {
+    "start": 24,
+    "end": 74
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1161,
+       "end": 1218
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "table-1",
+   "type": "table",
+   "range": {
+    "start": 76,
+    "end": 568
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1226,
+       "end": 2228
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "children": [
+    "table_cell-1",
+    "table_cell-2",
+    "table_cell-3",
+    "table_cell-4",
+    "table_cell-5",
+    "table_cell-6",
+    "table_cell-7",
+    "table_cell-8",
+    "table_cell-9",
+    "table_cell-10",
+    "table_cell-11",
+    "table_cell-12",
+    "table_cell-13",
+    "table_cell-14",
+    "table_cell-15",
+    "table_cell-16",
+    "table_cell-17",
+    "table_cell-18",
+    "table_cell-19",
+    "table_cell-20",
+    "table_cell-21",
+    "table_cell-22",
+    "table_cell-23",
+    "table_cell-24",
+    "table_cell-25",
+    "table_cell-26",
+    "table_cell-27",
+    "table_cell-28",
+    "table_cell-29",
+    "table_cell-30",
+    "table_cell-31",
+    "table_cell-32",
+    "table_cell-33",
+    "table_cell-34",
+    "table_cell-35",
+    "table_cell-36",
+    "table_cell-37",
+    "table_cell-38",
+    "table_cell-39",
+    "table_cell-40",
+    "table_cell-41",
+    "table_cell-42",
+    "table_cell-43",
+    "table_cell-44",
+    "table_cell-45"
+   ]
+  },
+  {
+   "id": "table_cell-1",
+   "type": "table_cell",
+   "range": {
+    "start": 78,
+    "end": 87
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1262,
+       "end": 1280
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "stubHead"
+  },
+  {
+   "id": "table_cell-2",
+   "type": "table_cell",
+   "range": {
+    "start": 90,
+    "end": 96
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1281,
+       "end": 1296
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-3",
+   "type": "table_cell",
+   "range": {
+    "start": 99,
+    "end": 106
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1297,
+       "end": 1313
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-4",
+   "type": "table_cell",
+   "range": {
+    "start": 109,
+    "end": 115
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1314,
+       "end": 1329
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-5",
+   "type": "table_cell",
+   "range": {
+    "start": 118,
+    "end": 125
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1330,
+       "end": 1346
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-6",
+   "type": "table_cell",
+   "range": {
+    "start": 182,
+    "end": 195
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1387,
+       "end": 1409
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-7",
+   "type": "table_cell",
+   "range": {
+    "start": 198,
+    "end": 202
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1410,
+       "end": 1423
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-8",
+   "type": "table_cell",
+   "range": {
+    "start": 205,
+    "end": 209
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1424,
+       "end": 1437
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-9",
+   "type": "table_cell",
+   "range": {
+    "start": 212,
+    "end": 216
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1438,
+       "end": 1451
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-10",
+   "type": "table_cell",
+   "range": {
+    "start": 219,
+    "end": 223
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1452,
+       "end": 1465
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-11",
+   "type": "table_cell",
+   "range": {
+    "start": 228,
+    "end": 240
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1490,
+       "end": 1511
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-12",
+   "type": "table_cell",
+   "range": {
+    "start": 243,
+    "end": 248
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1512,
+       "end": 1526
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-13",
+   "type": "table_cell",
+   "range": {
+    "start": 251,
+    "end": 258
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1527,
+       "end": 1543
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-14",
+   "type": "table_cell",
+   "range": {
+    "start": 261,
+    "end": 266
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1544,
+       "end": 1558
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-15",
+   "type": "table_cell",
+   "range": {
+    "start": 269,
+    "end": 275
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1559,
+       "end": 1574
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-16",
+   "type": "table_cell",
+   "range": {
+    "start": 280,
+    "end": 291
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1598,
+       "end": 1618
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-17",
+   "type": "table_cell",
+   "range": {
+    "start": 294,
+    "end": 299
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1619,
+       "end": 1633
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-18",
+   "type": "table_cell",
+   "range": {
+    "start": 302,
+    "end": 310
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1634,
+       "end": 1651
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-19",
+   "type": "table_cell",
+   "range": {
+    "start": 313,
+    "end": 319
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1652,
+       "end": 1667
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-20",
+   "type": "table_cell",
+   "range": {
+    "start": 322,
+    "end": 329
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1668,
+       "end": 1684
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-21",
+   "type": "table_cell",
+   "range": {
+    "start": 334,
+    "end": 345
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1709,
+       "end": 1729
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-22",
+   "type": "table_cell",
+   "range": {
+    "start": 348,
+    "end": 355
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1730,
+       "end": 1746
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-23",
+   "type": "table_cell",
+   "range": {
+    "start": 358,
+    "end": 365
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1747,
+       "end": 1763
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-24",
+   "type": "table_cell",
+   "range": {
+    "start": 368,
+    "end": 375
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1764,
+       "end": 1780
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-25",
+   "type": "table_cell",
+   "range": {
+    "start": 378,
+    "end": 384
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1781,
+       "end": 1796
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-26",
+   "type": "table_cell",
+   "range": {
+    "start": 389,
+    "end": 399
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1820,
+       "end": 1839
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-27",
+   "type": "table_cell",
+   "range": {
+    "start": 402,
+    "end": 405
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1840,
+       "end": 1852
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-28",
+   "type": "table_cell",
+   "range": {
+    "start": 408,
+    "end": 412
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1853,
+       "end": 1866
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-29",
+   "type": "table_cell",
+   "range": {
+    "start": 415,
+    "end": 418
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1867,
+       "end": 1879
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-30",
+   "type": "table_cell",
+   "range": {
+    "start": 421,
+    "end": 425
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1880,
+       "end": 1893
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-31",
+   "type": "table_cell",
+   "range": {
+    "start": 430,
+    "end": 443
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1918,
+       "end": 1940
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-32",
+   "type": "table_cell",
+   "range": {
+    "start": 446,
+    "end": 451
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1941,
+       "end": 1955
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-33",
+   "type": "table_cell",
+   "range": {
+    "start": 454,
+    "end": 459
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1956,
+       "end": 1970
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-34",
+   "type": "table_cell",
+   "range": {
+    "start": 462,
+    "end": 467
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1971,
+       "end": 1985
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-35",
+   "type": "table_cell",
+   "range": {
+    "start": 470,
+    "end": 475
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1986,
+       "end": 2000
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-36",
+   "type": "table_cell",
+   "range": {
+    "start": 480,
+    "end": 486
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2024,
+       "end": 2039
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 7,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-37",
+   "type": "table_cell",
+   "range": {
+    "start": 489,
+    "end": 494
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2040,
+       "end": 2054
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 7,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-38",
+   "type": "table_cell",
+   "range": {
+    "start": 497,
+    "end": 502
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2055,
+       "end": 2069
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 7,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-39",
+   "type": "table_cell",
+   "range": {
+    "start": 505,
+    "end": 510
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2070,
+       "end": 2084
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 7,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-40",
+   "type": "table_cell",
+   "range": {
+    "start": 513,
+    "end": 518
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2085,
+       "end": 2099
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 7,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-41",
+   "type": "table_cell",
+   "range": {
+    "start": 523,
+    "end": 530
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2124,
+       "end": 2140
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 8,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-42",
+   "type": "table_cell",
+   "range": {
+    "start": 533,
+    "end": 539
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2141,
+       "end": 2156
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 8,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-43",
+   "type": "table_cell",
+   "range": {
+    "start": 542,
+    "end": 548
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2157,
+       "end": 2172
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[3]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 8,
+   "col": 2,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-44",
+   "type": "table_cell",
+   "range": {
+    "start": 551,
+    "end": 557
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2173,
+       "end": 2188
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[4]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 8,
+   "col": 3,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-45",
+   "type": "table_cell",
+   "range": {
+    "start": 560,
+    "end": 566
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2189,
+       "end": 2204
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[5]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 8,
+   "col": 4,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  }
+ ],
+ "words": [
+  {
+   "range": {
+    "start": 2,
+    "end": 4
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1129,
+      "end": 1131
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "KM",
+      "prefix": "",
+      "suffix": " Series Comparison One column pe"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 5,
+    "end": 11
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1132,
+      "end": 1138
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Series",
+      "prefix": "KM ",
+      "suffix": " Comparison One column per model"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 12,
+    "end": 22
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1139,
+      "end": 1149
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Comparison",
+      "prefix": "KM Series ",
+      "suffix": " One column per model. Values at"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 24,
+    "end": 27
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1164,
+      "end": 1167
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "One",
+      "prefix": "KM Series Comparison ",
+      "suffix": " column per model. Values at the"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 28,
+    "end": 34
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1168,
+      "end": 1174
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "column",
+      "prefix": "KM Series Comparison One ",
+      "suffix": " per model. Values at the rated"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 35,
+    "end": 38
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1175,
+      "end": 1178
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "per",
+      "prefix": "KM Series Comparison One column ",
+      "suffix": " model. Values at the rated volt"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 39,
+    "end": 45
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1179,
+      "end": 1185
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "model.",
+      "prefix": "eries Comparison One column per ",
+      "suffix": " Values at the rated voltage. Pa"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 46,
+    "end": 52
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1186,
+      "end": 1192
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "Values",
+      "prefix": "omparison One column per model. ",
+      "suffix": " at the rated voltage. Parameter"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 53,
+    "end": 55
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1193,
+      "end": 1195
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "at",
+      "prefix": "on One column per model. Values ",
+      "suffix": " the rated voltage. Parameter KM"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 56,
+    "end": 59
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1196,
+      "end": 1199
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "One column per model. Values at ",
+      "suffix": " rated voltage. Parameter KM60-6"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 60,
+    "end": 65
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1200,
+      "end": 1205
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "rated",
+      "prefix": "column per model. Values at the ",
+      "suffix": " voltage. Parameter KM60-6 KM70-"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 66,
+    "end": 74
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1206,
+      "end": 1214
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "voltage.",
+      "prefix": "per model. Values at the rated ",
+      "suffix": " Parameter KM60-6 KM70-10 KM80-9"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 78,
+    "end": 87
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1266,
+      "end": 1275
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]",
+     "text_quote": {
+      "exact": "Parameter",
+      "prefix": "l. Values at the rated voltage. ",
+      "suffix": " KM60-6 KM70-10 KM80-9 KM80-64 R"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 90,
+    "end": 96
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1285,
+      "end": 1291
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]",
+     "text_quote": {
+      "exact": "KM60-6",
+      "prefix": "at the rated voltage. Parameter ",
+      "suffix": " KM70-10 KM80-9 KM80-64 Rated vo"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 99,
+    "end": 106
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1301,
+      "end": 1308
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[3]",
+     "text_quote": {
+      "exact": "KM70-10",
+      "prefix": "rated voltage. Parameter KM60-6 ",
+      "suffix": " KM80-9 KM80-64 Rated voltage 24"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 109,
+    "end": 115
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1318,
+      "end": 1324
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[4]",
+     "text_quote": {
+      "exact": "KM80-9",
+      "prefix": "ltage. Parameter KM60-6 KM70-10 ",
+      "suffix": " KM80-64 Rated voltage 24 V 24 V"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 118,
+    "end": 125
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1334,
+      "end": 1341
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[5]",
+     "text_quote": {
+      "exact": "KM80-64",
+      "prefix": "Parameter KM60-6 KM70-10 KM80-9 ",
+      "suffix": " Rated voltage 24 V 24 V 48 V 48"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 182,
+    "end": 187
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1391,
+      "end": 1396
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "r KM60-6 KM70-10 KM80-9 KM80-64 ",
+      "suffix": " voltage 24 V 24 V 48 V 48 V Rat"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 188,
+    "end": 195
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1397,
+      "end": 1404
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "voltage",
+      "prefix": "-6 KM70-10 KM80-9 KM80-64 Rated ",
+      "suffix": " 24 V 24 V 48 V 48 V Rated torqu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 198,
+    "end": 200
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1414,
+      "end": 1416
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "24",
+      "prefix": "10 KM80-9 KM80-64 Rated voltage ",
+      "suffix": " V 24 V 48 V 48 V Rated torque 3"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 201,
+    "end": 202
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1417,
+      "end": 1418
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "KM80-9 KM80-64 Rated voltage 24 ",
+      "suffix": " 24 V 48 V 48 V Rated torque 3 N"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 205,
+    "end": 207
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1428,
+      "end": 1430
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[3]",
+     "text_quote": {
+      "exact": "24",
+      "prefix": "80-9 KM80-64 Rated voltage 24 V ",
+      "suffix": " V 48 V 48 V Rated torque 3 N·m"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 208,
+    "end": 209
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1431,
+      "end": 1432
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[3]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "9 KM80-64 Rated voltage 24 V 24 ",
+      "suffix": " 48 V 48 V Rated torque 3 N·m 8."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 212,
+    "end": 214
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1442,
+      "end": 1444
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[4]",
+     "text_quote": {
+      "exact": "48",
+      "prefix": "KM80-64 Rated voltage 24 V 24 V ",
+      "suffix": " V 48 V Rated torque 3 N·m 8.3 N"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 215,
+    "end": 216
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1445,
+      "end": 1446
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[4]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "0-64 Rated voltage 24 V 24 V 48 ",
+      "suffix": " 48 V Rated torque 3 N·m 8.3 N·m"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 219,
+    "end": 221
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1456,
+      "end": 1458
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[5]",
+     "text_quote": {
+      "exact": "48",
+      "prefix": "64 Rated voltage 24 V 24 V 48 V ",
+      "suffix": " V Rated torque 3 N·m 8.3 N·m 9"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 222,
+    "end": 223
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1459,
+      "end": 1460
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[5]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "Rated voltage 24 V 24 V 48 V 48 ",
+      "suffix": " Rated torque 3 N·m 8.3 N·m 9 N·"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 228,
+    "end": 233
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1494,
+      "end": 1499
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "ted voltage 24 V 24 V 48 V 48 V ",
+      "suffix": " torque 3 N·m 8.3 N·m 9 N·m 48 N"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 234,
+    "end": 240
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1500,
+      "end": 1506
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "ltage 24 V 24 V 48 V 48 V Rated ",
+      "suffix": " 3 N·m 8.3 N·m 9 N·m 48 N·m Peak"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 243,
+    "end": 244
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1516,
+      "end": 1517
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "3",
+      "prefix": "4 V 24 V 48 V 48 V Rated torque ",
+      "suffix": " N·m 8.3 N·m 9 N·m 48 N·m Peak t"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 245,
+    "end": 248
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1518,
+      "end": 1521
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "V 24 V 48 V 48 V Rated torque 3 ",
+      "suffix": " 8.3 N·m 9 N·m 48 N·m Peak torqu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 251,
+    "end": 254
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1531,
+      "end": 1534
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[3]",
+     "text_quote": {
+      "exact": "8.3",
+      "prefix": "V 48 V 48 V Rated torque 3 N·m ",
+      "suffix": " N·m 9 N·m 48 N·m Peak torque 9"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 255,
+    "end": 258
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1535,
+      "end": 1538
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[3]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "8 V 48 V Rated torque 3 N·m 8.3 ",
+      "suffix": " 9 N·m 48 N·m Peak torque 9 N·m"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 261,
+    "end": 262
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1548,
+      "end": 1549
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[4]",
+     "text_quote": {
+      "exact": "9",
+      "prefix": "48 V Rated torque 3 N·m 8.3 N·m ",
+      "suffix": " N·m 48 N·m Peak torque 9 N·m 24"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 263,
+    "end": 266
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1550,
+      "end": 1553
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[4]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "V Rated torque 3 N·m 8.3 N·m 9 ",
+      "suffix": " 48 N·m Peak torque 9 N·m 24.8 N"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 269,
+    "end": 271
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1563,
+      "end": 1565
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[5]",
+     "text_quote": {
+      "exact": "48",
+      "prefix": "ated torque 3 N·m 8.3 N·m 9 N·m ",
+      "suffix": " N·m Peak torque 9 N·m 24.8 N·m"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 272,
+    "end": 275
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1566,
+      "end": 1569
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[5]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "d torque 3 N·m 8.3 N·m 9 N·m 48 ",
+      "suffix": " Peak torque 9 N·m 24.8 N·m 18 N"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 280,
+    "end": 284
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1602,
+      "end": 1606
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "Peak",
+      "prefix": "rque 3 N·m 8.3 N·m 9 N·m 48 N·m ",
+      "suffix": " torque 9 N·m 24.8 N·m 18 N·m 12"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 285,
+    "end": 291
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1607,
+      "end": 1613
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "3 N·m 8.3 N·m 9 N·m 48 N·m Peak ",
+      "suffix": " 9 N·m 24.8 N·m 18 N·m 120 N·m R"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 294,
+    "end": 295
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1623,
+      "end": 1624
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "9",
+      "prefix": ".3 N·m 9 N·m 48 N·m Peak torque ",
+      "suffix": " N·m 24.8 N·m 18 N·m 120 N·m Rat"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 296,
+    "end": 299
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1625,
+      "end": 1628
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "N·m 9 N·m 48 N·m Peak torque 9 ",
+      "suffix": " 24.8 N·m 18 N·m 120 N·m Rated s"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 302,
+    "end": 306
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1638,
+      "end": 1642
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[3]",
+     "text_quote": {
+      "exact": "24.8",
+      "prefix": "9 N·m 48 N·m Peak torque 9 N·m ",
+      "suffix": " N·m 18 N·m 120 N·m Rated speed"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 307,
+    "end": 310
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1643,
+      "end": 1646
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[3]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "m 48 N·m Peak torque 9 N·m 24.8 ",
+      "suffix": " 18 N·m 120 N·m Rated speed 330"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 313,
+    "end": 315
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1656,
+      "end": 1658
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[4]",
+     "text_quote": {
+      "exact": "18",
+      "prefix": "N·m Peak torque 9 N·m 24.8 N·m ",
+      "suffix": " N·m 120 N·m Rated speed 330 rpm"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 316,
+    "end": 319
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1659,
+      "end": 1662
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[4]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "m Peak torque 9 N·m 24.8 N·m 18 ",
+      "suffix": " 120 N·m Rated speed 330 rpm 145"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 322,
+    "end": 325
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1672,
+      "end": 1675
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[5]",
+     "text_quote": {
+      "exact": "120",
+      "prefix": "ak torque 9 N·m 24.8 N·m 18 N·m ",
+      "suffix": " N·m Rated speed 330 rpm 145 rpm"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 326,
+    "end": 329
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1676,
+      "end": 1679
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[5]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "orque 9 N·m 24.8 N·m 18 N·m 120 ",
+      "suffix": " Rated speed 330 rpm 145 rpm 230"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 334,
+    "end": 339
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1713,
+      "end": 1718
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "e 9 N·m 24.8 N·m 18 N·m 120 N·m ",
+      "suffix": " speed 330 rpm 145 rpm 230 rpm 4"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 340,
+    "end": 345
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1719,
+      "end": 1724
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "speed",
+      "prefix": "m 24.8 N·m 18 N·m 120 N·m Rated ",
+      "suffix": " 330 rpm 145 rpm 230 rpm 48 rpm"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 348,
+    "end": 351
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1734,
+      "end": 1737
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "330",
+      "prefix": "N·m 18 N·m 120 N·m Rated speed ",
+      "suffix": " rpm 145 rpm 230 rpm 48 rpm Gear"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 352,
+    "end": 355
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1738,
+      "end": 1741
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "18 N·m 120 N·m Rated speed 330 ",
+      "suffix": " 145 rpm 230 rpm 48 rpm Gear rat"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 358,
+    "end": 361
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1751,
+      "end": 1754
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[3]",
+     "text_quote": {
+      "exact": "145",
+      "prefix": "N·m 120 N·m Rated speed 330 rpm ",
+      "suffix": " rpm 230 rpm 48 rpm Gear ratio 6"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 362,
+    "end": 365
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1755,
+      "end": 1758
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[3]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "120 N·m Rated speed 330 rpm 145 ",
+      "suffix": " 230 rpm 48 rpm Gear ratio 6:1 1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 368,
+    "end": 371
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1768,
+      "end": 1771
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[4]",
+     "text_quote": {
+      "exact": "230",
+      "prefix": "N·m Rated speed 330 rpm 145 rpm ",
+      "suffix": " rpm 48 rpm Gear ratio 6:1 10:1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 372,
+    "end": 375
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1772,
+      "end": 1775
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[4]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "Rated speed 330 rpm 145 rpm 230 ",
+      "suffix": " 48 rpm Gear ratio 6:1 10:1 9:1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 378,
+    "end": 380
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1785,
+      "end": 1787
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[5]",
+     "text_quote": {
+      "exact": "48",
+      "prefix": "d speed 330 rpm 145 rpm 230 rpm ",
+      "suffix": " rpm Gear ratio 6:1 10:1 9:1 64:"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 381,
+    "end": 384
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1788,
+      "end": 1791
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[5]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "peed 330 rpm 145 rpm 230 rpm 48 ",
+      "suffix": " Gear ratio 6:1 10:1 9:1 64:1 Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 389,
+    "end": 393
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1824,
+      "end": 1828
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "Gear",
+      "prefix": "330 rpm 145 rpm 230 rpm 48 rpm ",
+      "suffix": " ratio 6:1 10:1 9:1 64:1 Rated c"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 394,
+    "end": 399
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1829,
+      "end": 1834
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "ratio",
+      "prefix": "rpm 145 rpm 230 rpm 48 rpm Gear ",
+      "suffix": " 6:1 10:1 9:1 64:1 Rated current"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 402,
+    "end": 405
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1844,
+      "end": 1847
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]",
+     "text_quote": {
+      "exact": "6:1",
+      "prefix": "5 rpm 230 rpm 48 rpm Gear ratio ",
+      "suffix": " 10:1 9:1 64:1 Rated current 4.6"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 408,
+    "end": 412
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1857,
+      "end": 1861
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[3]",
+     "text_quote": {
+      "exact": "10:1",
+      "prefix": "m 230 rpm 48 rpm Gear ratio 6:1 ",
+      "suffix": " 9:1 64:1 Rated current 4.6 A 7."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 415,
+    "end": 418
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1871,
+      "end": 1874
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[4]",
+     "text_quote": {
+      "exact": "9:1",
+      "prefix": "rpm 48 rpm Gear ratio 6:1 10:1 ",
+      "suffix": " 64:1 Rated current 4.6 A 7.2 A"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 421,
+    "end": 425
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1884,
+      "end": 1888
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[5]",
+     "text_quote": {
+      "exact": "64:1",
+      "prefix": "48 rpm Gear ratio 6:1 10:1 9:1 ",
+      "suffix": " Rated current 4.6 A 7.2 A 7.2 A"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 430,
+    "end": 435
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1922,
+      "end": 1927
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "pm Gear ratio 6:1 10:1 9:1 64:1 ",
+      "suffix": " current 4.6 A 7.2 A 7.2 A 9.5 A"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 436,
+    "end": 443
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1928,
+      "end": 1935
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]",
+     "text_quote": {
+      "exact": "current",
+      "prefix": "r ratio 6:1 10:1 9:1 64:1 Rated ",
+      "suffix": " 4.6 A 7.2 A 7.2 A 9.5 A Weight"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 446,
+    "end": 449
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1945,
+      "end": 1948
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "4.6",
+      "prefix": "6:1 10:1 9:1 64:1 Rated current ",
+      "suffix": " A 7.2 A 7.2 A 9.5 A Weight 315"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 450,
+    "end": 451
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1949,
+      "end": 1950
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "A",
+      "prefix": "10:1 9:1 64:1 Rated current 4.6 ",
+      "suffix": " 7.2 A 7.2 A 9.5 A Weight 315 g"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 454,
+    "end": 457
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1960,
+      "end": 1963
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[3]",
+     "text_quote": {
+      "exact": "7.2",
+      "prefix": ":1 9:1 64:1 Rated current 4.6 A ",
+      "suffix": " A 7.2 A 9.5 A Weight 315 g 521"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 458,
+    "end": 459
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1964,
+      "end": 1965
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[3]",
+     "text_quote": {
+      "exact": "A",
+      "prefix": ":1 64:1 Rated current 4.6 A 7.2 ",
+      "suffix": " 7.2 A 9.5 A Weight 315 g 521 g"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 462,
+    "end": 465
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1975,
+      "end": 1978
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[4]",
+     "text_quote": {
+      "exact": "7.2",
+      "prefix": "64:1 Rated current 4.6 A 7.2 A ",
+      "suffix": " A 9.5 A Weight 315 g 521 g 485"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 466,
+    "end": 467
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1979,
+      "end": 1980
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[4]",
+     "text_quote": {
+      "exact": "A",
+      "prefix": "1 Rated current 4.6 A 7.2 A 7.2 ",
+      "suffix": " 9.5 A Weight 315 g 521 g 485 g"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 470,
+    "end": 473
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1990,
+      "end": 1993
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[5]",
+     "text_quote": {
+      "exact": "9.5",
+      "prefix": "Rated current 4.6 A 7.2 A 7.2 A ",
+      "suffix": " A Weight 315 g 521 g 485 g 850"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 474,
+    "end": 475
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1994,
+      "end": 1995
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[5]",
+     "text_quote": {
+      "exact": "A",
+      "prefix": "d current 4.6 A 7.2 A 7.2 A 9.5 ",
+      "suffix": " Weight 315 g 521 g 485 g 850 g"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 480,
+    "end": 486
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2028,
+      "end": 2034
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[1]",
+     "text_quote": {
+      "exact": "Weight",
+      "prefix": "current 4.6 A 7.2 A 7.2 A 9.5 A ",
+      "suffix": " 315 g 521 g 485 g 850 g Encoder"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 489,
+    "end": 492
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2044,
+      "end": 2047
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[2]",
+     "text_quote": {
+      "exact": "315",
+      "prefix": "4.6 A 7.2 A 7.2 A 9.5 A Weight ",
+      "suffix": " g 521 g 485 g 850 g Encoder 14-"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 493,
+    "end": 494
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2048,
+      "end": 2049
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[2]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "A 7.2 A 7.2 A 9.5 A Weight 315 ",
+      "suffix": " 521 g 485 g 850 g Encoder 14-bi"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 497,
+    "end": 500
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2059,
+      "end": 2062
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[3]",
+     "text_quote": {
+      "exact": "521",
+      "prefix": "7.2 A 7.2 A 9.5 A Weight 315 g ",
+      "suffix": " g 485 g 850 g Encoder 14-bit 14"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 501,
+    "end": 502
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2063,
+      "end": 2064
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[3]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "A 7.2 A 9.5 A Weight 315 g 521 ",
+      "suffix": " 485 g 850 g Encoder 14-bit 14-b"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 505,
+    "end": 508
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2074,
+      "end": 2077
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[4]",
+     "text_quote": {
+      "exact": "485",
+      "prefix": "7.2 A 9.5 A Weight 315 g 521 g ",
+      "suffix": " g 850 g Encoder 14-bit 14-bit 1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 509,
+    "end": 510
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2078,
+      "end": 2079
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[4]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "A 9.5 A Weight 315 g 521 g 485 ",
+      "suffix": " 850 g Encoder 14-bit 14-bit 14-"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 513,
+    "end": 516
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2089,
+      "end": 2092
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[5]",
+     "text_quote": {
+      "exact": "850",
+      "prefix": "9.5 A Weight 315 g 521 g 485 g ",
+      "suffix": " g Encoder 14-bit 14-bit 14-bit"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 517,
+    "end": 518
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2093,
+      "end": 2094
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[7]/td[5]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "A Weight 315 g 521 g 485 g 850 ",
+      "suffix": " Encoder 14-bit 14-bit 14-bit 14"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 523,
+    "end": 530
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2128,
+      "end": 2135
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[1]",
+     "text_quote": {
+      "exact": "Encoder",
+      "prefix": "Weight 315 g 521 g 485 g 850 g ",
+      "suffix": " 14-bit 14-bit 14-bit 14-bit"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 533,
+    "end": 539
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2145,
+      "end": 2151
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[2]",
+     "text_quote": {
+      "exact": "14-bit",
+      "prefix": "315 g 521 g 485 g 850 g Encoder ",
+      "suffix": " 14-bit 14-bit 14-bit"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 542,
+    "end": 548
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2161,
+      "end": 2167
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[3]",
+     "text_quote": {
+      "exact": "14-bit",
+      "prefix": "21 g 485 g 850 g Encoder 14-bit ",
+      "suffix": " 14-bit 14-bit"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 551,
+    "end": 557
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2177,
+      "end": 2183
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[4]",
+     "text_quote": {
+      "exact": "14-bit",
+      "prefix": "5 g 850 g Encoder 14-bit 14-bit ",
+      "suffix": " 14-bit"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 560,
+    "end": 566
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2193,
+      "end": 2199
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[8]/td[5]",
+     "text_quote": {
+      "exact": "14-bit",
+      "prefix": "g Encoder 14-bit 14-bit 14-bit ",
+      "suffix": ""
+     }
+    }
+   },
+   "score": 1.0
+  }
+ ],
+ "dropped": []
+}

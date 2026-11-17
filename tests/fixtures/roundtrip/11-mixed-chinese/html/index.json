@@ -1,0 +1,1579 @@
+{
+ "schema": "markdownify/index@0",
+ "tool": {
+  "name": "harness-truth",
+  "version": "0",
+  "pipeline": "truth"
+ },
+ "source": {
+  "sha256": "d5d9b5b6505cedd5e82e2ebed6295f80bb7f436da5cc08c079a3c92b360ced5d",
+  "media_type": "text/html"
+ },
+ "markdown_sha256": "e272d7092f8f1fbb3eb9ce53a6f03d49c44af251f347556b5f51924782738497",
+ "range_units": "unicode_codepoints",
+ "pages": [],
+ "blocks": [
+  {
+   "id": "heading-1",
+   "type": "heading",
+   "range": {
+    "start": 0,
+    "end": 26
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1103,
+       "end": 1166
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h1[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-1",
+   "type": "paragraph",
+   "range": {
+    "start": 28,
+    "end": 100
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1173,
+       "end": 1252
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "table-1",
+   "type": "table",
+   "range": {
+    "start": 102,
+    "end": 329
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1260,
+       "end": 1757
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "children": [
+    "table_cell-1",
+    "table_cell-2",
+    "table_cell-3",
+    "table_cell-4",
+    "table_cell-5",
+    "table_cell-6",
+    "table_cell-7",
+    "table_cell-8",
+    "table_cell-9",
+    "table_cell-10",
+    "table_cell-11",
+    "table_cell-12",
+    "table_cell-13",
+    "table_cell-14"
+   ]
+  },
+  {
+   "id": "table_cell-1",
+   "type": "table_cell",
+   "range": {
+    "start": 104,
+    "end": 116
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1296,
+       "end": 1317
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "stubHead"
+  },
+  {
+   "id": "table_cell-2",
+   "type": "table_cell",
+   "range": {
+    "start": 119,
+    "end": 127
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1318,
+       "end": 1335
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-3",
+   "type": "table_cell",
+   "range": {
+    "start": 164,
+    "end": 182
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1376,
+       "end": 1403
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-4",
+   "type": "table_cell",
+   "range": {
+    "start": 185,
+    "end": 189
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1404,
+       "end": 1417
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-5",
+   "type": "table_cell",
+   "range": {
+    "start": 194,
+    "end": 211
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1442,
+       "end": 1468
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-6",
+   "type": "table_cell",
+   "range": {
+    "start": 214,
+    "end": 219
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1469,
+       "end": 1483
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-7",
+   "type": "table_cell",
+   "range": {
+    "start": 224,
+    "end": 240
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1507,
+       "end": 1532
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-8",
+   "type": "table_cell",
+   "range": {
+    "start": 243,
+    "end": 249
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1533,
+       "end": 1548
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-9",
+   "type": "table_cell",
+   "range": {
+    "start": 254,
+    "end": 270
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1573,
+       "end": 1598
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-10",
+   "type": "table_cell",
+   "range": {
+    "start": 273,
+    "end": 280
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1599,
+       "end": 1615
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-11",
+   "type": "table_cell",
+   "range": {
+    "start": 285,
+    "end": 299
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1639,
+       "end": 1662
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-12",
+   "type": "table_cell",
+   "range": {
+    "start": 302,
+    "end": 305
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1663,
+       "end": 1675
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 5,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-13",
+   "type": "table_cell",
+   "range": {
+    "start": 310,
+    "end": 319
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1700,
+       "end": 1718
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-14",
+   "type": "table_cell",
+   "range": {
+    "start": 322,
+    "end": 327
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1719,
+       "end": 1733
+      },
+      "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 6,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "paragraph-2",
+   "type": "paragraph",
+   "range": {
+    "start": 331,
+    "end": 394
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1764,
+       "end": 1834
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  }
+ ],
+ "words": [
+  {
+   "range": {
+    "start": 2,
+    "end": 8
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1137,
+      "end": 1143
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "KM80-9",
+      "prefix": "",
+      "suffix": " 关节模组 Joint Module 本产品适用于足式机器人和协"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 9,
+    "end": 13
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1144,
+      "end": 1148
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "关节模组",
+      "prefix": "KM80-9 ",
+      "suffix": " Joint Module 本产品适用于足式机器人和协作机械臂。"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 14,
+    "end": 19
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1149,
+      "end": 1154
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Joint",
+      "prefix": "KM80-9 关节模组 ",
+      "suffix": " Module 本产品适用于足式机器人和协作机械臂。The mo"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 20,
+    "end": 26
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1155,
+      "end": 1161
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Module",
+      "prefix": "KM80-9 关节模组 Joint ",
+      "suffix": " 本产品适用于足式机器人和协作机械臂。The module su"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 28,
+    "end": 49
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1176,
+      "end": 1197
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "本产品适用于足式机器人和协作机械臂。The",
+      "prefix": "KM80-9 关节模组 Joint Module ",
+      "suffix": " module suits legged robots and"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 50,
+    "end": 56
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1198,
+      "end": 1204
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "module",
+      "prefix": "nt Module 本产品适用于足式机器人和协作机械臂。The ",
+      "suffix": " suits legged robots and collabo"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 57,
+    "end": 62
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1205,
+      "end": 1210
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "suits",
+      "prefix": "le 本产品适用于足式机器人和协作机械臂。The module ",
+      "suffix": " legged robots and collaborative"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 63,
+    "end": 69
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1211,
+      "end": 1217
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "legged",
+      "prefix": "适用于足式机器人和协作机械臂。The module suits ",
+      "suffix": " robots and collaborative arms."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 70,
+    "end": 76
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1218,
+      "end": 1224
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "robots",
+      "prefix": "人和协作机械臂。The module suits legged ",
+      "suffix": " and collaborative arms. 参数 Para"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 77,
+    "end": 80
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1225,
+      "end": 1228
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "and",
+      "prefix": "。The module suits legged robots ",
+      "suffix": " collaborative arms. 参数 Paramete"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 81,
+    "end": 94
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1229,
+      "end": 1242
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "collaborative",
+      "prefix": "module suits legged robots and ",
+      "suffix": " arms. 参数 Parameter 数值 Value 额定电"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 95,
+    "end": 100
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1243,
+      "end": 1248
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "arms.",
+      "prefix": "legged robots and collaborative ",
+      "suffix": " 参数 Parameter 数值 Value 额定电压 Rate"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 104,
+    "end": 106
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1300,
+      "end": 1302
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]",
+     "text_quote": {
+      "exact": "参数",
+      "prefix": "robots and collaborative arms. ",
+      "suffix": " Parameter 数值 Value 额定电压 Rated v"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 107,
+    "end": 116
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1303,
+      "end": 1312
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[1]",
+     "text_quote": {
+      "exact": "Parameter",
+      "prefix": "bots and collaborative arms. 参数 ",
+      "suffix": " 数值 Value 额定电压 Rated voltage 48"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 119,
+    "end": 121
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1322,
+      "end": 1324
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]",
+     "text_quote": {
+      "exact": "数值",
+      "prefix": "ollaborative arms. 参数 Parameter ",
+      "suffix": " Value 额定电压 Rated voltage 48 V 额"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 122,
+    "end": 127
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1325,
+      "end": 1330
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/thead[1]/tr[1]/th[2]",
+     "text_quote": {
+      "exact": "Value",
+      "prefix": "aborative arms. 参数 Parameter 数值 ",
+      "suffix": " 额定电压 Rated voltage 48 V 额定扭矩 Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 164,
+    "end": 168
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1380,
+      "end": 1384
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "额定电压",
+      "prefix": "ive arms. 参数 Parameter 数值 Value ",
+      "suffix": " Rated voltage 48 V 额定扭矩 Rated t"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 169,
+    "end": 174
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1385,
+      "end": 1390
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "rms. 参数 Parameter 数值 Value 额定电压 ",
+      "suffix": " voltage 48 V 额定扭矩 Rated torque"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 175,
+    "end": 182
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1391,
+      "end": 1398
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "voltage",
+      "prefix": "数 Parameter 数值 Value 额定电压 Rated ",
+      "suffix": " 48 V 额定扭矩 Rated torque 9 N·m 峰值"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 185,
+    "end": 187
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1408,
+      "end": 1410
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "48",
+      "prefix": "ter 数值 Value 额定电压 Rated voltage ",
+      "suffix": " V 额定扭矩 Rated torque 9 N·m 峰值扭矩"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 188,
+    "end": 189
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1411,
+      "end": 1412
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "V",
+      "prefix": "数值 Value 额定电压 Rated voltage 48 ",
+      "suffix": " 额定扭矩 Rated torque 9 N·m 峰值扭矩 Pe"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 194,
+    "end": 198
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1446,
+      "end": 1450
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "额定扭矩",
+      "prefix": "值 Value 额定电压 Rated voltage 48 V ",
+      "suffix": " Rated torque 9 N·m 峰值扭矩 Peak to"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 199,
+    "end": 204
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1451,
+      "end": 1456
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "ue 额定电压 Rated voltage 48 V 额定扭矩 ",
+      "suffix": " torque 9 N·m 峰值扭矩 Peak torque 1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 205,
+    "end": 211
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1457,
+      "end": 1463
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "压 Rated voltage 48 V 额定扭矩 Rated ",
+      "suffix": " 9 N·m 峰值扭矩 Peak torque 18 N·m 额"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 214,
+    "end": 215
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1473,
+      "end": 1474
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "9",
+      "prefix": "voltage 48 V 额定扭矩 Rated torque ",
+      "suffix": " N·m 峰值扭矩 Peak torque 18 N·m 额定转"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 216,
+    "end": 219
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1475,
+      "end": 1478
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "oltage 48 V 额定扭矩 Rated torque 9 ",
+      "suffix": " 峰值扭矩 Peak torque 18 N·m 额定转速 Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 224,
+    "end": 228
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1511,
+      "end": 1515
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "峰值扭矩",
+      "prefix": "ge 48 V 额定扭矩 Rated torque 9 N·m ",
+      "suffix": " Peak torque 18 N·m 额定转速 Rated s"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 229,
+    "end": 233
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1516,
+      "end": 1520
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "Peak",
+      "prefix": "V 额定扭矩 Rated torque 9 N·m 峰值扭矩 ",
+      "suffix": " torque 18 N·m 额定转速 Rated speed"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 234,
+    "end": 240
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1521,
+      "end": 1527
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "扭矩 Rated torque 9 N·m 峰值扭矩 Peak ",
+      "suffix": " 18 N·m 额定转速 Rated speed 230 rpm"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 243,
+    "end": 245
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1537,
+      "end": 1539
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "18",
+      "prefix": "d torque 9 N·m 峰值扭矩 Peak torque ",
+      "suffix": " N·m 额定转速 Rated speed 230 rpm 减速"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 246,
+    "end": 249
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1540,
+      "end": 1543
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "orque 9 N·m 峰值扭矩 Peak torque 18 ",
+      "suffix": " 额定转速 Rated speed 230 rpm 减速比 Ge"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 254,
+    "end": 258
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1577,
+      "end": 1581
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "额定转速",
+      "prefix": "e 9 N·m 峰值扭矩 Peak torque 18 N·m ",
+      "suffix": " Rated speed 230 rpm 减速比 Gear ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 259,
+    "end": 264
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1582,
+      "end": 1587
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "·m 峰值扭矩 Peak torque 18 N·m 额定转速 ",
+      "suffix": " speed 230 rpm 减速比 Gear ratio 9:"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 265,
+    "end": 270
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1588,
+      "end": 1593
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "speed",
+      "prefix": "矩 Peak torque 18 N·m 额定转速 Rated ",
+      "suffix": " 230 rpm 减速比 Gear ratio 9:1 重量 W"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 273,
+    "end": 276
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1603,
+      "end": 1606
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "230",
+      "prefix": "torque 18 N·m 额定转速 Rated speed ",
+      "suffix": " rpm 减速比 Gear ratio 9:1 重量 Weigh"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 277,
+    "end": 280
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1607,
+      "end": 1610
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "que 18 N·m 额定转速 Rated speed 230 ",
+      "suffix": " 减速比 Gear ratio 9:1 重量 Weight 48"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 285,
+    "end": 288
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1643,
+      "end": 1646
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "减速比",
+      "prefix": "18 N·m 额定转速 Rated speed 230 rpm ",
+      "suffix": " Gear ratio 9:1 重量 Weight 485 g"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 289,
+    "end": 293
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1647,
+      "end": 1651
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "Gear",
+      "prefix": "·m 额定转速 Rated speed 230 rpm 减速比 ",
+      "suffix": " ratio 9:1 重量 Weight 485 g 通信接口："
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 294,
+    "end": 299
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1652,
+      "end": 1657
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[1]",
+     "text_quote": {
+      "exact": "ratio",
+      "prefix": "转速 Rated speed 230 rpm 减速比 Gear ",
+      "suffix": " 9:1 重量 Weight 485 g 通信接口：CAN 2."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 302,
+    "end": 305
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1667,
+      "end": 1670
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[5]/td[2]",
+     "text_quote": {
+      "exact": "9:1",
+      "prefix": "ed speed 230 rpm 减速比 Gear ratio ",
+      "suffix": " 重量 Weight 485 g 通信接口：CAN 2.0B，波"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 310,
+    "end": 312
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1704,
+      "end": 1706
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]",
+     "text_quote": {
+      "exact": "重量",
+      "prefix": "peed 230 rpm 减速比 Gear ratio 9:1 ",
+      "suffix": " Weight 485 g 通信接口：CAN 2.0B，波特率"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 313,
+    "end": 319
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1707,
+      "end": 1713
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[1]",
+     "text_quote": {
+      "exact": "Weight",
+      "prefix": "d 230 rpm 减速比 Gear ratio 9:1 重量 ",
+      "suffix": " 485 g 通信接口：CAN 2.0B，波特率 1 Mbit/"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 322,
+    "end": 325
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1723,
+      "end": 1726
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "485",
+      "prefix": "pm 减速比 Gear ratio 9:1 重量 Weight ",
+      "suffix": " g 通信接口：CAN 2.0B，波特率 1 Mbit/s。Co"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 326,
+    "end": 327
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1727,
+      "end": 1728
+     },
+     "xpath": "/html[1]/body[1]/main[1]/table[1]/tbody[1]/tr[6]/td[2]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "速比 Gear ratio 9:1 重量 Weight 485 ",
+      "suffix": " 通信接口：CAN 2.0B，波特率 1 Mbit/s。Comm"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 331,
+    "end": 339
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1767,
+      "end": 1775
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "通信接口：CAN",
+      "prefix": "Gear ratio 9:1 重量 Weight 485 g ",
+      "suffix": " 2.0B，波特率 1 Mbit/s。Communication"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 340,
+    "end": 348
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1776,
+      "end": 1784
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "2.0B，波特率",
+      "prefix": "io 9:1 重量 Weight 485 g 通信接口：CAN ",
+      "suffix": " 1 Mbit/s。Communication: CAN 2.0"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 349,
+    "end": 350
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1785,
+      "end": 1786
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "1",
+      "prefix": "Weight 485 g 通信接口：CAN 2.0B，波特率 ",
+      "suffix": " Mbit/s。Communication: CAN 2.0B"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 351,
+    "end": 372
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1787,
+      "end": 1808
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "Mbit/s。Communication:",
+      "prefix": "eight 485 g 通信接口：CAN 2.0B，波特率 1 ",
+      "suffix": " CAN 2.0B at 1 Mbit/s."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 373,
+    "end": 376
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1809,
+      "end": 1812
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "CAN",
+      "prefix": ".0B，波特率 1 Mbit/s。Communication: ",
+      "suffix": " 2.0B at 1 Mbit/s."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 377,
+    "end": 381
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1813,
+      "end": 1817
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "2.0B",
+      "prefix": "波特率 1 Mbit/s。Communication: CAN ",
+      "suffix": " at 1 Mbit/s."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 382,
+    "end": 384
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1818,
+      "end": 1820
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "at",
+      "prefix": "Mbit/s。Communication: CAN 2.0B ",
+      "suffix": " 1 Mbit/s."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 385,
+    "end": 386
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1821,
+      "end": 1822
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "1",
+      "prefix": "it/s。Communication: CAN 2.0B at ",
+      "suffix": " Mbit/s."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 387,
+    "end": 394
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1823,
+      "end": 1830
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "Mbit/s.",
+      "prefix": "/s。Communication: CAN 2.0B at 1 ",
+      "suffix": ""
+     }
+    }
+   },
+   "score": 1.0
+  }
+ ],
+ "dropped": []
+}

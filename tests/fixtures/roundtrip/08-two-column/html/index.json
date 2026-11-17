@@ -1,0 +1,2768 @@
+{
+ "schema": "markdownify/index@0",
+ "tool": {
+  "name": "harness-truth",
+  "version": "0",
+  "pipeline": "truth"
+ },
+ "source": {
+  "sha256": "ac9f25b6b7fdcbe7f4ea4cb59d724b6a2abb467257ca29ce0f3890471b80cd58",
+  "media_type": "text/html"
+ },
+ "markdown_sha256": "ff37ec69c67747b4e3618941715a7105efdb3ea0781a99e431c7b640f9ad2dbe",
+ "range_units": "unicode_codepoints",
+ "pages": [],
+ "blocks": [
+  {
+   "id": "heading-1",
+   "type": "heading",
+   "range": {
+    "start": 0,
+    "end": 26
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1103,
+       "end": 1166
+      },
+      "xpath": "/html[1]/body[1]/main[1]/h1[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "heading-2",
+   "type": "heading",
+   "range": {
+    "start": 28,
+    "end": 42
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1188,
+       "end": 1225
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-1",
+   "type": "paragraph",
+   "range": {
+    "start": 44,
+    "end": 192
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1232,
+       "end": 1387
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-2",
+   "type": "paragraph",
+   "range": {
+    "start": 194,
+    "end": 287
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1401,
+       "end": 1501
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "heading-3",
+   "type": "heading",
+   "range": {
+    "start": 289,
+    "end": 300
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1509,
+       "end": 1540
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[2]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-1",
+   "type": "list_item",
+   "range": {
+    "start": 302,
+    "end": 326
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1552,
+       "end": 1596
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[1]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-2",
+   "type": "list_item",
+   "range": {
+    "start": 327,
+    "end": 350
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1597,
+       "end": 1640
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[2]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-3",
+   "type": "list_item",
+   "range": {
+    "start": 351,
+    "end": 370
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1641,
+       "end": 1680
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[3]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "list_item-4",
+   "type": "list_item",
+   "range": {
+    "start": 371,
+    "end": 397
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1681,
+       "end": 1727
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "heading-4",
+   "type": "heading",
+   "range": {
+    "start": 399,
+    "end": 409
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1741,
+       "end": 1770
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[3]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "table-1",
+   "type": "table",
+   "range": {
+    "start": 411,
+    "end": 553
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1771,
+       "end": 2122
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "children": [
+    "table_cell-1",
+    "table_cell-2",
+    "table_cell-3",
+    "table_cell-4",
+    "table_cell-5",
+    "table_cell-6",
+    "table_cell-7",
+    "table_cell-8",
+    "table_cell-9",
+    "table_cell-10"
+   ]
+  },
+  {
+   "id": "table_cell-1",
+   "type": "table_cell",
+   "range": {
+    "start": 413,
+    "end": 422
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1807,
+       "end": 1825
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/thead[1]/tr[1]/th[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "stubHead"
+  },
+  {
+   "id": "table_cell-2",
+   "type": "table_cell",
+   "range": {
+    "start": 425,
+    "end": 430
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1826,
+       "end": 1840
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 0,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "columnHeader"
+  },
+  {
+   "id": "table_cell-3",
+   "type": "table_cell",
+   "range": {
+    "start": 457,
+    "end": 469
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1881,
+       "end": 1902
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-4",
+   "type": "table_cell",
+   "range": {
+    "start": 472,
+    "end": 479
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1903,
+       "end": 1919
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 1,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-5",
+   "type": "table_cell",
+   "range": {
+    "start": 484,
+    "end": 495
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1944,
+       "end": 1964
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-6",
+   "type": "table_cell",
+   "range": {
+    "start": 498,
+    "end": 506
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 1965,
+       "end": 1982
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 2,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-7",
+   "type": "table_cell",
+   "range": {
+    "start": 511,
+    "end": 522
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2006,
+       "end": 2026
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-8",
+   "type": "table_cell",
+   "range": {
+    "start": 525,
+    "end": 532
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2027,
+       "end": 2043
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 3,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "table_cell-9",
+   "type": "table_cell",
+   "range": {
+    "start": 537,
+    "end": 543
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2068,
+       "end": 2083
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[4]/td[1]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 0,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "rowHeader"
+  },
+  {
+   "id": "table_cell-10",
+   "type": "table_cell",
+   "range": {
+    "start": 546,
+    "end": 551
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2084,
+       "end": 2098
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[4]/td[2]"
+     }
+    }
+   ],
+   "represented": true,
+   "row": 4,
+   "col": 1,
+   "rowspan": 1,
+   "colspan": 1,
+   "kind": "content"
+  },
+  {
+   "id": "heading-5",
+   "type": "heading",
+   "range": {
+    "start": 555,
+    "end": 566
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2123,
+       "end": 2154
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[4]"
+     }
+    }
+   ],
+   "represented": true
+  },
+  {
+   "id": "paragraph-3",
+   "type": "paragraph",
+   "range": {
+    "start": 568,
+    "end": 664
+   },
+   "grounding": [
+    {
+     "html": {
+      "source_range": {
+       "start": 2161,
+       "end": 2264
+      },
+      "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]"
+     }
+    }
+   ],
+   "represented": true
+  }
+ ],
+ "words": [
+  {
+   "range": {
+    "start": 2,
+    "end": 9
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1137,
+      "end": 1144
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "KM70-10",
+      "prefix": "",
+      "suffix": " Product Overview Description Th"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 10,
+    "end": 17
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1145,
+      "end": 1152
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Product",
+      "prefix": "KM70-10 ",
+      "suffix": " Overview Description The KM70-1"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 18,
+    "end": 26
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1153,
+      "end": 1161
+     },
+     "xpath": "/html[1]/body[1]/main[1]/h1[1]",
+     "text_quote": {
+      "exact": "Overview",
+      "prefix": "KM70-10 Product ",
+      "suffix": " Description The KM70-10 is a co"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 31,
+    "end": 42
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1209,
+      "end": 1220
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[1]",
+     "text_quote": {
+      "exact": "Description",
+      "prefix": "KM70-10 Product Overview ",
+      "suffix": " The KM70-10 is a compact joint"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 44,
+    "end": 47
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1235,
+      "end": 1238
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "The",
+      "prefix": "10 Product Overview Description ",
+      "suffix": " KM70-10 is a compact joint modu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 48,
+    "end": 55
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1239,
+      "end": 1246
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "KM70-10",
+      "prefix": "roduct Overview Description The ",
+      "suffix": " is a compact joint module for r"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 56,
+    "end": 58
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1247,
+      "end": 1249
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "is",
+      "prefix": "verview Description The KM70-10 ",
+      "suffix": " a compact joint module for robo"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 59,
+    "end": 60
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1250,
+      "end": 1251
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "a",
+      "prefix": "view Description The KM70-10 is ",
+      "suffix": " compact joint module for robot"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 61,
+    "end": 68
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1252,
+      "end": 1259
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "compact",
+      "prefix": "ew Description The KM70-10 is a ",
+      "suffix": " joint module for robot arms and"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 69,
+    "end": 74
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1260,
+      "end": 1265
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "joint",
+      "prefix": "iption The KM70-10 is a compact ",
+      "suffix": " module for robot arms and exosk"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 75,
+    "end": 81
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1266,
+      "end": 1272
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "module",
+      "prefix": "The KM70-10 is a compact joint ",
+      "suffix": " for robot arms and exoskeletons"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 82,
+    "end": 85
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1273,
+      "end": 1276
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "for",
+      "prefix": "70-10 is a compact joint module ",
+      "suffix": " robot arms and exoskeletons. A"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 86,
+    "end": 91
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1277,
+      "end": 1282
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "robot",
+      "prefix": "0 is a compact joint module for ",
+      "suffix": " arms and exoskeletons. A 10:1 p"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 92,
+    "end": 96
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1283,
+      "end": 1287
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "arms",
+      "prefix": "compact joint module for robot ",
+      "suffix": " and exoskeletons. A 10:1 planet"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 97,
+    "end": 100
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1288,
+      "end": 1291
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "and",
+      "prefix": "act joint module for robot arms ",
+      "suffix": " exoskeletons. A 10:1 planetary"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 101,
+    "end": 114
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1292,
+      "end": 1305
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "exoskeletons.",
+      "prefix": "joint module for robot arms and ",
+      "suffix": " A 10:1 planetary stage gives it"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 115,
+    "end": 116
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1306,
+      "end": 1307
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "A",
+      "prefix": "or robot arms and exoskeletons. ",
+      "suffix": " 10:1 planetary stage gives it a"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 117,
+    "end": 121
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1308,
+      "end": 1312
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "10:1",
+      "prefix": "robot arms and exoskeletons. A ",
+      "suffix": " planetary stage gives it a rate"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 122,
+    "end": 131
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1313,
+      "end": 1322
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "planetary",
+      "prefix": "t arms and exoskeletons. A 10:1 ",
+      "suffix": " stage gives it a rated torque o"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 132,
+    "end": 137
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1323,
+      "end": 1328
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "stage",
+      "prefix": "exoskeletons. A 10:1 planetary ",
+      "suffix": " gives it a rated torque of 8.3"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 138,
+    "end": 143
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1329,
+      "end": 1334
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "gives",
+      "prefix": "eletons. A 10:1 planetary stage ",
+      "suffix": " it a rated torque of 8.3 N·m in"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 144,
+    "end": 146
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1335,
+      "end": 1337
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "it",
+      "prefix": "s. A 10:1 planetary stage gives ",
+      "suffix": " a rated torque of 8.3 N·m in a"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 147,
+    "end": 148
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1338,
+      "end": 1339
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "a",
+      "prefix": "A 10:1 planetary stage gives it ",
+      "suffix": " rated torque of 8.3 N·m in a 52"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 149,
+    "end": 154
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1340,
+      "end": 1345
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "rated",
+      "prefix": "10:1 planetary stage gives it a ",
+      "suffix": " torque of 8.3 N·m in a 521 g ho"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 155,
+    "end": 161
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1346,
+      "end": 1352
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "lanetary stage gives it a rated ",
+      "suffix": " of 8.3 N·m in a 521 g housing."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 162,
+    "end": 164
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1353,
+      "end": 1355
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "of",
+      "prefix": "y stage gives it a rated torque ",
+      "suffix": " 8.3 N·m in a 521 g housing. The"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 165,
+    "end": 168
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1356,
+      "end": 1359
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "8.3",
+      "prefix": "tage gives it a rated torque of ",
+      "suffix": " N·m in a 521 g housing. The hol"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 169,
+    "end": 172
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1360,
+      "end": 1363
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "gives it a rated torque of 8.3 ",
+      "suffix": " in a 521 g housing. The hollow"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 173,
+    "end": 175
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1364,
+      "end": 1366
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "in",
+      "prefix": "es it a rated torque of 8.3 N·m ",
+      "suffix": " a 521 g housing. The hollow sha"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 176,
+    "end": 177
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1367,
+      "end": 1368
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "a",
+      "prefix": "it a rated torque of 8.3 N·m in ",
+      "suffix": " 521 g housing. The hollow shaft"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 178,
+    "end": 181
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1369,
+      "end": 1372
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "521",
+      "prefix": "a rated torque of 8.3 N·m in a ",
+      "suffix": " g housing. The hollow shaft has"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 182,
+    "end": 183
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1373,
+      "end": 1374
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "ated torque of 8.3 N·m in a 521 ",
+      "suffix": " housing. The hollow shaft has a"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 184,
+    "end": 192
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1375,
+      "end": 1383
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[1]/p[1]",
+     "text_quote": {
+      "exact": "housing.",
+      "prefix": "ed torque of 8.3 N·m in a 521 g ",
+      "suffix": " The hollow shaft has an 11 mm b"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 194,
+    "end": 197
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1404,
+      "end": 1407
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "The",
+      "prefix": "of 8.3 N·m in a 521 g housing. ",
+      "suffix": " hollow shaft has an 11 mm bore,"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 198,
+    "end": 204
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1408,
+      "end": 1414
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "hollow",
+      "prefix": "8.3 N·m in a 521 g housing. The ",
+      "suffix": " shaft has an 11 mm bore, so cab"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 205,
+    "end": 210
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1415,
+      "end": 1420
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "shaft",
+      "prefix": "in a 521 g housing. The hollow ",
+      "suffix": " has an 11 mm bore, so cables ca"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 211,
+    "end": 214
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1421,
+      "end": 1424
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "has",
+      "prefix": "521 g housing. The hollow shaft ",
+      "suffix": " an 11 mm bore, so cables can ru"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 215,
+    "end": 217
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1425,
+      "end": 1427
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "an",
+      "prefix": "g housing. The hollow shaft has ",
+      "suffix": " 11 mm bore, so cables can run t"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 218,
+    "end": 220
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1428,
+      "end": 1430
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "11",
+      "prefix": "ousing. The hollow shaft has an ",
+      "suffix": " mm bore, so cables can run thro"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 221,
+    "end": 223
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1431,
+      "end": 1433
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "mm",
+      "prefix": "ing. The hollow shaft has an 11 ",
+      "suffix": " bore, so cables can run through"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 224,
+    "end": 229
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1434,
+      "end": 1439
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "bore,",
+      "prefix": ". The hollow shaft has an 11 mm ",
+      "suffix": " so cables can run through the j"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 230,
+    "end": 232
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1440,
+      "end": 1442
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "so",
+      "prefix": "hollow shaft has an 11 mm bore, ",
+      "suffix": " cables can run through the join"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 233,
+    "end": 239
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1443,
+      "end": 1449
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "cables",
+      "prefix": "low shaft has an 11 mm bore, so ",
+      "suffix": " can run through the joint inste"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 240,
+    "end": 243
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1450,
+      "end": 1453
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "can",
+      "prefix": "ft has an 11 mm bore, so cables ",
+      "suffix": " run through the joint instead o"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 244,
+    "end": 247
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1454,
+      "end": 1457
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "run",
+      "prefix": "as an 11 mm bore, so cables can ",
+      "suffix": " through the joint instead of ar"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 248,
+    "end": 255
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1458,
+      "end": 1465
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "through",
+      "prefix": "n 11 mm bore, so cables can run ",
+      "suffix": " the joint instead of around it."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 256,
+    "end": 259
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1466,
+      "end": 1469
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "bore, so cables can run through ",
+      "suffix": " joint instead of around it. Fea"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 260,
+    "end": 265
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1470,
+      "end": 1475
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "joint",
+      "prefix": ", so cables can run through the ",
+      "suffix": " instead of around it. Features"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 266,
+    "end": 273
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1476,
+      "end": 1483
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "instead",
+      "prefix": "ables can run through the joint ",
+      "suffix": " of around it. Features Dual abs"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 274,
+    "end": 276
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1484,
+      "end": 1486
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "of",
+      "prefix": "n run through the joint instead ",
+      "suffix": " around it. Features Dual absolu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 277,
+    "end": 283
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1487,
+      "end": 1493
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "around",
+      "prefix": "un through the joint instead of ",
+      "suffix": " it. Features Dual absolute enco"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 284,
+    "end": 287
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1494,
+      "end": 1497
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[2]/p[1]",
+     "text_quote": {
+      "exact": "it.",
+      "prefix": "ugh the joint instead of around ",
+      "suffix": " Features Dual absolute encoders"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 292,
+    "end": 300
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1527,
+      "end": 1535
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[2]",
+     "text_quote": {
+      "exact": "Features",
+      "prefix": "the joint instead of around it. ",
+      "suffix": " Dual absolute encoders Integrat"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 304,
+    "end": 308
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1562,
+      "end": 1566
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "Dual",
+      "prefix": "instead of around it. Features ",
+      "suffix": " absolute encoders Integrated FO"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 309,
+    "end": 317
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1567,
+      "end": 1575
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "absolute",
+      "prefix": "ead of around it. Features Dual ",
+      "suffix": " encoders Integrated FOC driver"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 318,
+    "end": 326
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1576,
+      "end": 1584
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[1]/div[1]",
+     "text_quote": {
+      "exact": "encoders",
+      "prefix": "ound it. Features Dual absolute ",
+      "suffix": " Integrated FOC driver CAN 2.0B"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 329,
+    "end": 339
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1607,
+      "end": 1617
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[2]/div[1]",
+     "text_quote": {
+      "exact": "Integrated",
+      "prefix": "Features Dual absolute encoders ",
+      "suffix": " FOC driver CAN 2.0B and UART Ho"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 340,
+    "end": 343
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1618,
+      "end": 1621
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[2]/div[1]",
+     "text_quote": {
+      "exact": "FOC",
+      "prefix": "al absolute encoders Integrated ",
+      "suffix": " driver CAN 2.0B and UART Hollow"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 344,
+    "end": 350
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1622,
+      "end": 1628
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[2]/div[1]",
+     "text_quote": {
+      "exact": "driver",
+      "prefix": "bsolute encoders Integrated FOC ",
+      "suffix": " CAN 2.0B and UART Hollow shaft,"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 353,
+    "end": 356
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1651,
+      "end": 1654
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "CAN",
+      "prefix": "encoders Integrated FOC driver ",
+      "suffix": " 2.0B and UART Hollow shaft, 11"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 357,
+    "end": 361
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1655,
+      "end": 1659
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "2.0B",
+      "prefix": "oders Integrated FOC driver CAN ",
+      "suffix": " and UART Hollow shaft, 11 mm bo"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 362,
+    "end": 365
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1660,
+      "end": 1663
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "and",
+      "prefix": "Integrated FOC driver CAN 2.0B ",
+      "suffix": " UART Hollow shaft, 11 mm bore R"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 366,
+    "end": 370
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1664,
+      "end": 1668
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[3]/div[1]",
+     "text_quote": {
+      "exact": "UART",
+      "prefix": "egrated FOC driver CAN 2.0B and ",
+      "suffix": " Hollow shaft, 11 mm bore Rating"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 373,
+    "end": 379
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1691,
+      "end": 1697
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "Hollow",
+      "prefix": "ed FOC driver CAN 2.0B and UART ",
+      "suffix": " shaft, 11 mm bore Ratings Param"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 380,
+    "end": 386
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1698,
+      "end": 1704
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "shaft,",
+      "prefix": "driver CAN 2.0B and UART Hollow ",
+      "suffix": " 11 mm bore Ratings Parameter Va"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 387,
+    "end": 389
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1705,
+      "end": 1707
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "11",
+      "prefix": "CAN 2.0B and UART Hollow shaft, ",
+      "suffix": " mm bore Ratings Parameter Value"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 390,
+    "end": 392
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1708,
+      "end": 1710
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "mm",
+      "prefix": "2.0B and UART Hollow shaft, 11 ",
+      "suffix": " bore Ratings Parameter Value Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 393,
+    "end": 397
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1711,
+      "end": 1715
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[3]/ul[1]/li[4]/div[1]",
+     "text_quote": {
+      "exact": "bore",
+      "prefix": "0B and UART Hollow shaft, 11 mm ",
+      "suffix": " Ratings Parameter Value Rated t"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 402,
+    "end": 409
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1758,
+      "end": 1765
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[3]",
+     "text_quote": {
+      "exact": "Ratings",
+      "prefix": "d UART Hollow shaft, 11 mm bore ",
+      "suffix": " Parameter Value Rated torque 8."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 413,
+    "end": 422
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1811,
+      "end": 1820
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/thead[1]/tr[1]/th[1]",
+     "text_quote": {
+      "exact": "Parameter",
+      "prefix": "ollow shaft, 11 mm bore Ratings ",
+      "suffix": " Value Rated torque 8.3 N·m Peak"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 425,
+    "end": 430
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1830,
+      "end": 1835
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/thead[1]/tr[1]/th[2]",
+     "text_quote": {
+      "exact": "Value",
+      "prefix": "t, 11 mm bore Ratings Parameter ",
+      "suffix": " Rated torque 8.3 N·m Peak torqu"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 457,
+    "end": 462
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1885,
+      "end": 1890
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "mm bore Ratings Parameter Value ",
+      "suffix": " torque 8.3 N·m Peak torque 24.8"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 463,
+    "end": 469
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1891,
+      "end": 1897
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "e Ratings Parameter Value Rated ",
+      "suffix": " 8.3 N·m Peak torque 24.8 N·m Ra"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 472,
+    "end": 475
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1907,
+      "end": 1910
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "8.3",
+      "prefix": "gs Parameter Value Rated torque ",
+      "suffix": " N·m Peak torque 24.8 N·m Rated"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 476,
+    "end": 479
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1911,
+      "end": 1914
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "arameter Value Rated torque 8.3 ",
+      "suffix": " Peak torque 24.8 N·m Rated spee"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 484,
+    "end": 488
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1948,
+      "end": 1952
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "Peak",
+      "prefix": "eter Value Rated torque 8.3 N·m ",
+      "suffix": " torque 24.8 N·m Rated speed 145"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 489,
+    "end": 495
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1953,
+      "end": 1959
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]",
+     "text_quote": {
+      "exact": "torque",
+      "prefix": "Value Rated torque 8.3 N·m Peak ",
+      "suffix": " 24.8 N·m Rated speed 145 rpm We"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 498,
+    "end": 502
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1969,
+      "end": 1973
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "24.8",
+      "prefix": "ated torque 8.3 N·m Peak torque ",
+      "suffix": " N·m Rated speed 145 rpm Weight"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 503,
+    "end": 506
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 1974,
+      "end": 1977
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[2]/td[2]",
+     "text_quote": {
+      "exact": "N·m",
+      "prefix": "torque 8.3 N·m Peak torque 24.8 ",
+      "suffix": " Rated speed 145 rpm Weight 521"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 511,
+    "end": 516
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2010,
+      "end": 2015
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "Rated",
+      "prefix": "ue 8.3 N·m Peak torque 24.8 N·m ",
+      "suffix": " speed 145 rpm Weight 521 g Moun"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 517,
+    "end": 522
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2016,
+      "end": 2021
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[1]",
+     "text_quote": {
+      "exact": "speed",
+      "prefix": "N·m Peak torque 24.8 N·m Rated ",
+      "suffix": " 145 rpm Weight 521 g Mounting S"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 525,
+    "end": 528
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2031,
+      "end": 2034
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "145",
+      "prefix": "eak torque 24.8 N·m Rated speed ",
+      "suffix": " rpm Weight 521 g Mounting Six M"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 529,
+    "end": 532
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2035,
+      "end": 2038
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[3]/td[2]",
+     "text_quote": {
+      "exact": "rpm",
+      "prefix": "torque 24.8 N·m Rated speed 145 ",
+      "suffix": " Weight 521 g Mounting Six M3 th"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 537,
+    "end": 543
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2072,
+      "end": 2078
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[4]/td[1]",
+     "text_quote": {
+      "exact": "Weight",
+      "prefix": "ue 24.8 N·m Rated speed 145 rpm ",
+      "suffix": " 521 g Mounting Six M3 threads o"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 546,
+    "end": 549
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2088,
+      "end": 2091
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "521",
+      "prefix": "N·m Rated speed 145 rpm Weight ",
+      "suffix": " g Mounting Six M3 threads on a"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 550,
+    "end": 551
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2092,
+      "end": 2093
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/table[1]/tbody[1]/tr[4]/td[2]",
+     "text_quote": {
+      "exact": "g",
+      "prefix": "Rated speed 145 rpm Weight 521 ",
+      "suffix": " Mounting Six M3 threads on a 60"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 558,
+    "end": 566
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2141,
+      "end": 2149
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/h2[4]",
+     "text_quote": {
+      "exact": "Mounting",
+      "prefix": "ated speed 145 rpm Weight 521 g ",
+      "suffix": " Six M3 threads on a 60 mm circl"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 568,
+    "end": 571
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2164,
+      "end": 2167
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "Six",
+      "prefix": "d 145 rpm Weight 521 g Mounting ",
+      "suffix": " M3 threads on a 60 mm circle ho"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 572,
+    "end": 574
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2168,
+      "end": 2170
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "M3",
+      "prefix": "5 rpm Weight 521 g Mounting Six ",
+      "suffix": " threads on a 60 mm circle hold"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 575,
+    "end": 582
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2171,
+      "end": 2178
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "threads",
+      "prefix": "pm Weight 521 g Mounting Six M3 ",
+      "suffix": " on a 60 mm circle hold the outp"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 583,
+    "end": 585
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2179,
+      "end": 2181
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "on",
+      "prefix": "t 521 g Mounting Six M3 threads ",
+      "suffix": " a 60 mm circle hold the output"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 586,
+    "end": 587
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2182,
+      "end": 2183
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "a",
+      "prefix": "21 g Mounting Six M3 threads on ",
+      "suffix": " 60 mm circle hold the output fl"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 588,
+    "end": 590
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2184,
+      "end": 2186
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "60",
+      "prefix": "g Mounting Six M3 threads on a ",
+      "suffix": " mm circle hold the output flang"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 591,
+    "end": 593
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2187,
+      "end": 2189
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "mm",
+      "prefix": "Mounting Six M3 threads on a 60 ",
+      "suffix": " circle hold the output flange."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 594,
+    "end": 600
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2190,
+      "end": 2196
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "circle",
+      "prefix": "nting Six M3 threads on a 60 mm ",
+      "suffix": " hold the output flange. The hou"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 601,
+    "end": 605
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2197,
+      "end": 2201
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "hold",
+      "prefix": "ix M3 threads on a 60 mm circle ",
+      "suffix": " the output flange. The housing"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 606,
+    "end": 609
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2202,
+      "end": 2205
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "the",
+      "prefix": "threads on a 60 mm circle hold ",
+      "suffix": " output flange. The housing moun"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 610,
+    "end": 616
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2206,
+      "end": 2212
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "output",
+      "prefix": "eads on a 60 mm circle hold the ",
+      "suffix": " flange. The housing mounts with"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 617,
+    "end": 624
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2213,
+      "end": 2220
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "flange.",
+      "prefix": "a 60 mm circle hold the output ",
+      "suffix": " The housing mounts with four M4"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 625,
+    "end": 628
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2221,
+      "end": 2224
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "The",
+      "prefix": "circle hold the output flange. ",
+      "suffix": " housing mounts with four M4 scr"
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 629,
+    "end": 636
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2225,
+      "end": 2232
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "housing",
+      "prefix": "cle hold the output flange. The ",
+      "suffix": " mounts with four M4 screws."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 637,
+    "end": 643
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2233,
+      "end": 2239
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "mounts",
+      "prefix": "the output flange. The housing ",
+      "suffix": " with four M4 screws."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 644,
+    "end": 648
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2240,
+      "end": 2244
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "with",
+      "prefix": "tput flange. The housing mounts ",
+      "suffix": " four M4 screws."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 649,
+    "end": 653
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2245,
+      "end": 2249
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "four",
+      "prefix": "flange. The housing mounts with ",
+      "suffix": " M4 screws."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 654,
+    "end": 656
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2250,
+      "end": 2252
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "M4",
+      "prefix": "e. The housing mounts with four ",
+      "suffix": " screws."
+     }
+    }
+   },
+   "score": 1.0
+  },
+  {
+   "range": {
+    "start": 657,
+    "end": 664
+   },
+   "grounding": {
+    "html": {
+     "source_range": {
+      "start": 2253,
+      "end": 2260
+     },
+     "xpath": "/html[1]/body[1]/main[1]/div[1]/div[4]/p[1]",
+     "text_quote": {
+      "exact": "screws.",
+      "prefix": "The housing mounts with four M4 ",
+      "suffix": ""
+     }
+    }
+   },
+   "score": 1.0
+  }
+ ],
+ "dropped": []
+}
