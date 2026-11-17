@@ -1,6 +1,11 @@
-"""Build the GitHub Pages landing page into site/: the hero video, the API section and the gallery.
+"""Build the GitHub Pages landing page into site/: the hero video, the API section, the live gallery and the tests.
 
-    uv run python scripts/build_site.py --gim DIR
+    uv run python scripts/build_site.py --gim DIR [--no-hero]
+    uv run python scripts/build_site.py --stage        # only site/lib/ (what CI does before deploying)
+
+The gallery is the drop-in viewer itself, running in the page on the repo's fixtures (staged into the gitignored
+site/lib/). The tests section reads site/tests.json, which only the Pages workflow writes, from the CI run's JUnit XML
+(scripts/ci_tests_json.py); a local build shows "no CI run".
 
 Every picture and every printed output on the page comes from running the code shown beside it, here, against
 the real sources: the repo's fixtures and a SteadyWin GIM4305-10 maker page saved by
@@ -27,10 +32,8 @@ import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from PIL import Image
-
 import source_highlighter
-from source_highlighter import Source, TableCell
+from source_highlighter import Source, TableCell, TextQuote
 
 REPO = Path(__file__).resolve().parents[1]
 SITE = REPO / "site"
@@ -55,22 +58,6 @@ def run_snippet(code: str, workdir: Path) -> str:
     finally:
         os.chdir(previous)
     return output.getvalue()
-
-
-def crop_to_marks(image_path: Path, marks, out: Path, *, pad_left: int = 720, pad_right: int = 280, pad_y: int = 240,
-                  max_width: int = 1100) -> tuple[int, int]:
-    """WHY more room on the left: a datasheet value sits right of its parameter name, which must stay in the picture."""
-    image = Image.open(image_path).convert("RGB")
-    x0 = min(mark.rect.x0 for mark in marks) - pad_left
-    y0 = min(mark.rect.y0 for mark in marks) - pad_y
-    x1 = max(mark.rect.x1 for mark in marks) + pad_right
-    y1 = max(mark.rect.y1 for mark in marks) + pad_y
-    box = (max(0, int(x0)), max(0, int(y0)), min(image.width, int(x1)), min(image.height, int(y1)))
-    cropped = image.crop(box)
-    if cropped.width > max_width:
-        cropped = cropped.resize((max_width, round(cropped.height * max_width / cropped.width)), Image.Resampling.LANCZOS)
-    cropped.save(out, quality=84, optimize=True)
-    return cropped.size
 
 
 # --- the hero video ------------------------------------------------------------------------------------------------
@@ -193,84 +180,225 @@ def record_hero(gim: Source, scratch: Path) -> None:
                     str(MEDIA / "hero-poster.jpg")], check=True)
 
 
-# --- the gallery ---------------------------------------------------------------------------------------------------
+# --- the gallery: every card is the live drop-in viewer -------------------------------------------------------------
+
+FIXTURES = REPO / "tests" / "fixtures"
+LIB = SITE / "lib"  # staged, not committed: the module, its vendored parts, PDF.js and the gallery's sources
 
 
-def gallery(work: Path, gim_dir: Path) -> list[dict]:
-    """One card per source kind: the 3 lines, run as shown, and the picture they wrote."""
-    words = json.loads((gim_dir / "snapshot.json").read_text(encoding="utf-8"))["words"]
-    stall_box = next(word for word in words if word[0] == "3.47")[3:7]
-    x0, y0, x1, y1 = stall_box
-    pad_x, pad_y = 0.004, 0.0025
-    image_box = f"PageBox(1, {x0 - pad_x:.4f}, {y0 - pad_y:.4f}, {x1 - x0 + 2 * pad_x:.4f}, {y1 - y0 + 2 * pad_y:.4f})"
-    j60 = {loc["id"]: loc for loc in json.loads((REPO / "tests/fixtures/j60-joint.locations.json").read_text())}
-    boxes = ", ".join(
-        f'"{source_highlighter.from_location(j60[key]).compact().split("&id=")[0]}"'
-        for key in ("peak-torque-label", "peak-torque-j60-6", "peak-torque-j60-10")
-    )
-    cards = [
+def stage_live_assets() -> None:
+    """Copy what the live gallery loads into site/lib/ (gitignored; the Pages workflow stages it from the checkout)."""
+    if LIB.exists():
+        shutil.rmtree(LIB)
+    (LIB / "fixtures").mkdir(parents=True)
+    shutil.copy(REPO / "js" / "source-highlighter.js", LIB / "source-highlighter.js")
+    shutil.copytree(REPO / "js" / "vendor", LIB / "vendor")
+    shutil.copytree(REPO / "js" / "like-obsidian", LIB / "like-obsidian")
+    pdfjs = REPO / "js" / "node_modules" / "pdfjs-dist" / "build"
+    (LIB / "pdfjs").mkdir()
+    for name in ("pdf.min.mjs", "pdf.worker.min.mjs"):
+        shutil.copy(pdfjs / name, LIB / "pdfjs" / name)
+    for name in ("j60-joint.pdf", "cubemars-ak80-9.html", "cubemars-ak80-9-spec.md", "erob80-band.jpg"):
+        shutil.copy(FIXTURES / name, LIB / "fixtures" / name)
+
+
+def live_cards() -> list[dict]:
+    """One card per kind of source. `locations` are what the page's viewer is given, verbatim; `python` is the
+    static form of the same marks, run here (with the default style) so a card can't show a call that fails."""
+    markdown = (FIXTURES / "cubemars-ak80-9-spec.md").read_text(encoding="utf-8")
+    j60 = json.loads((FIXTURES / "j60-joint.locations.json").read_text(encoding="utf-8"))
+    j60 = [loc for loc in j60 if loc["page"] == 2]
+    j60_compact = ", ".join(f'"{source_highlighter.from_location(loc).compact().split("&id=")[0]}"' for loc in j60)
+    erob = json.loads((FIXTURES / "erob80-band.locations.json").read_text(encoding="utf-8"))
+    erob_compact = ", ".join(f'"{source_highlighter.from_location(loc).compact().split("&id=")[0]}"' for loc in erob)
+    rated = [
+        {"id": "rated-torque-label", "label": "Rated torque (Nm)", **TableCell(19, 1).to_location("text", markdown)},
+        {"id": "rated-torque-value", "label": "9 N·m", **TableCell(19, 2).to_location("text", markdown)},
+    ]
+    return [
         {
-            "kind": "PDF",
-            "file": "pdf",
-            "what": "A datasheet PDF, page 2 of the J60 joint: the peak-torque row, spotlit. Geometry-anchored boxes "
-                    "(compact strings: PDF page + Media Fragments xywh), drawn into the page by pdfium.",
-            "code": f'src = Source.from_file("j60-joint.pdf")\n'
-                    f"hl = src.highlight([{boxes}], \"spotlight\")\n"
-                    f'hl.save("pdf.png")',
+            "key": "pdf", "title": "PDF", "file": "j60-joint.pdf",
+            "what": "A datasheet scan (no text layer), page 2: the peak-torque row. Geometry-anchored boxes, drawn over PDF.js.",
+            "source": {"kind": "pdf"}, "options": {"page": 2}, "locations": j60, "focus": j60[-1]["id"],
+            "python": f'Source.from_file("j60-joint.pdf").highlight([{j60_compact}], "{{style}}").save("pdf.png")',
         },
         {
-            "kind": "HTML page",
-            "file": "html",
-            "what": "CubeMars' AK80-9 product page, archived (scripts off, no network). A text quote pinned by its "
-                    "prefix — found exactly once in the page, else reported.",
-            "code": 'src = Source.from_file("cubemars-ak80-9.html")\n'
-                    'hl = src.highlight(TextQuote("22", prefix="Peak torque (Nm)", label="peak"), "box", label=True)\n'
-                    'hl.save("html.png")',
+            "key": "html", "title": "HTML page", "file": "cubemars-ak80-9.html",
+            "what": "CubeMars' AK80-9 product page, archived: scripts off, no network. A quote pinned by its prefix — "
+                    "found exactly once, else reported.",
+            "source": {"kind": "html"}, "options": {},
+            "locations": [{"id": "peak", "label": "peak torque", **TextQuote("22", prefix="Peak torque (Nm)").to_location("html")}],
+            "focus": "peak",
+            "python": 'Source.from_file("cubemars-ak80-9.html").highlight(TextQuote("22", prefix="Peak torque (Nm)"), "{style}").save("html.png")',
         },
         {
-            "kind": "Markdown",
-            "file": "markdown",
-            "what": "The same spec as a markdown table. TableCell counts rows from the header row; it becomes the "
-                    "cell's exact character span.",
-            "code": 'src = Source.from_file("cubemars-ak80-9-spec.md")\n'
-                    'hl = src.highlight([TableCell(19, 1), TableCell(19, 2)], "highlight")\n'
-                    'hl.save("markdown.png")',
+            "key": "markdown-raw", "title": "Markdown, raw", "file": "cubemars-ak80-9-spec.md",
+            "what": "The same spec as a markdown table, as written. TableCell counts rows from the header row and "
+                    "becomes the cell's exact character span.",
+            "source": {"kind": "text"}, "options": {"width": 760}, "locations": rated, "focus": "rated-torque-value",
+            "python": 'Source.from_file("cubemars-ak80-9-spec.md").highlight([TableCell(19, 1), TableCell(19, 2)], "{style}").save("raw.png")',
         },
         {
-            "kind": "Image / screenshot",
-            "file": "image",
-            "what": "The GIM4305-10 page as a picture (mdify's capture-time snapshot). No text layer, so the "
-                    "location is a box: the word box mdify measured for “3.47”.",
-            "code": 'src = Source.from_file("steadywin-gim4305/snapshot.jpg")\n'
-                    f'hl = src.highlight({image_box}, "box")\n'
-                    'hl.save("image.png")',
+            "key": "markdown-rendered", "title": "Markdown, rendered", "file": "cubemars-ak80-9-spec.md",
+            "what": "The same note and the same two spans, drawn as Obsidian draws it (Zach's like-obsidian viewer, "
+                    "vendored). The spans still count into the markdown; they anchor on the rendered text.",
+            "source": {"kind": "markdown"}, "options": {"width": 760}, "locations": rated, "focus": "rated-torque-value",
+            "python": 'Source.from_file("cubemars-ak80-9-spec.md").highlight([TableCell(19, 1), TableCell(19, 2)], "{style}")'
+                      '.save("rendered.png", markdown="rendered")',
         },
         {
-            "kind": "Table cell",
-            "file": "table-cell",
-            "what": "The live GIM4305-10 page, saved by mdify capture: the GDS34 column's stall torque, by its cell "
-                    "— not by searching for “3.47”, so a value that repeats can't fool it.",
-            "code": 'src = Source.from_bundle("steadywin-gim4305")  # mdify capture ' + GIM_URL + "\n"
-                    'hl = src.highlight(TableCell(8, 4, table=33, label="stall torque, GDS34"), "spotlight", label=True)\n'
-                    'hl.save("table-cell.png")',
+            "key": "image", "title": "Image / screenshot", "file": "erob80-band.jpg",
+            "what": "A band of eRob80's product-page screenshot. No text layer, so the places are boxes: the rated-"
+                    "torque label, the eRob80I-50 column and its value.",
+            "source": {"kind": "image"}, "options": {}, "locations": erob, "focus": erob[0]["id"],
+            "python": f'Source.from_file("erob80-band.jpg").highlight([{erob_compact}], "{{style}}").save("image.png")',
         },
     ]
+
+
+def check_cards(cards: list[dict], work: Path) -> None:
+    """Run each card's Python line (default style) on the same file; any mark it can't place stops the build."""
     for card in cards:
-        namespace_code = "from source_highlighter import *\n" + card["code"].replace("\nhl.save(", "\n_result = hl.save(")
+        shutil.copy(FIXTURES / card["file"], work / card["file"])
+        code = "from source_highlighter import *\n_result = " + card["python"].format(style="highlight")
         namespace: dict = {}
         previous = Path.cwd()
         os.chdir(work)
         try:
-            exec(compile(namespace_code, "<card>", "exec"), namespace)  # noqa: S102
+            exec(compile(code, "<card>", "exec"), namespace)  # noqa: S102 — the page's own snippets
         finally:
             os.chdir(previous)
         result = namespace["_result"]
         if result.unresolved or not result.marks:
-            raise SystemExit(f"{card['kind']}: drew {len(result.marks)} marks, unresolved {result.unresolved}")
-        output = Path(work) / result.outputs[0]
-        card["size"] = crop_to_marks(output, result.marks, MEDIA / f"gallery-{card['file']}.jpg")
-        card["marks"] = len(result.marks)
-    return cards
+            raise SystemExit(f"{card['title']}: drew {len(result.marks)} marks, unresolved {result.unresolved}")
+
+
+# The click-capture demo: a parameter table (what an extractor outputs) driving the viewer and driven by it, built
+# only on the public API — highlight(), update(), focus() and the highlight-click event. Shown on the page verbatim.
+DEMO_VALUES = [  # (id, parameter, value, the html table's row and column)
+    ("peak-torque", "Peak torque", "22 N·m", 1, 4),
+    ("kv", "KV", "100 rpm/V", 4, 4),
+    ("ratio", "Reduction ratio", "9:1", 10, 2),
+    ("rated-voltage", "Rated voltage", "48 V", 17, 2),
+    ("rated-torque", "Rated torque", "9 N·m", 18, 2),
+    ("rated-speed", "Rated speed", "390 rpm", 19, 2),
+    ("rated-current", "Rated current", "12 A", 20, 2),
+    ("weight", "Weight", "490 g", 21, 2),
+]
+
+DEMO_CODE = """\
+const viewer = document.getElementById("demo-viewer");
+const rows = [...document.querySelectorAll("#demo-table tbody tr")];
+const all = rows.map((row) => ({id: row.dataset.id, label: row.dataset.label, ...JSON.parse(row.dataset.location)}));
+const layers = (id) => [
+  {locations: all, style: "highlight"},
+  ...(id ? [{locations: all.filter((loc) => loc.id === id), style: "box"}] : []),
+];
+const marks = highlight(viewer, {source: {kind: "html", url: "lib/fixtures/cubemars-ak80-9.html"}, layers: layers(null)});
+
+function select(id) {
+  for (const row of rows) row.classList.toggle("selected", row.dataset.id === id);
+  rows.find((row) => row.dataset.id === id)?.scrollIntoView({block: "nearest"});
+  marks.update({layers: layers(id)});
+  marks.focus(id);
+}
+viewer.addEventListener("highlight-click", (event) => select(event.detail.id));   // highlight → row
+for (const row of rows) row.addEventListener("click", () => select(row.dataset.id)); // row → highlight"""
+
+
+def demo_rows() -> str:
+    rows = []
+    for key, parameter, value, row, col in DEMO_VALUES:
+        location = TableCell(row, col, table=1).to_location("html")
+        rows.append(
+            f'<tr data-id="{key}" data-label="{html.escape(parameter)} {html.escape(value)}" '
+            f"data-location='{html.escape(json.dumps(location))}'><td>{html.escape(parameter)}</td>"
+            f"<td>{html.escape(value)}</td><td><code>TableCell({row}, {col}, table=1)</code></td></tr>"
+        )
+    return "".join(rows)
+
+
+GALLERY_SCRIPT = """
+import { highlight, STYLES } from "./lib/source-highlighter.js";
+const PDFJS = new URL("./lib/pdfjs/pdf.min.mjs", location.href).href;
+const cards = JSON.parse(document.getElementById("cards-data").textContent);
+
+const json = (value) => JSON.stringify(value).replace(/"(\\w+)":/g, "$1: ").replace(/,(?=\\S)/g, ", ");
+function jsCode(card, style) {
+  const options = Object.entries(card.options).map(([key, value]) => `  ${key}: ${json(value)},\\n`).join("");
+  return `import { highlight } from "source-highlighter";   // js/source-highlighter.js\\n\\n` +
+    `const viewer = document.getElementById("viewer");\\n` +
+    `const marks = highlight(viewer, {\\n` +
+    `  source: ${json({...card.source, url: card.file})},\\n` + options +
+    (card.source.kind === "pdf" ? `  pdfjs: "pdf.min.mjs",\\n` : "") +
+    `  locations: [\\n${card.locations.map((loc) => `    ${json(loc)},`).join("\\n")}\\n  ],\\n` +
+    `  style: {name: "${style}", label: true},\\n});\\n` +
+    `viewer.addEventListener("highlight-click", (event) => console.log(event.detail.id));`;
+}
+
+for (const card of cards) {
+  const root = document.querySelector(`[data-card="${card.key}"]`);
+  const view = root.querySelector(".view");
+  const log = root.querySelector(".log");
+  let style = "highlight";
+  const source = {...card.source, url: `lib/fixtures/${card.file}`};
+  const marks = highlight(view, {source, locations: card.locations, style: {name: style, label: true}, pdfjs: PDFJS, ...card.options});
+  const show = () => {
+    root.querySelector(".js-code code").textContent = jsCode(card, style);
+    root.querySelector(".py-code code").textContent = card.python.replace("{style}", style);
+    for (const button of root.querySelectorAll(".styles button")) button.setAttribute("aria-pressed", String(button.dataset.style === style));
+  };
+  marks.ready.then(({unresolved}) => {
+    root.dataset.ready = unresolved.length ? "unresolved" : "ok";
+    marks.focus(card.focus);
+  });
+  view.addEventListener("highlight-click", (event) => {
+    log.textContent = `highlight-click → ${JSON.stringify({id: event.detail.id, label: event.detail.label})}`;
+  });
+  root.querySelector(".styles").addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    style = button.dataset.style;
+    show();
+    marks.update(card.locations, {name: style, label: true}).then(() => marks.focus(card.focus));
+  });
+  show();
+}
+
+{
+%DEMO%
+}
+"""
+
+TESTS_SCRIPT = """
+const box = document.getElementById("tests-body");
+const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
+const WORD = {passed: "pass", failed: "fail", error: "error", skipped: "skip", xfailed: "xfail", xpassed: "xpass"};
+fetch("tests.json", {cache: "no-store"}).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((run) => {
+  const t = run.totals;
+  const bad = (t.failed || 0) + (t.error || 0);
+  const parts = ["passed", "failed", "error", "skipped", "xfailed", "xpassed"].filter((k) => t[k]).map((k) => `<b>${t[k]}</b> ${k}`);
+  const files = run.files.map((f) => `<tr><td><code>${esc(f.file)}</code></td>${["passed", "failed", "skipped", "xfailed"].map((k) =>
+    `<td class="num">${f[k] || ""}</td>`).join("")}</tr>`).join("");
+  const acceptance = run.acceptance.map((test) => {
+    const counts = Object.entries(test.counts).map(([k, n]) => `<span class="pill ${k}">${n} ${WORD[k] || k}</span>`).join(" ");
+    const cases = test.cases.map((c) => `<li><span class="pill ${c.outcome}">${WORD[c.outcome] || c.outcome}</span> <code>${esc(c.params || test.name)}</code>` +
+      (c.message ? `<div class="msg">${esc(c.message)}</div>` : "") + `</li>`).join("");
+    return `<details class="test ${test.status}"><summary><span class="dot ${test.status}"></span><code>${esc(test.name)}</code> ${counts}` +
+      `<span class="why">${esc(test.doc || "")}</span></summary><ul>${cases}</ul></details>`;
+  }).join("");
+  box.innerHTML =
+    `<p class="totals ${bad ? "red" : "green"}">${parts.join(" · ")} <span class="when">in ${run.seconds.toFixed(0)} s</span></p>` +
+    `<p class="sub">On commit <a href="${esc(run.commit_url)}"><code>${esc(run.commit.slice(0, 7))}</code></a>, ` +
+    `<a href="${esc(run.run_url)}">GitHub Actions run ${esc(run.run_number)}</a>, ${esc(run.ran_at)} — ${esc(run.runner)}. ` +
+    `Written by the workflow from pytest's JUnit XML; nothing here is typed by hand.</p>` +
+    `<h3>The acceptance suite</h3><p class="sub">${esc(run.acceptance_doc)}</p>${acceptance}` +
+    `<h3>Every test file</h3><div class="scroll"><table><tr><th>file</th><th class="num">passed</th><th class="num">failed</th><th class="num">skipped</th><th class="num">xfailed</th></tr>${files}</table></div>`;
+}).catch(() => {
+  box.innerHTML = `<p class="sub">No CI run is published with this copy of the page. The Pages workflow ` +
+    `(<code>.github/workflows/pages.yml</code>) runs the suite on every push to main and writes <code>tests.json</code> beside it.</p>`;
+});
+"""
 
 
 # --- the API section: snippets and their real output ----------------------------------------------------------------
@@ -287,7 +415,7 @@ note = Source.from_text("| Part | Rated torque |\\n|---|---|\\n| GIM4305-10 | 1 
 print(note.kind, note.media_type, note.to_markdown().splitlines()[2])
 print(sorted(pdf.to_dict()))                                         # a CONTRACT §5 Reference source''',
     "verbs": '''\
-from source_highlighter import Source, TableCell
+from source_highlighter import Source, TableCell, TextQuote
 
 src = Source.from_bundle("steadywin-gim4305")            # = Source.from_url(url).capture(), saved earlier
 hl = src.highlight(TableCell(8, 4, table=33), "spotlight")
@@ -361,12 +489,16 @@ def build_page(api: dict[str, str], cards: list[dict], hero: bool) -> str:
         f"<td><code>{html.escape(compact)}</code></td><td>{borrowed}</td></tr>"
         for name, anchor, fields, compact, borrowed in selector_rows
     )
+    style_buttons = "".join(f'<button type="button" data-style="{name}">{name}</button>' for name in source_highlighter.STYLES)
     gallery_cards = "".join(
-        f"""<figure class="card"><a href="media/gallery-{card['file']}.jpg"><img src="media/gallery-{card['file']}.jpg"
- width="{card['size'][0]}" height="{card['size'][1]}" alt="{html.escape(card['kind'])} source, highlighted"></a>
-<figcaption><h3>{html.escape(card['kind'])}</h3><p>{html.escape(card['what'])}</p>{code_block(card['code'])}</figcaption></figure>"""
+        f"""<figure class="card" data-card="{card['key']}"><div class="view" aria-label="{html.escape(card['title'])}, highlighted"></div>
+<figcaption><div class="cardhead"><h3>{html.escape(card['title'])}</h3><div class="styles" role="group" aria-label="style">{style_buttons}</div></div>
+<p>{html.escape(card['what'])}</p><p class="log">Click a highlight.</p>
+<pre class="code js-code"><code></code></pre><pre class="code py-code"><code></code></pre></figcaption></figure>"""
         for card in cards
     )
+    cards_json = json.dumps([{k: v for k, v in card.items() if k != "what"} for card in cards], ensure_ascii=False).replace("</", "<\\/")
+    page_script = GALLERY_SCRIPT.replace("%DEMO%", textwrap.indent(DEMO_CODE, "  "))
     hero_media = (
         """<video autoplay muted loop playsinline controls poster="media/hero-poster.jpg" width="1280" height="720">
 <source src="media/hero.webm" type="video/webm"><source src="media/hero.mp4" type="video/mp4">
@@ -414,8 +546,39 @@ th {{ font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(
 .big b {{ color:var(--accent); }}
 .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr)); gap:22px; }}
 .card {{ margin:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }}
-.card > a {{ display:block; background:#fff; border-bottom:1px solid var(--line); max-height:420px; overflow:hidden; }}
-.card img {{ width:100%; height:auto; display:block; }}
+.card .view, .demo .view {{ height:400px; overflow:auto; background:#e9e7e1; border-bottom:1px solid var(--line); padding:10px; }}
+.cardhead {{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; }}
+.styles {{ display:flex; flex-wrap:wrap; gap:4px; }}
+.styles button {{ font:600 12px system-ui; padding:4px 9px; border-radius:99px; border:1px solid var(--line); background:var(--panel); color:var(--ink); cursor:pointer; }}
+.styles button[aria-pressed="true"] {{ background:var(--ink); color:var(--bg); border-color:var(--ink); }}
+.log {{ font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted) !important; min-height:1.5em; overflow-wrap:anywhere; }}
+.card pre + pre {{ margin-top:6px; }}
+.sh-mark {{ cursor:pointer; }}
+.demo {{ display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }}
+.demo .view {{ height:460px; border-bottom:0; border-right:1px solid var(--line); }}
+.demo .side {{ max-height:460px; overflow:auto; }}
+.demo table {{ border:0; border-radius:0; font-size:14px; }}
+.demo tbody tr {{ cursor:pointer; }}
+.demo tbody tr:hover {{ background:color-mix(in srgb, var(--hl) 18%, transparent); }}
+.demo tbody tr.selected {{ background:color-mix(in srgb, var(--hl) 55%, transparent); color:#1c1d21; }}
+.demo td code {{ font-size:12px; color:var(--muted); }}
+.demo tr.selected td code {{ color:#1c1d21; }}
+@media (max-width:760px) {{ .demo {{ grid-template-columns:1fr; }} .demo .view {{ border-right:0; border-bottom:1px solid var(--line); }} }}
+.totals {{ font-size:20px; margin:0 0 4px; }}
+.totals.green b {{ color:#1f8a4c; }} .totals.red b {{ color:var(--accent); }}
+.totals .when {{ color:var(--muted); font-size:14px; }}
+.pill {{ font:600 11.5px system-ui; padding:1px 8px; border-radius:99px; white-space:nowrap; background:var(--out-bg); }}
+.pill.passed {{ background:#1f8a4c22; color:#1f8a4c; }} .pill.failed, .pill.error {{ background:#e5322d26; color:var(--accent); }}
+.pill.xfailed, .pill.skipped {{ background:#c9a20026; color:#8a6d00; }}
+details.test {{ background:var(--panel); border:1px solid var(--line); border-radius:8px; margin:6px 0; }}
+details.test summary {{ padding:8px 12px; cursor:pointer; display:flex; flex-wrap:wrap; align-items:center; gap:6px; }}
+details.test .why {{ flex-basis:100%; color:var(--muted); font-size:13.5px; padding-left:18px; }}
+details.test ul {{ margin:0; padding:4px 12px 10px 30px; font-size:13px; }}
+details.test li {{ margin:2px 0; }}
+.dot {{ width:10px; height:10px; border-radius:50%; display:inline-block; background:#1f8a4c; }}
+.dot.failed, .dot.error {{ background:var(--accent); }} .dot.xfailed, .dot.skipped {{ background:#c9a200; }}
+.msg {{ color:var(--accent); font:12px ui-monospace,monospace; white-space:pre-wrap; }}
+td.num, th.num {{ text-align:right; font-variant-numeric:tabular-nums; }}
 .card figcaption {{ padding:14px 16px 16px; }}
 .card h3 {{ margin:0 0 4px; }}
 .card p {{ margin:0 0 10px; color:var(--muted); font-size:14.5px; }}
@@ -430,7 +593,7 @@ code {{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em
 <p class="lede">Give it a PDF, a web page, a markdown note or an image, say where (a quote, a span, a table cell, a box on a
 page) and how (highlight, box, underline, spotlight, blackout). You get the source back with those places marked — as a
 picture, a marked PDF, or live in a browser. It never decides <em>what</em> to mark; that's the caller's job.</p>
-<p class="links"><a href="{GITHUB}">GitHub</a><a href="{GITHUB}/blob/main/docs/peps/0001-the-source-type.md">PEP 0001: the Source type</a><a href="{GITHUB}/blob/main/CONTRACT.md">CONTRACT</a></p>
+<p class="links"><a href="{GITHUB}">GitHub</a><a href="{GITHUB}/blob/main/docs/peps/0001-the-source-type.md">PEP 0001: the Source type</a><a href="{GITHUB}/blob/main/CONTRACT.md">CONTRACT</a><a href="#gallery">Live gallery</a><a href="#tests">Tests</a></p>
 </header>
 
 <div class="hero">{hero_media}
@@ -474,8 +637,24 @@ highlighter (the quote find, mdify's index); the selectors carry its answer.</p>
 </section>
 
 <section id="gallery"><h2>Gallery</h2>
-<p class="sub">One card per kind of source. Each picture is the real output of the three lines under it (cropped around the marks).</p>
-<div class="grid">{gallery_cards}</div></section>
+<p class="sub">Every card is the drop-in viewer itself — <code>js/source-highlighter.js</code>, live in this page. Switch the style and
+the code under it changes to match; click a highlight and the card logs the <code>highlight-click</code> event your app would get.
+Under the JavaScript is the same call in Python, which burns the marks into a PNG (run when this page was built).</p>
+<div class="grid">{gallery_cards}</div>
+
+<h3 id="click-capture">Click capture: a parameter table that drives the viewer</h3>
+<p class="sub">What a datasheet extractor shows, in miniature. Click a highlighted value and its row is selected; click a row and its
+cell is boxed and scrolled to. The highlighter only displays and reports clicks — the table logic is the ten lines below, on the
+public API (<code>highlight</code>, <code>update</code>, <code>focus</code>, the <code>highlight-click</code> event).</p>
+<div class="demo"><div class="view" id="demo-viewer" aria-label="CubeMars AK80-9 page, highlighted"></div>
+<div class="side"><table id="demo-table"><thead><tr><th>parameter</th><th>value</th><th>location</th></tr></thead>
+<tbody>{demo_rows()}</tbody></table></div></div>
+{code_block(DEMO_CODE)}
+</section>
+
+<section id="tests"><h2>Tests</h2>
+<p class="sub">The suite, as GitHub Actions ran it on the commit this page was deployed from.</p>
+<div id="tests-body"><p class="sub">Loading the CI run…</p></div></section>
 
 <footer>
 <p><b>Install</b> (Python ≥ 3.12; HTML and text also need <code>playwright install chromium</code>):</p>
@@ -484,15 +663,26 @@ highlighter (the quote find, mdify's index); the selectors carry its answer.</p>
 Datasheet pages shown belong to their makers (SteadyWin, CubeMars, and the J60 joint's maker); they appear here as the sources being cited.
 This page is built by <code>scripts/build_site.py</code>; every output above was printed by the code beside it.</p>
 </footer>
-</main></body></html>
+</main>
+<script type="application/json" id="cards-data">{cards_json}</script>
+<script type="module">{page_script}</script>
+<script type="module">{TESTS_SCRIPT}</script>
+</body></html>
 """
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--gim", required=True, help=f"a folder written by `mdify capture {GIM_URL} --keep html,snapshot --out DIR`")
+    parser.add_argument("--gim", help=f"a folder written by `mdify capture {GIM_URL} --keep html,snapshot --out DIR`")
     parser.add_argument("--no-hero", action="store_true", help="skip recording the hero video (keeps the old one)")
+    parser.add_argument("--stage", action="store_true", help="only copy what the live gallery loads into site/lib/ (CI)")
     args = parser.parse_args()
+    stage_live_assets()
+    if args.stage:
+        print(json.dumps({"staged": str(LIB), "bytes": sum(p.stat().st_size for p in LIB.rglob("*") if p.is_file())}))
+        return
+    if not args.gim:
+        parser.error("--gim is required to build the page")
     gim_dir = Path(args.gim).resolve()
     MEDIA.mkdir(parents=True, exist_ok=True)
     os.environ["SOURCE_HIGHLIGHTER_BACKEND"] = "none"
@@ -503,15 +693,18 @@ def main() -> None:
         work = scratch / "work"
         work.mkdir()
         for name in ("j60-joint.pdf", "cubemars-ak80-9.html", "cubemars-ak80-9-spec.md"):
-            shutil.copy(REPO / "tests" / "fixtures" / name, work / name)
+            shutil.copy(FIXTURES / name, work / name)
         shutil.copytree(gim_dir, work / "steadywin-gim4305",
                         ignore=shutil.ignore_patterns("bundle", "fragbundle", "frag.html"))
         api = {name: run_snippet(textwrap.dedent(code), work) for name, code in API_SNIPPETS.items()}
-        cards = gallery(work, gim_dir)
+        cards = live_cards()
+        check_cards(cards, work)
         hero = (MEDIA / "hero.mp4").exists()
         if not args.no_hero:
             record_hero(Source.from_bundle(work / "steadywin-gim4305"), scratch)
             hero = True
+    for stale in MEDIA.glob("gallery-*.jpg"):  # the gallery was pictures until 2026-11-17; it is live now
+        stale.unlink()
     (SITE / "index.html").write_text(build_page(api, cards, hero), encoding="utf-8")
     (SITE / ".nojekyll").write_text("", encoding="utf-8")
     sizes = {path.name: path.stat().st_size for path in sorted(MEDIA.iterdir())}

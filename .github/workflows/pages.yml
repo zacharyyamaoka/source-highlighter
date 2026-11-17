@@ -1,11 +1,13 @@
-# Deploys site/ (built locally by scripts/build_site.py, committed) to GitHub Pages.
-# WHY no build in CI: the hero and gallery are recorded from a maker's page saved by `mdify capture`; that page is not
-# committed (it is the maker's), so CI publishes the pictures made from it instead of re-fetching it on every push.
+# Runs the test suite, then deploys site/ to GitHub Pages with the run's results in it (site/tests.json).
+# WHY tests here (Zach, 2026-11-16): the landing page shows the tests and whether they pass — real CI output from the
+# commit being deployed, never a hand-written list. A red suite still deploys, so the page shows it red.
+# WHY site/index.html and site/media are built locally (scripts/build_site.py) and committed: the hero is recorded
+# from a maker's page saved by `mdify capture`, which is not committed (it is the maker's). The live gallery's files
+# (site/lib/: the module, its vendored parts, PDF.js, the fixtures) are staged here from the checkout.
 name: pages
 on:
   push:
     branches: [main]
-    paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,13 +17,35 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  test-and-deploy:
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: |
+          pnpm --dir js install --frozen-lockfile
+          uv sync
+          uv run playwright install --with-deps chromium
+          # WHY: the CJK fixtures (case 11) need a CJK font to lay out in Chromium, as on the dev box.
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+      - name: Test
+        run: uv run pytest -q -p no:cacheprovider --junitxml=junit.xml || echo "pytest exited $?"
+      - name: Results into the page
+        run: python3 scripts/ci_tests_json.py junit.xml site/tests.json
+      - name: Stage the live gallery
+        run: uv run python scripts/build_site.py --stage
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

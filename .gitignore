@@ -5,3 +5,5 @@ out/
 demo/lib/
 demo/vendor/
 demo/assets/
+site/lib/
+site/tests.json
