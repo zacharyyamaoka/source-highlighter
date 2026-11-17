@@ -84,6 +84,8 @@ def _render(argv: list[str]) -> int:
     parser.add_argument("--twin", help="HTML: draw on this visual-twin screenshot instead of laying the page out")
     parser.add_argument("--pdf", dest="pdf_out", help="PDF: also write a vector-marked PDF here")
     parser.add_argument("--layout-width", type=int, help="HTML/text: layout width in CSS px")
+    parser.add_argument("--markdown", choices=("raw", "rendered"), default="raw",
+                        help="text/markdown: show it raw (default) or rendered as Obsidian does (like-obsidian)")
     parser.add_argument("--out", required=True, help=".png / .jpg / .webp, .pdf for PDFs, .html for text")
     args = parser.parse_args(argv)
 
@@ -101,6 +103,7 @@ def _render(argv: list[str]) -> int:
             twin=args.twin,
             pdf_out=args.pdf_out,
             width=args.layout_width,
+            markdown=args.markdown,
         )
     except (OSError, ValueError) as error:
         print(f"source-highlighter: {error}", file=sys.stderr)

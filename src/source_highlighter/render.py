@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -31,7 +32,7 @@ from .paint import paint_layer
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff"}
 HTML_SUFFIXES = {".html", ".htm", ".xhtml"}
 DEFAULT_SCALE = {"pdf": 2.0, "image": 1.0, "html": 1.0, "text": 1.0}
-DEFAULT_WIDTH = {"html": 1280, "text": 900}  # html: the width the visual twins were captured at
+DEFAULT_WIDTH = {"html": 1280, "text": 900, "markdown": 900}  # html: the width the visual twins were captured at
 
 
 def source_kind(path: Path) -> str:
@@ -72,10 +73,12 @@ def _resolve_page_boxes(
     page_sizes: list[tuple[float, float]],
     source_label: str,
     result: RenderResult,
+    surface: Path,
 ) -> list[tuple[Style, dict[int, list[tuple[Rect, str | None, str]]]]]:
     """Page/box and page-only Locations → rectangles in source units, per layer and page, as
-    (rect, label, id, whole); the rest go to result.unresolved."""
+    (rect, label, id, whole); the rest go to result.unresolved. `surface` is the file the boxes are drawn on."""
     resolved_layers = []
+    surface_sha256 = None
     for layer_index, layer in enumerate(layers):
         by_page: dict[int, list[tuple[Rect, str | None, str, bool]]] = {}
         for index, location in enumerate(layer.locations):
@@ -95,6 +98,13 @@ def _resolve_page_boxes(
                 page_number = location.get("page", 1)
                 if not isinstance(page_number, int) or not 1 <= page_number <= page_count:
                     reason = f"page {page_number} does not exist (the source has {page_count})"
+            if not reason and location.get("sha256"):
+                # WHY (CONTRACT §2, R2): a box is 0–1 of the page it was measured on; on other bytes (a new datasheet
+                # revision, a recaptured screenshot) the same fractions point at something else, so it is refused.
+                surface_sha256 = surface_sha256 or hashlib.sha256(surface.read_bytes()).hexdigest()
+                if str(location["sha256"]).lower() != surface_sha256:
+                    reason = (f"the box was measured on other bytes (sha256 {str(location['sha256'])[:12]}…, this file is "
+                              f"{surface_sha256[:12]}…); measure it again on this file")
             if reason:
                 result.unresolved.append(Unresolved(layer_index, index, location, reason))
                 continue
@@ -153,7 +163,7 @@ def _render_pdf(source_path, layers, out_path, page, scale, pdf_out, result) -> 
 
     document = pdfium.PdfDocument(str(source_path))
     sizes = page_sizes(document)
-    resolved_layers = _resolve_page_boxes(layers, len(document), sizes, "a PDF source", result)
+    resolved_layers = _resolve_page_boxes(layers, len(document), sizes, "a PDF source", result, Path(source_path))
     wants_pdf = out_path.suffix.lower() == ".pdf"
     if pdf_out or wants_pdf:
         target = out_path if wants_pdf else Path(pdf_out)
@@ -198,7 +208,7 @@ def _render_image(source_path, layers, out_path, scale, result, *, twin: bool) -
         image = image.resize((round(image.width * scale), round(image.height * scale)), Image.Resampling.LANCZOS)
     natural_size = (image.width / scale, image.height / scale)
     label = "a visual twin (a screenshot has no DOM; give page/box Locations for the twin)" if twin else "an image source"
-    resolved_layers = _resolve_page_boxes(layers, 1, [natural_size], label, result)
+    resolved_layers = _resolve_page_boxes(layers, 1, [natural_size], label, result, Path(source_path))
     image = _paint_page(image, 1, resolved_layers, scale, result)
     _save_image(image, out_path)
     result.outputs.append(str(out_path))
@@ -207,6 +217,8 @@ def _render_image(source_path, layers, out_path, scale, result, *, twin: bool) -
 def _render_browser(kind, source_path, layers, out_path, scale, width, result) -> None:
     raw = Path(source_path).read_bytes()
     source_text = decode_html(raw) if kind == "html" else raw.decode("utf-8")
+    if kind == "markdown" and out_path.suffix.lower() in (".html", ".htm"):
+        raise ValueError("a rendered markdown note is written as an image (.png / .jpg / .webp); the .html page shows it raw")
     if kind == "text" and out_path.suffix.lower() in (".html", ".htm"):
         write_text_page(source_text, layers, width=width, out_html=out_path)
         result.outputs.append(str(out_path))
@@ -236,6 +248,7 @@ def render(
     twin: str | Path | None = None,
     pdf_out: str | Path | None = None,
     width: int | None = None,
+    markdown: str = "raw",
 ) -> RenderResult:
     """Burn `locations` in `style` into a copy of `source_path`, written to `out_path`.
 
@@ -245,6 +258,8 @@ def render(
     Image → image. HTML → PNG of the page laid out by headless Chromium, or of its visual `twin` (an image)
     when given. Text/markdown → PNG, or a self-contained .html page.
     scale: output pixels per source unit (PDF default 2 = 144 dpi). width: layout width for HTML/text.
+    markdown: "raw" (the text as written, default) or "rendered" (as Obsidian shows it, through the vendored
+      like-obsidian viewer); text and markdown sources only. Rendered marks anchor on the note's rendered text.
     Locations that cannot be placed are listed in result.unresolved, never dropped silently.
     source_path may also be a `Source` (PEP 0001): its saved bytes are drawn, captured first if it is a link only.
     """
@@ -255,6 +270,12 @@ def render(
     layers = normalize_layers(_load_locations(locations), style)
     result = RenderResult()
     kind = source_kind(source_path)
+    if markdown not in ("raw", "rendered"):
+        raise ValueError(f"markdown must be 'raw' or 'rendered', got {markdown!r}")
+    if markdown == "rendered":
+        if kind != "text":
+            raise ValueError(f"markdown='rendered' needs a text / markdown source, not {kind}")
+        kind = "markdown"
     if twin is not None:
         if kind != "html":
             raise ValueError("a visual twin is only meaningful for an HTML source")

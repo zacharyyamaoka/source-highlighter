@@ -9,7 +9,8 @@
   },
   "files": [
     "source-highlighter.js",
-    "vendor/"
+    "vendor/",
+    "like-obsidian/"
   ],
   "license": "UNLICENSED",
   "private": true,

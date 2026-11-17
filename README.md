@@ -9,7 +9,7 @@ One job: **source + locations + style in → the source, highlighted, out.** The
 | PDF | PNG per marked page, or a vector-marked PDF (pypdfium2) | PDF.js canvas + overlay |
 | Image | image of the same size (Pillow) | `<img>` + overlay |
 | HTML | PNG of the page laid out by headless Chromium, or of its visual twin (`--twin`) | sandboxed `<iframe srcdoc>`; CSS Custom Highlight API |
-| Text / markdown | PNG, or a self-contained `.html` page | `<pre>`; CSS Custom Highlight API |
+| Text / markdown | raw: PNG, or a self-contained `.html` page; rendered (`--markdown rendered`): PNG of the note as Obsidian draws it | raw: `<pre>`; rendered (`{kind: "markdown"}`): Zach's like-obsidian viewer; CSS Custom Highlight API |
 
 **Landing page, with the API and a gallery: <https://zacharyyamaoka.github.io/source-highlighter/>**
 
@@ -30,8 +30,9 @@ Locations are eight selectors in two families — text-anchored `TextQuote`, `Te
 `TableCell`, `Note`; geometry-anchored `PageBox`, `Page` — each with a compact string (`text=…`, `char=…`,
 `page=…&xywh=percent:…`) and a CONTRACT §2 dict. The types live in `packages/source_msgs`, a stdlib-only package the
 other source apps can import without this one; why and how: [docs/peps/0001-the-source-type.md](docs/peps/0001-the-source-type.md).
-The landing page is built by `uv run python scripts/build_site.py --gim DIR` into `site/` and deployed by
-`.github/workflows/pages.yml`.
+The landing page is built by `uv run python scripts/build_site.py --gim DIR` into `site/`; `.github/workflows/pages.yml`
+runs the test suite, writes its results into the page (`scripts/ci_tests_json.py`), stages the live gallery's files
+and deploys it.
 
 ## Use it
 
@@ -63,15 +64,43 @@ marks.update(newLocations, "box");
 marks.destroy();
 ```
 
+### Drop it into an app
+
+The module only displays; what a click means is the host's. Four lines:
+
+```js
+const marks = highlight(viewer, {source, locations: [{id: "kt", label: "Torque constant", href: "/parts/kt", ...where}]});
+viewer.addEventListener("highlight-click", (event) => {   // bubbles from the mark; cancelable
+  const {id, label, href, location, layer, page, style} = event.detail;
+  event.preventDefault();                                  // take the click: an href mark is then not followed
+});
+```
+
+Each Location may carry an `id`, a `label` (the annotation: the mark's tooltip, and a chip with `style.label`) and an
+`href` (the mark becomes a real link, followed when no listener calls `preventDefault()`; `target` is passed on).
+Selecting from outside is `update()` and `focus(id)`: the landing page's click-capture demo drives a parameter table
+both ways in ten lines on these alone.
+
 `js/` is its own npm package (`source-highlighter`, one framework-free file, no runtime dependencies;
 `pdfjs-dist` is an optional peer). A React app calls it from a `useEffect`; RobotParts' static pages import it
 directly. Exact Locations need only that file; the approximate quote find loads `vendor/match-quote.js` beside it
 on demand (pinned in `js/vendor/VENDOR.json`) and, where it can't, stays exact-only and says so.
 
+**Markdown, raw or rendered.** `{kind: "text"}` shows a markdown file as written. `{kind: "markdown"}` draws it as
+Obsidian does, through Zach's [like_obsidian_md_viewer](https://github.com/zacharyyamaoka/like_obsidian_md_viewer) (`mountNote`, read-only,
+light), vendored built in `js/like-obsidian/` from a commit of its `main` by `scripts/vendor_like_obsidian.py` (commit
+and every file's sha256 in `VENDOR.json` / `manifest.json`); pass `markdown: <module or URL>` to use another copy. It is
+drawn in an iframe as tall as the note, so every line is laid out. Locations still count into the markdown: a
+`{text}` span or `{note}` anchors on the same text in the rendered note — the k-th place that text occurs in the source
+is its k-th place on screen when both count the same; when they don't (the text also sits in a link target or
+frontmatter), or it is not shown at all, it is reported, never guessed. A `{quote}` is found in the rendered text.
+Static: `render(..., markdown="rendered")`, CLI `--markdown rendered`.
+
 Locations (CONTRACT §2): `{page, box}`, `{html}`, `{text}`, and the best-effort ones —
 `{note: {heading, block}}` (a markdown section or `^block` paragraph), `{page, quote}` (a quote on a PDF page),
 `{quote}` (a quote anywhere: a reference that kept only its quote) and `{page}` (the whole page, outlined just
-inside its edge, never filled). A quote is found exactly first (whitespace never counts), then approximately
+inside its edge, never filled). A `{page, box}` or `{page}` may carry the `sha256` of the file it was measured on
+(`PageBox(..., sha256=src.sha256)`); on other bytes it is refused, never painted — both forms. A quote is found exactly first (whitespace never counts), then approximately
 (approx-string-match through Hypothesis's `matchQuote` scoring, within a fifth of its length); found in two or
 more places it is reported as ambiguous, never picked from. Marks of a found quote carry `found: {exact, errors,
 text}`. `focus(id)` scrolls the mark to the middle of its own scroll boxes and window, never a parent frame's.
@@ -128,8 +157,10 @@ scale `s` multiplies them by `s`.
 
 - page/box → `[x0·W − p, y0·H − p, x1·W + p, y1·H + p]`, clipped to the page (`p` = padding, default 2).
 - html/text → one rectangle per line box of the DOM Range (`Range.getClientRects`), padded the same way.
-- `box`: an outline `width` thick just outside the rectangle; `underline`: a bar `width` thick just below it;
-  `spotlight` / `blackout`: everything on the page outside the union of rectangles is covered.
+- `box`: an outline `width` thick just outside the rectangle; `underline`: a line under each line of the target, end
+  to end (PDF and image: a bar `width` thick just below the padded box; HTML and text: the text's own underline, unbroken
+  at descenders); `spotlight` / `blackout`: everything on the page outside the union of rectangles is covered.
+- Marks of one style that overlap show one tint, like a highlighter pen; separate layers stack.
 - Defaults (`STYLE_DEFAULTS`, the same table in Python and JS, test-enforced): highlight `#ffe600` at 0.45,
   box/underline `#e5322d` 2 units wide, spotlight black at 0.6, blackout black at 1.
 
@@ -157,9 +188,10 @@ They measure, not assert presence: predicted pixel values for every static style
 every drawn mark against rectangles computed outside the module (pdfium page sizes, Pillow image sizes, the
 test's own DOM ranges, pdfplumber's character boxes for PDF quotes) at two zoom levels, and Python-vs-JS
 rectangles for the same input. The check runs against a local fixture server; the viewer tests drag every panel
-boundary and re-measure it after a reload. The eRob80 and
-CubeMars screenshots are not committed (1.2–1.4 MB); their tests skip unless `SOURCE_HIGHLIGHTER_SNAP` points at
-them. `scripts/make_fixtures.py` regenerates the Locations.
+boundary and re-measure it after a reload. Nothing skips: the eRob80 and CubeMars screenshots are committed as 800-px
+bands around their Locations (`scripts/crop_snapshots.py`). `scripts/make_fixtures.py` regenerates the Locations.
+`tests/test_acceptance.py` is the ruler (oracle: markdownify's round-trip truth in `tests/fixtures/roundtrip/`).
+The Pages workflow runs the whole suite on every push and the landing page shows the result, per test, with the commit.
 
 ## Stock parts
 
@@ -174,6 +206,7 @@ them. `scripts/make_fixtures.py` regenerates the Locations.
 | `<iframe sandbox srcdoc>` + CSP | showing an archived page offline and script-free | web platform |
 | [approx-string-match](https://github.com/robertknight/approx-string-match-js) 2.0.1 (vendored) | the approximate quote find | MIT |
 | Hypothesis [`matchQuote`](https://github.com/hypothesis/client/blob/main/src/annotator/anchoring/match-quote.ts) (vendored, wrapped so ambiguity is reported) | scoring approximate quote matches | BSD-2-Clause |
+| [like_obsidian_md_viewer](https://github.com/zacharyyamaoka/like_obsidian_md_viewer) (Zach's fork of [atomic-editor](https://github.com/kenforthewin/atomic-editor); CodeMirror 6), built and vendored | rendered markdown | MIT |
 | [Text Fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) | the live link: the browser highlights the quote itself | web platform |
 | numpy, pdfplumber, pytest (dev only) | pixel measurements, fixture generation, tests | BSD-3 / MIT / MIT |
 

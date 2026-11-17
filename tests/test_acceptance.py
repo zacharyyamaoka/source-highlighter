@@ -397,7 +397,6 @@ def test_unplaceable_locations_are_refused_and_paint_nothing(harness, tmp_path):
     assert drawn["drawn"] == []
 
 
-@pytest.mark.xfail(strict=True, reason="render() has no sha256 pin yet: a box made on other bytes paints anyway")
 def test_a_box_made_on_different_bytes_is_refused(tmp_path):
     arm = load_arm("04-multi-model", "png")
     stale = {"id": "stale", "page": 1, "box": arm.words[30].grounding["box"], "sha256": "0" * 64}

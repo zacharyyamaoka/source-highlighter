@@ -43,8 +43,13 @@ def _unquote(value: str) -> str:
     return urllib.parse.unquote(value)
 
 
+# WHY sha256 only on the geometry selectors (CONTRACT §2): a box is fractions of the page it was measured on, so it
+# carries that file's sha256 and is refused on other bytes; text selectors re-find their text and need no pin.
+_EXTRA_KEYS = ("id", "label", "sha256")
+
+
 def _extras(selector: Any) -> dict[str, str]:
-    return {key: value for key in ("id", "label") if (value := getattr(selector, key)) is not None}
+    return {key: value for key in _EXTRA_KEYS if (value := getattr(selector, key, None)) is not None}
 
 
 def _extras_compact(selector: Any) -> str:
@@ -58,6 +63,11 @@ def _with_extras(location: dict, selector: Any) -> dict:
 def _check_page(page: Any) -> None:
     if not isinstance(page, int) or isinstance(page, bool) or page < 1:
         raise ValueError(f"page must be an integer from 1 (pages are 1-based, as in PDF.js), got {page!r}")
+
+
+def _check_sha256(sha256: Any) -> None:
+    if sha256 is not None and not (isinstance(sha256, str) and re.fullmatch(r"[0-9a-f]{64}", sha256)):
+        raise ValueError(f"sha256 must be 64 lowercase hex digits (the file's sha256), got {sha256!r}")
 
 
 def _check_kind(kind: str) -> None:
@@ -169,9 +179,11 @@ class PageBox:
     h: float
     id: str | None = field(default=None, kw_only=True)
     label: str | None = field(default=None, kw_only=True)
+    sha256: str | None = field(default=None, kw_only=True)  # of the file it was measured on: refused on other bytes
 
     def __post_init__(self) -> None:
         _check_page(self.page)
+        _check_sha256(self.sha256)
         for name in ("x", "y", "w", "h"):
             value = getattr(self, name)
             if not isinstance(value, (int, float)) or not math.isfinite(value):
@@ -210,9 +222,11 @@ class Page:
     page: int
     id: str | None = field(default=None, kw_only=True)
     label: str | None = field(default=None, kw_only=True)
+    sha256: str | None = field(default=None, kw_only=True)
 
     def __post_init__(self) -> None:
         _check_page(self.page)
+        _check_sha256(self.sha256)
 
     def to_location(self, kind: str, text: str | None = None) -> dict:
         _check_kind(kind)
@@ -420,7 +434,10 @@ def parse(text: str) -> Selector:
             raise ValueError(f"cannot read {text!r}: expected key=value pairs joined by &")
         pairs[key] = value
     extras = {key: _unquote(pairs.pop(key)) for key in ("id", "label") if key in pairs}
+    pin = {"sha256": pairs.pop("sha256")} if "sha256" in pairs else {}
     keys = set(pairs)
+    if pin and keys not in ({"page", "xywh"}, {"page"}):
+        raise ValueError(f"cannot read {text!r}: sha256= pins a geometry selector (page, page + xywh) only")
     if "text" in keys and keys <= {"text", "page"}:
         tokens = pairs["text"].split(",")  # split before unquoting: an escaped %2C is part of the text
         prefix = suffix = ""
@@ -442,9 +459,9 @@ def parse(text: str) -> Selector:
         if not match:
             raise ValueError(f"cannot read {text!r}: xywh= needs percent:x,y,w,h")
         x, y, w, h = (float(value) / 100 for value in match.groups())
-        return PageBox(_int(pairs["page"], "page"), x, y, w, h, **extras)
+        return PageBox(_int(pairs["page"], "page"), x, y, w, h, **extras, **pin)
     if keys == {"page"}:
-        return Page(_int(pairs["page"], "page"), **extras)
+        return Page(_int(pairs["page"], "page"), **extras, **pin)
     if keys == {"xpath"}:
         return XPath(_unquote(pairs["xpath"]), **extras)
     if keys == {"css"}:
@@ -462,9 +479,10 @@ def from_location(location: dict) -> Selector:
     if not isinstance(location, dict):
         raise ValueError(f"a Location is a dict, got {type(location).__name__}")
     extras = {key: location[key] for key in ("id", "label") if location.get(key) is not None}
+    pin = {"sha256": location["sha256"]} if location.get("sha256") is not None else {}
     if "box" in location:
         x0, y0, x1, y1 = location["box"]
-        return PageBox(location.get("page", 1), x0, y0, x1 - x0, y1 - y0, **extras)
+        return PageBox(location.get("page", 1), x0, y0, x1 - x0, y1 - y0, **extras, **pin)
     if "text" in location:
         return TextPosition(location["text"]["start"], location["text"]["end"], **extras)
     if "quote" in location:
@@ -486,7 +504,7 @@ def from_location(location: dict) -> Selector:
         quote = html[key]
         return TextQuote(quote["exact"], quote.get("prefix", ""), quote.get("suffix", ""), **extras)
     if "page" in location:
-        return Page(location["page"], **extras)
+        return Page(location["page"], **extras, **pin)
     raise ValueError(f"not a CONTRACT §2 Location: {location!r}")
 
 

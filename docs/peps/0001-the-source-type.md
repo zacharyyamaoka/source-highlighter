@@ -135,6 +135,14 @@ The selectors carry a resolver's answer; the highlighter only draws it, and repo
 Every selector also takes keyword-only `id` and `label` (CONTRACT §2's optional fields). A dash means "cannot
 address this kind": `save()` lists it as unresolved, with the reason.
 
+### Addendum 2026-11-17: geometry pinned to the source's bytes (R2)
+
+`PageBox` and `Page` take a keyword-only `sha256`, the `sha256` of the `Source` they were measured on
+(`PageBox(2, 0.19, 0.31, 0.07, 0.01, sha256=src.sha256)`; compact `…&sha256=<hex>`; CONTRACT §2 `"sha256"`).
+`render()` / `Highlighted.save()` and the ES module refuse such a box on any other bytes, with the reason. WHY on the
+geometry family only: a box is fractions of one rendering of one file; text selectors re-find their text and carry no
+pin. The acceptance test `test_a_box_made_on_different_bytes_is_refused` held this as a strict xfail until now.
+
 ## 7. Migration (not done this round)
 
 - **markdownify:** `mdify.capture()` returns `Captured`; `Source.from_bundle(captured.directory)` already reads its

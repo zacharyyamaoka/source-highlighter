@@ -33,6 +33,16 @@ def js_module_source() -> str:
     return js_file("source-highlighter.js")
 
 
+def js_folder_files(folder_name: str) -> dict[str, bytes]:
+    """Every file of a folder beside the module (`like-obsidian`: the vendored markdown viewer), by name."""
+    packaged = resources.files("source_highlighter").joinpath("js", folder_name)
+    folder = packaged if packaged.is_dir() else Path(__file__).resolve().parents[2] / "js" / folder_name
+    return {entry.name: entry.read_bytes() for entry in folder.iterdir() if entry.is_file()}
+
+
+CONTENT_TYPES = {".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json"}
+
+
 def js_vendor_names() -> list[str]:
     """The vendored modules the ES module loads on demand (vendor/*.js)."""
     packaged = resources.files("source_highlighter").joinpath("js", "vendor")
@@ -73,7 +83,8 @@ def _render_in_browser(
     scale: float,
     out_png: Path,
 ) -> dict[str, Any]:
-    """Lay out `source_text` (kind "html" or "text") at `width` CSS px, draw the marks, screenshot the page.
+    """Lay out `source_text` (kind "html", "text" or "markdown" — rendered) at `width` CSS px, draw the marks,
+    screenshot the page.
 
     Returns the module's {marks, unresolved}, with mark rects in source units (CSS px at zoom 1).
     """
@@ -81,6 +92,7 @@ def _render_in_browser(
 
     module_source = js_module_source()
     vendor = {HARNESS_ORIGIN + "vendor/" + name: js_file("vendor/" + name) for name in js_vendor_names()}
+    viewer = {HARNESS_ORIGIN + "like-obsidian/" + name: body for name, body in js_folder_files("like-obsidian").items()} if kind == "markdown" else {}
 
     def serve(route):
         url = route.request.url
@@ -90,6 +102,8 @@ def _render_in_browser(
             route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=module_source)
         elif url in vendor:
             route.fulfill(status=200, content_type="text/javascript; charset=utf-8", body=vendor[url])
+        elif url in viewer:
+            route.fulfill(status=200, content_type=CONTENT_TYPES.get(Path(url).suffix, "application/octet-stream"), body=viewer[url])
         else:
             # Archived pages reference their live CSS, fonts and trackers; none of it is fetched.
             route.abort()

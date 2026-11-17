@@ -37,7 +37,10 @@ The last two are best-effort locations: the highlighter finds the quote on that 
 note, and marks it; found more than once, or not at all, it says so. WHY (2026-11-05, from the Tycoon CRM and ObjectDB
 agents): most real citations today are "page 78, this sentence" or "[[Note#Heading]]", with no measured box.
 
-Optional on any Location: `id`, `label` (shown on hover / beside the mark).
+Optional on any Location: `id`, `label` (the annotation: shown on hover / beside the mark), `href` (the interactive
+form draws the mark as a link to it; added 2026-11-17) and `target`.
+A geometry Location (`{page, box}`, `{page}`) may carry `sha256`: the file it was measured on (added 2026-11-17, R2).
+On other bytes it is refused — the same fractions point at something else on a new revision or a recapture.
 A Location that cannot be resolved on the given source is reported back, never silently skipped.
 
 An `html` Location may also name its element by `"css": "table.spec td.value"` (added 2026-11-16, PEP 0001); it is
@@ -72,8 +75,13 @@ list of `{locations, style}` layers.
 2. **Interactive** — a framework-free ES module that draws the same styles over a rendered source in a web page and
    scrolls to them: `highlight(container, {source, locations, style}) → {update(locations, style), focus(id), destroy()}`.
    PDF via PDF.js; images as `<img>`; HTML via the CSS Custom Highlight API on the archived page (or boxes on its
-   visual twin); text via ranges. Plain JS so a React app, a vanilla static site (RobotParts) and anything else can
-   use it.
+   visual twin); text via ranges; markdown raw (`text`) or rendered (`markdown`: Zach's like-obsidian viewer, the
+   Locations anchored on the same text in the rendered note). Plain JS so a React app, a vanilla static site
+   (RobotParts) and anything else can use it.
+   A click on a mark dispatches a bubbling, cancelable `highlight-click` event (detail: `id`, `label`, `href`,
+   `location`, `layer`, `page`, `style`); a mark with an `href` is followed unless a listener cancels it. Nothing
+   else: what a click means is the caller's (WHY, Zach 2026-11-16: "all this basically does is display it. BUT I do
+   think we want a drop-in viewer").
 
 Both forms take the same three inputs and must draw the same marks in the same places (tested by measuring the drawn
 rectangles, not by checking that elements exist).

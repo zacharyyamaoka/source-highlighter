@@ -5,10 +5,12 @@
 //   marks.focus("rated-torque");  // scroll (and optionally zoom) to a location
 //   marks.update(locations, style);
 //   marks.destroy();
+//   container.addEventListener("highlight-click", (event) => event.detail);  // {id, label, href, location, …}
 //
 // Framework-free on purpose: a static HTML page and a React app call this the same way.
 // It renders the source itself (PDF.js canvas, <img>, a sandboxed <iframe> for archived HTML, a <pre> for
-// text) so the marks and the pixels underneath share one coordinate system.
+// text; a markdown note drawn by the vendored like-obsidian viewer for {kind: "markdown"}) so the marks and the
+// pixels underneath share one coordinate system.
 //
 // Geometry rule shared with the Python renderer (src/source_highlighter/geometry.py) — both forms must draw the
 // same rectangles, and tests measure that they do:
@@ -268,7 +270,7 @@ export function normalizeLayers({ locations, style, layers }) {
   return [{ locations: locations || [], style: normalizeStyle(style) }];
 }
 
-/** Which renderer a source needs: "pdf" | "image" | "html" | "text". */
+/** Which renderer a source needs: "pdf" | "image" | "html" | "text" (raw) | "markdown" (rendered: only when asked). */
 export function sourceKind(source) {
   if (source && typeof source === "object" && source.kind) return source.kind;
   const url = typeof source === "string" ? source : source?.url || "";
@@ -497,6 +499,44 @@ async function loadMatcher(given) {
 }
 
 /**
+ * The rendered-markdown viewer: Zach's like_obsidian_md_viewer, vendored built in like-obsidian/ beside this file
+ * (scripts/vendor_like_obsidian.py), or `given` (its module, or the URL of its like-obsidian.js). Returns
+ * {viewer, css}: the module and the URL of its stylesheet (like-obsidian.css beside it). WHY loaded on demand: raw
+ * sources never need it.
+ */
+async function loadMarkdownViewer(given) {
+  if (given && typeof given === "object" && given.mountNote) return { viewer: given, css: given.stylesheet ?? null };
+  const url = given ? new URL(String(given), document.baseURI).href : new URL("./like-obsidian/like-obsidian.js", import.meta.url).href;
+  return { viewer: await import(/* @vite-ignore */ url), css: url.replace(/\.js(?=$|[?#])/, ".css") };
+}
+
+/** Resolves once `node`'s subtree has not changed for `quietMs` (or after `maxMs`): a viewer that draws in steps is done. */
+function settled(node, quietMs = 120, maxMs = 4000) {
+  return new Promise((resolve) => {
+    let timer = setTimeout(done, quietMs);
+    const cap = setTimeout(done, maxMs);
+    const observer = new MutationObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(done, quietMs);
+    });
+    observer.observe(node, { subtree: true, childList: true, characterData: true, attributes: true });
+    function done() {
+      observer.disconnect();
+      clearTimeout(timer);
+      clearTimeout(cap);
+      resolve();
+    }
+  });
+}
+
+/** SHA-256 of bytes as lowercase hex, or null where the page has no Web Crypto (not a secure context). */
+async function sha256Hex(bytes) {
+  if (!globalThis.crypto?.subtle) return null;
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+/**
  * Scroll `target` to the middle of each scrolling box around it, innermost first, then of its own window.
  * WHY not scrollIntoView: it also scrolls every parent frame, so a highlighter embedded in another page (a peek
  * card, a gallery iframe) would yank the host page. A fixed-position box (a popup) stops the walk: scrolling
@@ -553,8 +593,10 @@ function installBaseStyles() {
 .sh-text { margin: 0; padding: 16px; box-sizing: border-box; white-space: pre-wrap; overflow-wrap: anywhere;
   font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #1f2328; background: #fff; }
 .sh-overlay { position: absolute; inset: 0; pointer-events: none; }
+.sh-paint { position: absolute; inset: 0; }
 .sh-overlay > svg { position: absolute; left: 0; top: 0; }
 .sh-mark { position: absolute; box-sizing: border-box; pointer-events: auto; }
+a.sh-mark { cursor: pointer; }
 .sh-mark.sh-underline::after { content: ""; position: absolute; left: 0; right: 0; top: 100%;
   height: var(--sh-width); background: var(--sh-color); }
 .sh-label { position: absolute; transform: translateY(-100%); padding: 1px 5px; font: 600 11px/1.4 system-ui, sans-serif;
@@ -568,12 +610,19 @@ function installBaseStyles() {
 /**
  * Render `source` into `container` and draw `locations` over it in `style`.
  *
- * source: a URL string (kind from its extension) or {kind: "pdf"|"image"|"html"|"text", url?, data?, html?, text?}.
+ * source: a URL string (kind from its extension) or {kind: "pdf"|"image"|"html"|"text"|"markdown", url?, data?, html?,
+ *   text?, title?}. "text" shows a markdown file raw; "markdown" renders it (like-obsidian, see loadMarkdownViewer).
  * options: {locations, style} or {layers: [{locations, style}]}; zoom: number or "fit" (default: fit the
- *   container width); pdfjs: the pdfjs-dist module or a URL to pdf.mjs (PDFs only); width: layout width for
- *   html (default 1280) and text (default: the container width).
+ *   container width); pdfjs: the pdfjs-dist module or a URL to pdf.mjs (PDFs only); markdown: the viewer module or
+ *   its URL (rendered markdown only); width: layout width for html (default 1280), text and markdown (default: the
+ *   container width).
  * Returns {ready, update(locations, style), focus(id, {zoom}), destroy()}; `ready` resolves to
  * {marks, unresolved} once the source is on screen and the marks are drawn.
+ *
+ * Clicks (the drop-in viewer): a click on a mark dispatches a bubbling, cancelable `highlight-click` CustomEvent
+ * from the mark, detail = {id, label, href, location, layer, page, style}. A Location with an `href` is drawn as a
+ * link and followed unless a listener calls event.preventDefault(); without one nothing else happens. WHY only an
+ * event: what a click means (select a table row, open a record) is the host's; this module only displays.
  */
 export function highlight(container, options) {
   installBaseStyles();
@@ -581,6 +630,25 @@ export function highlight(container, options) {
   const root = el("div", "sh-root");
   root.dataset.instance = instanceId;
   container.appendChild(root);
+
+  const markLocations = new WeakMap(); // mark element → {location, layer, page, style}
+  root.addEventListener("click", (event) => {
+    const mark = event.target instanceof Element ? event.target.closest(".sh-mark") : null;
+    const entry = mark && markLocations.get(mark);
+    if (!entry) return;
+    const { location } = entry;
+    const detail = {
+      id: mark.dataset.id,
+      label: location?.label ?? null,
+      href: typeof location?.href === "string" && location.href ? location.href : null,
+      location,
+      layer: entry.layer,
+      page: entry.page,
+      style: entry.style,
+    };
+    const proceed = mark.dispatchEvent(new CustomEvent("highlight-click", { bubbles: true, composed: true, cancelable: true, detail }));
+    if (!proceed) event.preventDefault(); // a listener took the click: an href mark is not followed
+  });
 
   const state = {
     kind: sourceKind(options.source),
@@ -600,6 +668,7 @@ export function highlight(container, options) {
     if (state.kind === "pdf") await renderPdf(source);
     else if (state.kind === "image") await renderImage(source);
     else if (state.kind === "html") await renderHtml(source);
+    else if (state.kind === "markdown") await renderMarkdown(source);
     else await renderText(source);
   }
 
@@ -706,6 +775,123 @@ export function highlight(container, options) {
     applyZoomToScaledPage(holder);
   }
 
+  async function renderMarkdown(source) {
+    const text = source.text ?? (await fetchText(source.url));
+    state.text = text;
+    const { viewer, css } = await loadMarkdownViewer(options.markdown);
+    const padding = getComputedStyle(container);
+    const width = options.width || container.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight) || 900;
+    // WHY an iframe as tall as the note: CodeMirror (under the viewer) draws only the lines near its window's viewport,
+    // and a mark needs its text drawn; in its own window as tall as the note, every line is in view. It also keeps the
+    // viewer's stylesheet out of the host page.
+    const frame = el("iframe");
+    frame.title = "Rendered note";
+    frame.style.width = `${width}px`;
+    frame.style.height = "800px";
+    frame.srcdoc = '<!doctype html><html><head><meta charset="utf-8">' + (css ? `<link rel="stylesheet" href="${css.replace(/"/g, "&quot;")}">` : "") +
+      '<style>html, body { margin: 0; background: #fff; overflow: hidden; }</style></head><body><div class="sh-markdown"></div></body></html>';
+    const scaled = el("div", "sh-scaled");
+    scaled.appendChild(frame);
+    const holder = addPage(width, 800);
+    holder.element.appendChild(scaled);
+    holder.pageNumber = 1;
+    await new Promise((resolve) => frame.addEventListener("load", resolve, { once: true }));
+    const frameDocument = frame.contentDocument;
+    const stylesheet = frameDocument.querySelector("link");
+    if (stylesheet && !stylesheet.sheet) await new Promise((resolve) => { stylesheet.onload = stylesheet.onerror = resolve; });
+    const host = frameDocument.querySelector(".sh-markdown");
+    holder.frame = frame;
+    holder.markdownHost = host;
+    // WHY read-only and light: this is a source being cited, shown as Obsidian shows it, never edited here.
+    holder.note = viewer.mountNote(host, { doc: text, readOnly: true, theme: "light", ...(source.title ? { title: source.title } : {}) });
+    await frameDocument.fonts?.ready;
+    const fit = () => {
+      const height = Math.ceil(frameDocument.documentElement.scrollHeight);
+      const changed = Math.abs(height - frame.offsetHeight) >= 1;
+      frame.style.height = `${height}px`;
+      // The page ends below the note's last block: the viewer's scroll-past-end space is not part of the source.
+      const blocks = host.querySelector(".cm-content")?.children ?? [];
+      const bottom = Math.max(0, ...Array.from(blocks, (block) => block.getBoundingClientRect().bottom));
+      holder.height = bottom ? Math.min(height, Math.ceil(bottom) + 24) : height;
+      return changed;
+    };
+    for (let round = 0; round < 8; round += 1) {
+      await settled(host);
+      if (!fit()) break;
+    }
+    state.zoom = resolveZoom(width);
+    applyZoomToScaledPage(holder);
+    // Should the viewer redraw later (a late font, an image), the marks follow it.
+    holder.redraw = new MutationObserver(() => {
+      clearTimeout(holder.redrawTimer);
+      holder.redrawTimer = setTimeout(() => {
+        if (state.destroyed) return;
+        fit();
+        applyZoomToScaledPage(holder);
+        chain = chain.then(() => drawMarks());
+      }, 80);
+    });
+    holder.redraw.observe(host, { subtree: true, childList: true, characterData: true });
+  }
+
+  /** The visible text of the rendered note, with the text node each character came from. Hidden markup is left out. */
+  function renderedText() {
+    if (state.renderedText) return state.renderedText;
+    const content = state.pages[0].markdownHost.querySelector(".cm-content") || state.pages[0].markdownHost;
+    const walker = content.ownerDocument.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    let text = "";
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const parent = node.parentElement;
+      if (!parent || (parent.checkVisibility && !parent.checkVisibility())) continue;
+      nodes.push({ node, start: text.length });
+      text += node.data;
+    }
+    state.renderedText = { nodes, text };
+    return state.renderedText;
+  }
+
+  function renderedRange(start, end) {
+    const { nodes } = renderedText();
+    const startPoint = pointAt(nodes, start, false);
+    const endPoint = pointAt(nodes, end, true);
+    const range = state.pages[0].markdownHost.ownerDocument.createRange();
+    range.setStart(startPoint.node, startPoint.offset);
+    range.setEnd(endPoint.node, endPoint.offset);
+    return range;
+  }
+
+  /**
+   * A span of the markdown source [start, end) (UTF-16) → the same text in the rendered note. The rendered DOM keeps
+   * the text in source order, so the k-th place the span's text occurs in the source is its k-th place on screen —
+   * when both count the same; when they don't (some occurrences are markup, frontmatter or a link target, never
+   * shown) it is reported as ambiguous, never picked from. A span whose text is not shown as is (it crosses
+   * markup) is found with the markup left out, then approximately, and only if that lands in one place.
+   */
+  function resolveRenderedSpan(start, end) {
+    const quote = state.text.slice(start, end);
+    if (!squashSpace(quote)) return { reason: `text range ${start}–${end} holds only whitespace` };
+    const shown = renderedText().text;
+    const onScreen = quoteCandidates(shown, quote, null).exact;
+    const found = (match, errors = 0) => ({ page: state.pages[0], range: renderedRange(match.start, match.end), found: { exact: errors === 0, errors, text: shown.slice(match.start, match.end) } });
+    if (onScreen.length === 1) return found(onScreen[0]);
+    if (onScreen.length > 1) {
+      const inSource = quoteCandidates(state.text, quote, null).exact;
+      const first = start + (quote.length - quote.trimStart().length);
+      const k = inSource.findIndex((match) => match.start === first);
+      if (k >= 0 && inSource.length === onScreen.length) return found(onScreen[k]);
+      return { reason: `ambiguous: "${quote.trim()}" shows ${onScreen.length} times in the rendered note and ${inSource.length} in its source` };
+    }
+    const bare = quote.replace(/[*_~`=|#>[\]]/g, " ");
+    if (squashSpace(bare) && squashSpace(bare) !== squashSpace(quote)) {
+      const plain = quoteCandidates(shown, bare, null).exact;
+      if (plain.length === 1) return found(plain[0]);
+    }
+    const near = quoteCandidates(shown, bare, state.matcher).approximate;
+    if (near.length === 1) return found(near[0], near[0].errors);
+    return { reason: near.length > 1 ? `ambiguous: "${quote.trim()}" is approximately in ${near.length} places of the rendered note` : `"${quote.trim()}" is not shown in the rendered note (markup, frontmatter or a link target)` };
+  }
+
   function applyZoomToScaledPage(page) {
     page.element.style.width = `${page.width * state.zoom}px`;
     page.element.style.height = `${page.height * state.zoom}px`;
@@ -732,14 +918,22 @@ export function highlight(container, options) {
       if (kind === "page" && !isValidBox(location.box)) return { reason: "box must be [x0, y0, x1, y1] within 0–1 with x0 < x1 and y0 < y1" };
       const found = findPage(location.page ?? 1);
       if (found.reason) return found;
+      if (location.sha256 !== undefined && location.sha256 !== null) {
+        // WHY (CONTRACT §2): a box is fractions of the page it was measured on; on other bytes it points elsewhere.
+        if (!state.sourceSha256) return { reason: "this box is pinned to a sha256, and the source's bytes could not be hashed here (no Web Crypto, or the image was not fetchable)" };
+        if (String(location.sha256).toLowerCase() !== state.sourceSha256) {
+          return { reason: `the box was measured on other bytes (sha256 ${String(location.sha256).slice(0, 12)}…, this file is ${state.sourceSha256.slice(0, 12)}…); measure it again on this file` };
+        }
+      }
       // A whole page (a slide, a drawing) is outlined, never filled: there is no finer mark to make.
       return kind === "page" ? { page: found.page, boxes: [{ kind: "page", box: location.box }] } : { page: found.page, whole: true };
     }
     if (kind === "quote") return resolveQuote(location);
     if (kind === "note") {
-      if (state.kind !== "text") return { reason: `a note Location addresses a markdown note, not a ${state.kind} source` };
+      if (state.kind !== "text" && state.kind !== "markdown") return { reason: `a note Location addresses a markdown note, not a ${state.kind} source` };
       const span = noteSpan(state.text, location.note);
       if (span.reason) return span;
+      if (state.kind === "markdown") return resolveRenderedSpan(span.start, span.end);
       return { page: state.pages[0], range: textRange(span.start, span.end) };
     }
     if (kind === "html") {
@@ -748,12 +942,13 @@ export function highlight(container, options) {
       if (found.reason) return found;
       return { page: state.pages[0], range: found.range };
     }
-    if (state.kind !== "text") return { reason: `a text Location cannot address a ${state.kind} source` };
+    if (state.kind !== "text" && state.kind !== "markdown") return { reason: `a text Location cannot address a ${state.kind} source` };
     const { start, end } = location.text || {};
     const page = state.pages[0];
     const startUnit = Number.isInteger(start) && start >= 0 ? codePointToUtf16(state.text, start) : -1;
     const endUnit = Number.isInteger(end) ? codePointToUtf16(state.text, end) : -1;
     if (startUnit < 0 || endUnit < 0 || end <= start) return { reason: `text range ${start}–${end} is outside the text or empty` };
+    if (state.kind === "markdown") return resolveRenderedSpan(startUnit, endUnit);
     return { page, range: textRange(startUnit, endUnit) };
   }
 
@@ -800,6 +995,13 @@ export function highlight(container, options) {
       range.setStart(startPoint.node, startPoint.offset);
       range.setEnd(endPoint.node, endPoint.offset);
       return { page: state.pages[0], range, found: { exact: errors === 0, errors, text: text.slice(start, end) } };
+    }
+    if (state.kind === "markdown") {
+      const shown = renderedText().text;
+      const decided = decideQuote(quote, [{ where: null, candidates: quoteCandidates(shown, quote, state.matcher) }], loaded);
+      if (decided.reason) return decided;
+      const { start, end, errors } = decided.match;
+      return { page: state.pages[0], range: renderedRange(start, end), found: { exact: errors === 0, errors, text: shown.slice(start, end) } };
     }
     const decided = decideQuote(quote, [{ where: null, candidates: quoteCandidates(state.text, quote, state.matcher) }], loaded);
     if (decided.reason) return decided;
@@ -908,6 +1110,16 @@ export function highlight(container, options) {
 
   /** Load what quote Locations need before marks are drawn: the approximate matcher and PDF text. */
   async function prepare() {
+    const wantsPin = state.layers.some((layer) => layer.locations.some((location) => location && location.sha256 != null));
+    if (wantsPin && state.sourceSha256 === undefined && (state.kind === "pdf" || state.kind === "image")) {
+      try {
+        const source = typeof options.source === "string" ? { url: options.source } : options.source;
+        const bytes = state.kind === "pdf" ? await state.pdf.getData() : source.data ?? (await (await fetch(source.url)).arrayBuffer());
+        state.sourceSha256 = await sha256Hex(bytes);
+      } catch {
+        state.sourceSha256 = null;
+      }
+    }
     const wantsQuotes = state.layers.some((layer) => layer.locations.some((location) => location && location.quote !== undefined));
     if (!wantsQuotes) return;
     if (state.matcher === undefined) state.matcher = await loadMatcher(options.matchQuoteAll);
@@ -1180,8 +1392,8 @@ export function highlight(container, options) {
   function registerTextHighlight(page, layerIndex, ranges, style) {
     // WHY the CSS Custom Highlight API for html/text highlight + underline: it paints the real text runs,
     // follows line wrapping, and never touches the archived DOM.
-    const host = state.kind === "html" ? page.frame.contentWindow : window;
-    const hostDocument = state.kind === "html" ? page.frame.contentDocument : document;
+    const host = page.frame ? page.frame.contentWindow : window;
+    const hostDocument = page.frame ? page.frame.contentDocument : document;
     if (!host.CSS?.highlights || !host.Highlight) return false;
     const name = `${instanceId}-layer${layerIndex}`;
     host.CSS.highlights.set(name, new host.Highlight(...ranges));
@@ -1189,7 +1401,7 @@ export function highlight(container, options) {
     const css =
       style.name === "highlight"
         ? `background-color: ${translucent(style.color, style.opacity)};`
-        : `text-decoration: underline ${translucent(style.color, style.opacity)} ${style.width}px; text-underline-offset: 2px;`;
+        : `text-decoration: underline ${translucent(style.color, style.opacity)} ${style.width}px; text-underline-offset: 2px; text-decoration-skip-ink: none;`;
     if (!page.highlightStyle || !page.highlightStyle.isConnected) {
       page.highlightStyle = hostDocument.createElement("style");
       (hostDocument.head || hostDocument.documentElement).appendChild(page.highlightStyle);
@@ -1200,6 +1412,7 @@ export function highlight(container, options) {
 
   function drawMarks() {
     clearMarks();
+    state.renderedText = null; // the rendered note may have redrawn since
     const marks = [];
     const unresolved = [];
     state.layers.forEach((layer, layerIndex) => {
@@ -1239,10 +1452,10 @@ export function highlight(container, options) {
           if (resolved.found) mark.found = resolved.found; // how a quote was found: {exact, errors, text}
           marks.push(mark);
           if (!rectsByPage.has(page)) rectsByPage.set(page, []);
-          rectsByPage.get(page).push({ id, label: location.label, rect, whole: Boolean(resolved.whole) });
+          rectsByPage.get(page).push({ id, label: location.label, rect, whole: Boolean(resolved.whole), location, layer: layerIndex });
         }
       });
-      const usesTextPaint = (state.kind === "html" || state.kind === "text") && (style.name === "highlight" || style.name === "underline");
+      const usesTextPaint = (state.kind === "html" || state.kind === "text" || state.kind === "markdown") && (style.name === "highlight" || style.name === "underline");
       if (usesTextPaint) {
         for (const [page, ranges] of rangesByPage) {
           if (!registerTextHighlight(page, layerIndex, ranges, style)) {
@@ -1276,35 +1489,45 @@ export function highlight(container, options) {
           `<rect width="${width}" height="${height}" fill="${style.color}" fill-opacity="${style.opacity}" mask="url(#${maskId})"/></svg>`,
       );
     }
-    for (const { id, label, rect, whole } of entries) {
-      const mark = el("div", `sh-mark sh-${style.name}${whole ? " sh-whole" : ""}`, {
+    // WHY one wrapper at the style's opacity holding opaque marks: overlapping marks of one style show one tint, like
+    // a real highlighter pen (Zach, 2026-11-16), and match the static form, which paints each pixel once per layer.
+    const paintLayer = el("div", "sh-paint", { opacity: String(style.opacity) });
+    overlay.appendChild(paintLayer);
+    for (const { id, label, rect, whole, location, layer } of entries) {
+      const href = typeof location?.href === "string" && location.href ? location.href : null;
+      const mark = el(href ? "a" : "div", `sh-mark sh-${style.name}${whole ? " sh-whole" : ""}`, {
         left: `${rect.x0 * zoom}px`,
         top: `${rect.y0 * zoom}px`,
         width: `${(rect.x1 - rect.x0) * zoom}px`,
         height: `${(rect.y1 - rect.y0) * zoom}px`,
       });
+      if (href) {
+        mark.href = href;
+        if (location.target) mark.target = location.target;
+      }
       mark.dataset.id = id;
       mark.dataset.layer = String(layerIndex);
       if (label) mark.title = label;
-      const paint = translucent(style.color, style.opacity);
+      markLocations.set(mark, { location, layer, page: page.pageNumber, style: style.name });
       const strokeWidth = `${style.width * zoom}px`;
       if (whole) {
-        // Inside the page edge (the page clips anything outside), in the box colour unless the style has its own.
-        const color = style.name === "box" || style.name === "underline" ? paint : STYLE_DEFAULTS.box.color;
+        // A whole page is outlined just inside its edge in its own colour and opacity, outside the layer's tint.
+        const paint = translucent(style.name === "box" || style.name === "underline" ? style.color : STYLE_DEFAULTS.box.color,
+          style.name === "box" || style.name === "underline" ? style.opacity : 1);
         const inset = `${Math.max(style.width, STYLE_DEFAULTS.box.width) * zoom}px`;
-        Object.assign(mark.style, { outline: `${inset} solid ${color}`, outlineOffset: `-${inset}` });
-        mark.classList.remove("sh-underline");
-      } else if (!usesTextPaint && style.name === "highlight") mark.style.background = paint;
-      if (style.name === "box" && !whole) mark.style.outline = `${strokeWidth} solid ${paint}`;
-      if (whole) {
-        // nothing more: a whole page gets only its outline
-      } else if (!usesTextPaint && style.name === "underline") {
-        mark.style.setProperty("--sh-width", strokeWidth);
-        mark.style.setProperty("--sh-color", paint);
-      } else if (style.name === "underline") {
-        mark.classList.remove("sh-underline");
+        Object.assign(mark.style, { outline: `${inset} solid ${paint}`, outlineOffset: `-${inset}` });
+        overlay.appendChild(mark);
+      } else {
+        if (!usesTextPaint && style.name === "highlight") mark.style.background = style.color;
+        if (style.name === "box") mark.style.outline = `${strokeWidth} solid ${style.color}`;
+        if (!usesTextPaint && style.name === "underline") {
+          mark.style.setProperty("--sh-width", strokeWidth);
+          mark.style.setProperty("--sh-color", style.color);
+        } else if (style.name === "underline") {
+          mark.classList.remove("sh-underline");
+        }
+        paintLayer.appendChild(mark);
       }
-      overlay.appendChild(mark);
       if (label && style.label) {
         const chip = el("div", "sh-label", { left: `${rect.x0 * zoom}px`, top: `${rect.y0 * zoom - 3}px` });
         chip.textContent = label;
@@ -1367,6 +1590,11 @@ export function highlight(container, options) {
       chain.catch(() => {});
       clearMarks();
       state.pdfTask?.destroy()?.catch?.(() => {});
+      for (const page of state.pages) {
+        page.redraw?.disconnect();
+        clearTimeout(page.redrawTimer);
+        page.note?.destroy();
+      }
       root.remove();
     },
   };
