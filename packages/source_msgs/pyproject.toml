@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "source-msgs"
 version = "0.1.0"
-description = "Source, its location selectors and Highlighted: the stdlib-only types the source apps (mdify, the Sources app, source-highlighter) share."
+description = "Source, its location selectors and Highlighted: the stdlib-only types the source apps (markdownify, the Sources app, source-highlighter) share."
 license = "MIT"
 authors = [{ name = "Zach Yamaoka" }]
 requires-python = ">=3.12"
@@ -14,9 +14,9 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-# mdify and source-highlighter are not on PyPI yet: both install from their public GitHub repos.
-capture = ["mdify @ git+https://github.com/zacharyyamaoka/markdownify"]
-markdown = ["mdify @ git+https://github.com/zacharyyamaoka/markdownify"]
+# markdownify and source-highlighter are not on PyPI yet (PyPI's `markdownify` is an unrelated HTML converter): both install from their public GitHub repos.
+capture = ["markdownify @ git+https://github.com/zacharyyamaoka/markdownify"]
+markdown = ["markdownify @ git+https://github.com/zacharyyamaoka/markdownify"]
 show = ["source-highlighter @ git+https://github.com/zacharyyamaoka/source-highlighter"]
 test = ["pytest>=8"]
 

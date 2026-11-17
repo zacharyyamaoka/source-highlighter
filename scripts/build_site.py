@@ -9,7 +9,7 @@ site/lib/). The tests section reads site/tests.json, which only the Pages workfl
 
 Every picture and every printed output on the page comes from running the code shown beside it, here, against
 the real sources: the repo's fixtures and a SteadyWin GIM4305-10 maker page saved by
-`mdify capture https://www.steadywin.cn/en/h-pd-9.html --keep html,snapshot --out DIR` (pass that DIR as --gim;
+`markdownify capture https://www.steadywin.cn/en/h-pd-9.html --keep html,snapshot --out DIR` (pass that DIR as --gim;
 the maker's page is not committed, only the pictures made from it). The hero is recorded from the real ES module
 drawing on that page in headless Chromium.
 """
@@ -597,7 +597,7 @@ picture, a marked PDF, or live in a browser. It never decides <em>what</em> to m
 </header>
 
 <div class="hero">{hero_media}
-<p>Recorded from the real ES module in headless Chromium, on SteadyWin's GIM4305-10 page saved by <code>mdify capture</code>
+<p>Recorded from the real ES module in headless Chromium, on SteadyWin's GIM4305-10 page saved by <code>markdownify capture</code>
 ({GIM_URL}). Each step's Python is in the bar; the cells are found by their place in the table, not by their text.</p></div>
 
 <section id="api"><h2>The API</h2>
@@ -615,8 +615,8 @@ reference already carries.</p>
 
 <h3>2 · The verbs</h3>
 <div class="scroll"><table><tr><th>verb</th><th>does</th></tr>
-<tr><td><code>.capture(keep=("html","snapshot"))</code></td><td>saves the bytes: through <code>mdify capture</code> when it is installed (every capture level, word boxes on the snapshot), else one polite request (robots.txt honoured). A no-op once saved.</td></tr>
-<tr><td><code>.to_markdown()</code></td><td>markdown of it: read as is for markdown, through <code>mdify</code> for a PDF, page or image.</td></tr>
+<tr><td><code>.capture(keep=("html","snapshot"))</code></td><td>saves the bytes: through <code>markdownify capture</code> when it is installed (every capture level, word boxes on the snapshot), else one polite request (robots.txt honoured). A no-op once saved.</td></tr>
+<tr><td><code>.to_markdown()</code></td><td>markdown of it: read as is for markdown, through <code>markdownify</code> for a PDF, page or image.</td></tr>
 <tr><td><code>.highlight(locations, style)</code></td><td>→ <code>Highlighted</code>: the source + locations + style, as data. Nothing drawn yet.</td></tr>
 <tr><td><code>Highlighted.show()</code></td><td>draws it and opens it in your browser (never raised over your window) or inline in a notebook. <code>SOURCE_HIGHLIGHTER_BACKEND=none</code>, no display, or pytest: opens nothing.</td></tr>
 <tr><td><code>Highlighted.save(path)</code></td><td>draws it into a PNG / JPEG / marked PDF / HTML page; returns the marks and anything it could not place, with why.</td></tr>
@@ -628,7 +628,7 @@ reference already carries.</p>
 PDF's text layer. <b>Geometry-anchored</b> ones point at a rendered surface with no text — a photo, a scan, a
 screenshot. Each has a one-line compact form borrowed from a web standard, and turns into the JSON the highlighter
 draws for whichever kind of source it meets. Finding "this text" in a source is a resolver step below the
-highlighter (the quote find, mdify's index); the selectors carry its answer.</p>
+highlighter (the quote find, markdownify's index); the selectors carry its answer.</p>
 <div class="scroll"><table><tr><th>selector</th><th>anchor</th><th>fields</th><th>compact</th><th>borrowed from</th></tr>{selectors_table}</table></div>
 <div class="pair" style="margin-top:12px">{code_block(API_SNIPPETS['selectors'])}{output_block(api['selectors'])}</div>
 <h3>Nothing is dropped silently</h3>
@@ -673,7 +673,7 @@ This page is built by <code>scripts/build_site.py</code>; every output above was
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--gim", help=f"a folder written by `mdify capture {GIM_URL} --keep html,snapshot --out DIR`")
+    parser.add_argument("--gim", help=f"a folder written by `markdownify capture {GIM_URL} --keep html,snapshot --out DIR`")
     parser.add_argument("--no-hero", action="store_true", help="skip recording the hero video (keeps the old one)")
     parser.add_argument("--stage", action="store_true", help="only copy what the live gallery loads into site/lib/ (CI)")
     args = parser.parse_args()

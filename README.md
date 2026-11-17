@@ -24,7 +24,7 @@ src.highlight(PageBox(2, 0.19, 0.31, 0.07, 0.01), "spotlight").save("marked.png"
 ```
 
 `Source` is one frozen type however it is made (`from_url`, `from_file`, `from_text`, `from_bundle` for an
-`mdify capture` folder, `from_dict`); its verbs are `.capture()`, `.to_markdown()` and `.highlight(locations, style)`
+`markdownify capture` folder, `from_dict`); its verbs are `.capture()`, `.to_markdown()` and `.highlight(locations, style)`
 → `Highlighted`, which `.show()`s (browser, notebook, or nothing: `SOURCE_HIGHLIGHTER_BACKEND=none`) or `.save()`s.
 Locations are eight selectors in two families — text-anchored `TextQuote`, `TextPosition`, `XPath`, `Css`,
 `TableCell`, `Note`; geometry-anchored `PageBox`, `Page` — each with a compact string (`text=…`, `char=…`,

@@ -99,7 +99,7 @@ def make_handler(viewer: Viewer):
             pass
 
         def _cors(self) -> None:
-            # WHY local origins only: a page on another localhost port (a CRM, mdify view) may embed Peek, but no
+            # WHY local origins only: a page on another localhost port (a CRM, markdownify view) may embed Peek, but no
             # website the browser happens to have open may read the stored files.
             origin = self.headers.get("Origin")
             if origin and LOCAL_ORIGIN.match(origin):

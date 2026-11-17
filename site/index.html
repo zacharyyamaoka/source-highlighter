@@ -92,7 +92,7 @@ picture, a marked PDF, or live in a browser. It never decides <em>what</em> to m
 <div class="hero"><video autoplay muted loop playsinline controls poster="media/hero-poster.jpg" width="1280" height="720">
 <source src="media/hero.webm" type="video/webm"><source src="media/hero.mp4" type="video/mp4">
 <img src="media/hero.gif" alt="The highlighter marking four cells of the GIM4305-10 spec table" width="640" height="360"></video>
-<p>Recorded from the real ES module in headless Chromium, on SteadyWin's GIM4305-10 page saved by <code>mdify capture</code>
+<p>Recorded from the real ES module in headless Chromium, on SteadyWin's GIM4305-10 page saved by <code>markdownify capture</code>
 (https://www.steadywin.cn/en/h-pd-9.html). Each step's Python is in the bar; the cells are found by their place in the table, not by their text.</p></div>
 
 <section id="api"><h2>The API</h2>
@@ -121,8 +121,8 @@ text text/markdown | GIM4305-10 | 1 N·m |
 
 <h3>2 · The verbs</h3>
 <div class="scroll"><table><tr><th>verb</th><th>does</th></tr>
-<tr><td><code>.capture(keep=("html","snapshot"))</code></td><td>saves the bytes: through <code>mdify capture</code> when it is installed (every capture level, word boxes on the snapshot), else one polite request (robots.txt honoured). A no-op once saved.</td></tr>
-<tr><td><code>.to_markdown()</code></td><td>markdown of it: read as is for markdown, through <code>mdify</code> for a PDF, page or image.</td></tr>
+<tr><td><code>.capture(keep=("html","snapshot"))</code></td><td>saves the bytes: through <code>markdownify capture</code> when it is installed (every capture level, word boxes on the snapshot), else one polite request (robots.txt honoured). A no-op once saved.</td></tr>
+<tr><td><code>.to_markdown()</code></td><td>markdown of it: read as is for markdown, through <code>markdownify</code> for a PDF, page or image.</td></tr>
 <tr><td><code>.highlight(locations, style)</code></td><td>→ <code>Highlighted</code>: the source + locations + style, as data. Nothing drawn yet.</td></tr>
 <tr><td><code>Highlighted.show()</code></td><td>draws it and opens it in your browser (never raised over your window) or inline in a notebook. <code>SOURCE_HIGHLIGHTER_BACKEND=none</code>, no display, or pytest: opens nothing.</td></tr>
 <tr><td><code>Highlighted.save(path)</code></td><td>draws it into a PNG / JPEG / marked PDF / HTML page; returns the marks and anything it could not place, with why.</td></tr>
@@ -144,7 +144,7 @@ index.html</code></pre></div>
 PDF's text layer. <b>Geometry-anchored</b> ones point at a rendered surface with no text — a photo, a scan, a
 screenshot. Each has a one-line compact form borrowed from a web standard, and turns into the JSON the highlighter
 draws for whichever kind of source it meets. Finding "this text" in a source is a resolver step below the
-highlighter (the quote find, mdify's index); the selectors carry its answer.</p>
+highlighter (the quote find, markdownify's index); the selectors carry its answer.</p>
 <div class="scroll"><table><tr><th>selector</th><th>anchor</th><th>fields</th><th>compact</th><th>borrowed from</th></tr><tr><td><code>TextQuote</code></td><td><span class='tag text'>text</span></td><td>exact, prefix, suffix, page</td><td><code>text=prefix-,exact,-suffix</code></td><td>Text Fragments</td></tr><tr><td><code>TextPosition</code></td><td><span class='tag text'>text</span></td><td>start, end</td><td><code>char=840,846</code></td><td>RFC 5147</td></tr><tr><td><code>XPath</code></td><td><span class='tag text'>text</span></td><td>path</td><td><code>xpath=/html/body/…</code></td><td>W3C XPathSelector</td></tr><tr><td><code>Css</code></td><td><span class='tag text'>text</span></td><td>selector</td><td><code>css=table.spec td</code></td><td>W3C CssSelector</td></tr><tr><td><code>TableCell</code></td><td><span class='tag text'>text</span></td><td>row, col, table</td><td><code>table=1&amp;row=3&amp;col=2</code></td><td>—</td></tr><tr><td><code>Note</code></td><td><span class='tag text'>text</span></td><td>heading, block</td><td><code>heading=Pricing</code></td><td>Obsidian links</td></tr><tr><td><code>PageBox</code></td><td><span class='tag geometry'>geometry</span></td><td>page, x, y, w, h (0–1)</td><td><code>page=2&amp;xywh=percent:61,40,7,2</code></td><td>Media Fragments + PDF open params</td></tr><tr><td><code>Page</code></td><td><span class='tag geometry'>geometry</span></td><td>page</td><td><code>page=33</code></td><td>PDF open parameters</td></tr></table></div>
 <div class="pair" style="margin-top:12px"><pre class="code"><code>from source_highlighter import *
 
@@ -184,7 +184,7 @@ result = src.highlight([TableCell(3, 2), &quot;page=2&amp;xywh=percent:19,30.9,6
 print(len(result.marks), &quot;drawn&quot;)
 for entry in result.unresolved:
     print(entry.location, &quot;→&quot;, entry.reason)</code></pre><pre class="out"><code>1 drawn
-table=1&amp;row=3&amp;col=2 → a table cell on a pdf needs its box: mdify&#x27;s index.json gives every table_cell block a page + box (use a PageBox)</code></pre></div>
+table=1&amp;row=3&amp;col=2 → a table cell on a pdf needs its box: markdownify&#x27;s index.json gives every table_cell block a page + box (use a PageBox)</code></pre></div>
 </section>
 
 <section id="gallery"><h2>Gallery</h2>

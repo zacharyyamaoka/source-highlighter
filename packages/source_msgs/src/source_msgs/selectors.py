@@ -11,7 +11,7 @@ Each selector is a frozen dataclass with
 Two families (Zach, 2026-11-16): **text-anchored** selectors (`anchor == "text"`: TextQuote, TextPosition, XPath,
 Css, TableCell, Note) point into a source's underlying text — HTML, markdown, a PDF's text layer; **geometry-anchored**
 ones (`anchor == "geometry"`: PageBox, Page) point at a rendered surface with no text — a photo, a scan, a screenshot.
-Turning "this text" into a source + location is a resolver step below the highlighter (the quote find, mdify's
+Turning "this text" into a source + location is a resolver step below the highlighter (the quote find, markdownify's
 index.json); these types only carry its answer.
 
 WHY borrowed syntaxes (W3C Web Annotation's FragmentSelector does the same): a quote's compact form pastes straight
@@ -319,7 +319,7 @@ class TableCell:
             start, end = gfm_table_cell(text, self.table, self.row, self.col)
             return _with_extras({"text": {"start": start, "end": end}}, self)
         raise Unconvertible(
-            f"a table cell on a{'n' if kind == 'image' else ''} {kind} needs its box: mdify's index.json gives "
+            f"a table cell on a{'n' if kind == 'image' else ''} {kind} needs its box: markdownify's index.json gives "
             "every table_cell block a page + box (use a PageBox)"
         )
 

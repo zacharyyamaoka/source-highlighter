@@ -1,7 +1,7 @@
-"""Polite HTTP for `Source.capture()` when mdify is not installed: robots.txt first, at most one request per second per host, and a few hosts
+"""Polite HTTP for `Source.capture()` when markdownify is not installed: robots.txt first, at most one request per second per host, and a few hosts
 it never touches.
 
-Copied from Markdownify's `src/mdify/fetch.py` (same author, /home/bam/markdownify), which adapted robotparts'
+Copied from Markdownify's `src/markdownify/fetch.py` (same author, /home/bam/markdownify), which adapted robotparts'
 `tools/ingestor/fetch.py`; the rules are unchanged. WHY these rules (Zach's research note "Viam and Full Stack
 Component Prior Art for robotparts", 2026-10-22, and CONTRACT §6):
 - robots.txt is honoured for our user agent, and a robots.txt that answers 401/403 or 5xx means "no";

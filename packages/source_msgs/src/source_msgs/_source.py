@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from .highlighted import Highlighted
 
 KINDS = ("pdf", "html", "image", "text")
-# Capture levels besides the primary bytes (markdownify CONTRACT §2.1), and the files an mdify folder keeps them in.
+# Capture levels besides the primary bytes (markdownify CONTRACT §2.1), and the files a markdownify folder keeps them in.
 LEVEL_FILES = {"snapshot": "snapshot.jpg", "pdf": "snapshot.pdf", "single": "single.html", "archive": "source.wacz"}
 _EXTENSIONS = {"application/pdf": "pdf", "text/html": "html", "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp",
                "image/gif": "gif", "text/markdown": "md", "text/plain": "txt"}
@@ -220,7 +220,7 @@ class Source:
 
     @classmethod
     def from_bundle(cls, directory: str | os.PathLike, *, title: str | None = None) -> Source:
-        """A folder written by `mdify capture` or `mdify`: source.json + source.<ext> (+ snapshot, pdf, archive)."""
+        """A folder written by `markdownify capture` or `markdownify`: source.json + source.<ext> (+ snapshot, pdf, archive)."""
         folder = Path(directory).expanduser().resolve()
         record = json.loads((folder / "source.json").read_text(encoding="utf-8"))
         retrieval = (record.get("retrievals") or [{}])[-1]
@@ -266,25 +266,28 @@ class Source:
     # --- verbs ------------------------------------------------------------------------------------------------------
 
     def capture(self, keep: tuple[str, ...] = ("html", "snapshot"), *, using: str = "auto") -> Source:
-        """Save the bytes. A no-op once saved; a local path is read. A web page goes through `mdify capture` when mdify
-        is installed (`using="mdify"`: every capture level in `keep`, the snapshot's word boxes), else one polite
+        """Save the bytes. A no-op once saved; a local path is read. A web page goes through `markdownify capture` when
+        markdownify is installed (`using="markdownify"`: every capture level in `keep`, the snapshot's word boxes), else one polite
         stdlib request (`using="stdlib"`: robots.txt honoured, refused hosts never asked) saved under cache_root()."""
         if self.is_saved:
             return self
         if not _is_url(self.origin):
             return replace(Source.from_file(self.origin), title=self.title or Path(self.origin).stem)
-        if using not in ("auto", "mdify", "stdlib"):
-            raise ValueError(f"using must be 'auto', 'mdify' or 'stdlib', got {using!r}")
-        if using in ("auto", "mdify") and self.kind == "html":
+        using = "markdownify" if using == "mdify" else using  # its old name, until 2026-11-16
+        if using not in ("auto", "markdownify", "stdlib"):
+            raise ValueError(f"using must be 'auto', 'markdownify' or 'stdlib', got {using!r}")
+        if using in ("auto", "markdownify") and self.kind == "html":
             try:
-                from mdify.capture import capture as mdify_capture
+                # WHY a submodule import: PyPI's unrelated `markdownify` (HTML → markdown) has the same top-level
+                # name and no `capture`, so it fails here and the stdlib fetch takes over.
+                from markdownify.capture import capture as markdownify_capture
             except ImportError:
-                if using == "mdify":
-                    raise ImportError("capture(using='mdify') needs mdify: pip install 'source-msgs[capture]'") from None
+                if using == "markdownify":
+                    raise ImportError("capture(using='markdownify') needs Markdownify: pip install 'source-msgs[capture]'") from None
             else:
-                captured = mdify_capture(self.origin, tuple(keep))
+                captured = markdownify_capture(self.origin, tuple(keep))
                 if captured.directory is None:
-                    raise RuntimeError(f"{self.origin}: mdify kept nothing")
+                    raise RuntimeError(f"{self.origin}: markdownify kept nothing")
                 return replace(Source.from_bundle(captured.directory), origin=self.origin, title=self.title)
         from ._fetch import Fetcher, FetchError, FetchRefused, media_type_of
 
@@ -301,15 +304,15 @@ class Source:
 
     def to_markdown(self) -> str:
         """Markdown of the source. Markdown and plain text are read as they are; a PDF, page or image goes through
-        mdify (pipeline A, no model) when it is installed."""
+        Markdownify (pipeline A, no model) when it is installed."""
         source = self.capture() if not self.is_saved else self
         if source.kind == "text":
             return source.text()
         try:
-            from mdify.bundle import build
+            from markdownify.bundle import build
         except ImportError:
             raise ImportError(
-                f"to_markdown() of a{'n' if source.kind in ('html', 'image') else ''} {source.kind} source needs mdify: "
+                f"to_markdown() of a{'n' if source.kind in ('html', 'image') else ''} {source.kind} source needs Markdownify: "
                 "pip install 'source-msgs[markdown]'"
             ) from None
         built = build(source.path)

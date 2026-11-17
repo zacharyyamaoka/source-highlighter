@@ -373,9 +373,9 @@ wheels = [
 ]
 
 [[package]]
-name = "mdify"
+name = "markdownify"
 version = "0.1.0"
-source = { git = "https://github.com/zacharyyamaoka/markdownify#de26be95d10ac05cc42039d3c2784a4fe18dd111" }
+source = { git = "https://github.com/zacharyyamaoka/markdownify#0762a9acb50e72643982a82ece787e491a1cadf3" }
 dependencies = [
     { name = "pdfplumber" },
     { name = "rapidfuzz" },
@@ -800,10 +800,10 @@ source = { editable = "packages/source_msgs" }
 
 [package.optional-dependencies]
 capture = [
-    { name = "mdify" },
+    { name = "markdownify" },
 ]
 markdown = [
-    { name = "mdify" },
+    { name = "markdownify" },
 ]
 show = [
     { name = "source-highlighter" },
@@ -814,8 +814,8 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "mdify", marker = "extra == 'capture'", git = "https://github.com/zacharyyamaoka/markdownify" },
-    { name = "mdify", marker = "extra == 'markdown'", git = "https://github.com/zacharyyamaoka/markdownify" },
+    { name = "markdownify", marker = "extra == 'capture'", git = "https://github.com/zacharyyamaoka/markdownify" },
+    { name = "markdownify", marker = "extra == 'markdown'", git = "https://github.com/zacharyyamaoka/markdownify" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8" },
     { name = "source-highlighter", marker = "extra == 'show'", editable = "." },
 ]

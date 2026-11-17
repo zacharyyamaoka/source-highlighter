@@ -116,7 +116,7 @@ the same linked-source model serves datasheets, the Tycoon CRM and ObjectDB, so 
   may cite one Reference (CRM: `evidence[field].ref = "<id>"`). A caller may keep References as Python records and
   project them to this JSON (Zach's rule: Python is the ground truth).
 - `stored` holds whatever capture kept — any subset of markdownify CONTRACT §2.1's levels (`html`, `snapshot`, `pdf`,
-  `archive`), or nothing at all (a link-only reference). Save with `mdify capture <url> --keep …`; a file source
+  `archive`), or nothing at all (a link-only reference). Save with `markdownify capture <url> --keep …`; a file source
   (PDF, image) is stored as itself.
 - A list of References is a reference set (`refs.json`): the input of the standalone viewer.
 

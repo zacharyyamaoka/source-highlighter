@@ -131,7 +131,7 @@ def test_from_dict_reads_a_contract_5_reference_source():
     assert source.stored["snapshot"] == "/abs/snapshot.jpg"
 
 
-def test_from_bundle_reads_an_mdify_capture_folder(tmp_path):
+def test_from_bundle_reads_a_markdownify_capture_folder(tmp_path):
     bundle = tmp_path / "bundle"
     bundle.mkdir()
     (bundle / "source.html").write_bytes(HTML.read_bytes())
@@ -185,7 +185,7 @@ def site():
     server.server_close()
 
 
-def test_capture_without_mdify_fetches_politely_and_saves(site):
+def test_capture_without_markdownify_fetches_politely_and_saves(site):
     link = Source.from_url(f"{site}/spec.html")
     captured = link.capture(using="stdlib")
     assert captured.is_saved
@@ -212,16 +212,16 @@ def test_to_markdown_of_markdown_and_text():
     assert Source.from_text("plain words", media_type="text/plain").to_markdown() == "plain words"
 
 
-def test_to_markdown_of_a_pdf_without_mdify_names_the_extra(monkeypatch):
+def test_to_markdown_of_a_pdf_without_markdownify_names_the_extra(monkeypatch):
     import builtins
 
     real_import = builtins.__import__
 
-    def no_mdify(name, *args, **kwargs):
-        if name == "mdify" or name.startswith("mdify."):
+    def no_markdownify(name, *args, **kwargs):
+        if name == "markdownify" or name.startswith("markdownify."):
             raise ImportError(name)
         return real_import(name, *args, **kwargs)
 
-    monkeypatch.setattr(builtins, "__import__", no_mdify)
+    monkeypatch.setattr(builtins, "__import__", no_markdownify)
     with pytest.raises(ImportError, match=r"source-msgs\[markdown\]"):
         Source.from_file(PDF).to_markdown()
