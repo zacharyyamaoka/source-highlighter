@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source Highlighter</title>
+<meta name="description" content="Source + locations + style in → the source, highlighted, out. PDF, HTML, markdown and images.">
+<style>
+:root { --bg:#f6f5f1; --panel:#ffffff; --ink:#1c1d21; --muted:#5d616b; --line:#dedbd2; --accent:#e5322d; --hl:#ffe600;
+  --code-bg:#16181d; --code-ink:#e8e6df; --out-bg:#eeece6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#121317; --panel:#1b1d22; --ink:#ecebe6;
+  --muted:#a2a5ad; --line:#2d3038; --out-bg:#202329; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+main { max-width:1120px; margin:0 auto; padding:0 16px 80px; }
+header { padding:56px 0 24px; }
+h1 { font-size:clamp(30px,5vw,48px); line-height:1.1; margin:0 0 14px; letter-spacing:-.02em; }
+.contract { font-size:clamp(18px,2.6vw,24px); margin:0 0 18px; }
+.contract mark { background:linear-gradient(transparent 55%, color-mix(in srgb, var(--hl) 70%, transparent) 55%); color:inherit; padding:0 2px; }
+.lede { color:var(--muted); max-width:760px; margin:0 0 20px; }
+.links a { color:var(--ink); margin-right:18px; font-weight:600; }
+video, .hero img { width:100%; height:auto; border-radius:10px; box-shadow:0 6px 30px #0003; background:#000; display:block; }
+.hero p { color:var(--muted); font-size:14px; margin:8px 0 0; }
+section { margin-top:64px; }
+h2 { font-size:28px; margin:0 0 6px; letter-spacing:-.01em; }
+h3 { margin:28px 0 6px; font-size:19px; }
+.sub { color:var(--muted); margin:0 0 18px; }
+pre { margin:0; overflow-x:auto; border-radius:8px; padding:14px 16px; font:13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+pre.code { background:var(--code-bg); color:var(--code-ink); }
+pre.out { background:var(--out-bg); color:var(--ink); border:1px solid var(--line); margin-top:6px; }
+pre.out::before { content:"output"; display:block; font:600 11px system-ui; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.pair { display:grid; gap:6px; }
+table { border-collapse:collapse; width:100%; background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; font-size:14.5px; }
+th, td { text-align:left; padding:8px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+.scroll { overflow-x:auto; }
+.tag { font:600 12px system-ui; padding:1px 8px; border-radius:99px; }
+.tag.text { background:color-mix(in srgb, var(--hl) 55%, transparent); color:#1c1d21; }
+.tag.geometry { background:color-mix(in srgb, var(--accent) 22%, transparent); }
+.big { font:600 clamp(16px,2.4vw,21px)/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; background:var(--panel); border:1px solid var(--line);
+  border-radius:10px; padding:18px 20px; overflow-x:auto; }
+.big b { color:var(--accent); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr)); gap:22px; }
+.card { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+.card > a { display:block; background:#fff; border-bottom:1px solid var(--line); max-height:420px; overflow:hidden; }
+.card img { width:100%; height:auto; display:block; }
+.card figcaption { padding:14px 16px 16px; }
+.card h3 { margin:0 0 4px; }
+.card p { margin:0 0 10px; color:var(--muted); font-size:14.5px; }
+.card pre { font-size:12.5px; white-space:pre-wrap; overflow-wrap:anywhere; }
+footer { margin-top:72px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding-top:18px; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em; }
+</style></head>
+<body><main>
+<header>
+<h1>Source Highlighter</h1>
+<p class="contract"><mark>source + locations + style in → the source, highlighted, out.</mark></p>
+<p class="lede">Give it a PDF, a web page, a markdown note or an image, say where (a quote, a span, a table cell, a box on a
+page) and how (highlight, box, underline, spotlight, blackout). You get the source back with those places marked — as a
+picture, a marked PDF, or live in a browser. It never decides <em>what</em> to mark; that's the caller's job.</p>
+<p class="links"><a href="https://github.com/zacharyyamaoka/source-highlighter">GitHub</a><a href="https://github.com/zacharyyamaoka/source-highlighter/blob/main/docs/peps/0001-the-source-type.md">PEP 0001: the Source type</a><a href="https://github.com/zacharyyamaoka/source-highlighter/blob/main/CONTRACT.md">CONTRACT</a></p>
+</header>
+
+<div class="hero"><video autoplay muted loop playsinline controls poster="media/hero-poster.jpg" width="1280" height="720">
+<source src="media/hero.webm" type="video/webm"><source src="media/hero.mp4" type="video/mp4">
+<img src="media/hero.gif" alt="The highlighter marking four cells of the GIM4305-10 spec table" width="640" height="360"></video>
+<p>Recorded from the real ES module in headless Chromium, on SteadyWin's GIM4305-10 page saved by <code>mdify capture</code>
+(https://www.steadywin.cn/en/h-pd-9.html). Each step's Python is in the bar; the cells are found by their place in the table, not by their text.</p></div>
+
+<section id="api"><h2>The API</h2>
+<p class="sub">One type in the middle. Make a <code>Source</code> however you like; every way gives the same thing.
+Then highlight it, and show or save it — like matplotlib's <code>show()</code> and <code>savefig()</code>.</p>
+<div class="big">Source.from_url(url)<b>.capture()</b><b>.highlight(</b>locations, style<b>).show()</b></div>
+
+<h3>1 · <code>Source</code> — one frozen type, set fields</h3>
+<p class="sub">A frozen dataclass in <code>source_msgs</code>, a stdlib-only package every source app can import without
+importing the others (re-exported by <code>source_highlighter</code>). Its JSON is the <code>source</code> a stored
+reference already carries.</p>
+<div class="scroll"><table><tr><th>field</th><th>type</th><th>holds</th></tr><tr><td><code>origin</code></td><td><code>str</code></td><td>where it came from: a URL, or a file's absolute path</td></tr><tr><td><code>kind</code></td><td><code>str</code></td><td><code>pdf</code> · <code>html</code> · <code>image</code> · <code>text</code> — what gets drawn on</td></tr><tr><td><code>media_type</code></td><td><code>str</code></td><td><code>application/pdf</code>, <code>text/html</code>, <code>text/markdown</code>, …</td></tr><tr><td><code>sha256</code></td><td><code>str | None</code></td><td>of the saved bytes; <code>None</code> while it is only a link</td></tr><tr><td><code>path</code></td><td><code>str | None</code></td><td>the saved bytes (a file is saved as itself)</td></tr><tr><td><code>retrieved_at</code></td><td><code>str | None</code></td><td>when, ISO 8601 UTC</td></tr><tr><td><code>stored</code></td><td><code>FrozenDict</code></td><td>other capture levels kept: snapshot, pdf, single, archive</td></tr><tr><td><code>title</code></td><td><code>str | None</code></td><td>a human name</td></tr></table></div>
+<h3>Constructors: many ways in, one type out</h3>
+<div class="pair"><pre class="code"><code>from source_highlighter import Source
+
+link = Source.from_url(&quot;https://www.steadywin.cn/en/h-pd-9.html&quot;)   # a link: no network yet
+print(link.kind, link.media_type, link.is_saved)
+pdf = Source.from_file(&quot;j60-joint.pdf&quot;)                              # read, hashed, kind sniffed
+print(pdf.kind, pdf.media_type, pdf.id[:12], pdf.retrieved_at[:4])
+note = Source.from_text(&quot;| Part | Rated torque |\n|---|---|\n| GIM4305-10 | 1 N·m |\n&quot;)
+print(note.kind, note.media_type, note.to_markdown().splitlines()[2])
+print(sorted(pdf.to_dict()))                                         # a CONTRACT §5 Reference source</code></pre><pre class="out"><code>html text/html False
+pdf application/pdf 6ac4a2918c13 2026
+text text/markdown | GIM4305-10 | 1 N·m |
+[&#x27;kind&#x27;, &#x27;media_type&#x27;, &#x27;path&#x27;, &#x27;retrieved_at&#x27;, &#x27;sha256&#x27;, &#x27;stored&#x27;, &#x27;title&#x27;, &#x27;url&#x27;]</code></pre></div>
+
+<h3>2 · The verbs</h3>
+<div class="scroll"><table><tr><th>verb</th><th>does</th></tr>
+<tr><td><code>.capture(keep=("html","snapshot"))</code></td><td>saves the bytes: through <code>mdify capture</code> when it is installed (every capture level, word boxes on the snapshot), else one polite request (robots.txt honoured). A no-op once saved.</td></tr>
+<tr><td><code>.to_markdown()</code></td><td>markdown of it: read as is for markdown, through <code>mdify</code> for a PDF, page or image.</td></tr>
+<tr><td><code>.highlight(locations, style)</code></td><td>→ <code>Highlighted</code>: the source + locations + style, as data. Nothing drawn yet.</td></tr>
+<tr><td><code>Highlighted.show()</code></td><td>draws it and opens it in your browser (never raised over your window) or inline in a notebook. <code>SOURCE_HIGHLIGHTER_BACKEND=none</code>, no display, or pytest: opens nothing.</td></tr>
+<tr><td><code>Highlighted.save(path)</code></td><td>draws it into a PNG / JPEG / marked PDF / HTML page; returns the marks and anything it could not place, with why.</td></tr>
+</table></div>
+<div class="pair" style="margin-top:12px"><pre class="code"><code>from source_highlighter import Source, TableCell
+
+src = Source.from_bundle(&quot;steadywin-gim4305&quot;)            # = Source.from_url(url).capture(), saved earlier
+hl = src.highlight(TableCell(8, 4, table=33), &quot;spotlight&quot;)
+print(hl)
+result = hl.save(&quot;stall.png&quot;)                            # always headless
+print(len(result.marks), &quot;mark,&quot;, len(result.unresolved), &quot;unresolved&quot;)
+page = hl.show()                                         # browser / notebook; headless here: opens nothing
+print(page.name)</code></pre><pre class="out"><code>Highlighted(html &#x27;https://www.steadywin.cn/en/h-pd-9.html&#x27;: 1 in spotlight)
+1 mark, 0 unresolved
+index.html</code></pre></div>
+
+<h3>3 · Locations: a small union of selectors</h3>
+<p class="sub">Two families. <b>Text-anchored</b> selectors point into a source's underlying text — HTML, markdown, a
+PDF's text layer. <b>Geometry-anchored</b> ones point at a rendered surface with no text — a photo, a scan, a
+screenshot. Each has a one-line compact form borrowed from a web standard, and turns into the JSON the highlighter
+draws for whichever kind of source it meets. Finding "this text" in a source is a resolver step below the
+highlighter (the quote find, mdify's index); the selectors carry its answer.</p>
+<div class="scroll"><table><tr><th>selector</th><th>anchor</th><th>fields</th><th>compact</th><th>borrowed from</th></tr><tr><td><code>TextQuote</code></td><td><span class='tag text'>text</span></td><td>exact, prefix, suffix, page</td><td><code>text=prefix-,exact,-suffix</code></td><td>Text Fragments</td></tr><tr><td><code>TextPosition</code></td><td><span class='tag text'>text</span></td><td>start, end</td><td><code>char=840,846</code></td><td>RFC 5147</td></tr><tr><td><code>XPath</code></td><td><span class='tag text'>text</span></td><td>path</td><td><code>xpath=/html/body/…</code></td><td>W3C XPathSelector</td></tr><tr><td><code>Css</code></td><td><span class='tag text'>text</span></td><td>selector</td><td><code>css=table.spec td</code></td><td>W3C CssSelector</td></tr><tr><td><code>TableCell</code></td><td><span class='tag text'>text</span></td><td>row, col, table</td><td><code>table=1&amp;row=3&amp;col=2</code></td><td>—</td></tr><tr><td><code>Note</code></td><td><span class='tag text'>text</span></td><td>heading, block</td><td><code>heading=Pricing</code></td><td>Obsidian links</td></tr><tr><td><code>PageBox</code></td><td><span class='tag geometry'>geometry</span></td><td>page, x, y, w, h (0–1)</td><td><code>page=2&amp;xywh=percent:61,40,7,2</code></td><td>Media Fragments + PDF open params</td></tr><tr><td><code>Page</code></td><td><span class='tag geometry'>geometry</span></td><td>page</td><td><code>page=33</code></td><td>PDF open parameters</td></tr></table></div>
+<div class="pair" style="margin-top:12px"><pre class="code"><code>from source_highlighter import *
+
+for selector, kind in [
+    (TextQuote(&quot;20 Nm&quot;, prefix=&quot;Rated torque &quot;, suffix=&quot; Peak&quot;), &quot;html&quot;),
+    (TextPosition(840, 846), &quot;text&quot;),
+    (PageBox(2, 0.61, 0.40, 0.07, 0.02), &quot;pdf&quot;),
+    (Page(33), &quot;pdf&quot;),
+    (XPath(&quot;/html/body/main/table[2]/tr[3]/td[2]&quot;), &quot;html&quot;),
+    (Css(&quot;table.spec td.value&quot;), &quot;html&quot;),
+    (TableCell(3, 2), &quot;html&quot;),
+    (Note(heading=&quot;Pricing&quot;), &quot;text&quot;),
+]:
+    print(f&quot;{type(selector).__name__:12} {selector.anchor:8} {selector.compact()}&quot;)
+    print(f&quot;{&#x27;&#x27;:21} → {selector.to_location(kind)}&quot;)</code></pre><pre class="out"><code>TextQuote    text     text=Rated%20torque%20-,20%20Nm,-%20Peak
+                      → {&#x27;html&#x27;: {&#x27;text_quote&#x27;: {&#x27;exact&#x27;: &#x27;20 Nm&#x27;, &#x27;prefix&#x27;: &#x27;Rated torque &#x27;, &#x27;suffix&#x27;: &#x27; Peak&#x27;}}}
+TextPosition text     char=840,846
+                      → {&#x27;text&#x27;: {&#x27;start&#x27;: 840, &#x27;end&#x27;: 846}}
+PageBox      geometry page=2&amp;xywh=percent:61,40,7,2
+                      → {&#x27;page&#x27;: 2, &#x27;box&#x27;: [0.61, 0.4, 0.68, 0.42]}
+Page         geometry page=33
+                      → {&#x27;page&#x27;: 33}
+XPath        text     xpath=/html/body/main/table[2]/tr[3]/td[2]
+                      → {&#x27;html&#x27;: {&#x27;xpath&#x27;: &#x27;/html/body/main/table[2]/tr[3]/td[2]&#x27;}}
+Css          text     css=table.spec%20td.value
+                      → {&#x27;html&#x27;: {&#x27;css&#x27;: &#x27;table.spec td.value&#x27;}}
+TableCell    text     table=1&amp;row=3&amp;col=2
+                      → {&#x27;html&#x27;: {&#x27;xpath&#x27;: &#x27;(//table)[1]/descendant::tr[3]/*[self::td or self::th][2]&#x27;}}
+Note         text     heading=Pricing
+                      → {&#x27;note&#x27;: {&#x27;heading&#x27;: &#x27;Pricing&#x27;}}</code></pre></div>
+<h3>Nothing is dropped silently</h3>
+<p class="sub">A selector that can't address this kind of source is reported with the reason, beside the marks that were drawn.</p>
+<div class="pair"><pre class="code"><code>from source_highlighter import Source, TableCell, PageBox
+
+src = Source.from_file(&quot;j60-joint.pdf&quot;)
+result = src.highlight([TableCell(3, 2), &quot;page=2&amp;xywh=percent:19,30.9,6.4,0.8&quot;], &quot;box&quot;).save(&quot;mixed.png&quot;)
+print(len(result.marks), &quot;drawn&quot;)
+for entry in result.unresolved:
+    print(entry.location, &quot;→&quot;, entry.reason)</code></pre><pre class="out"><code>1 drawn
+table=1&amp;row=3&amp;col=2 → a table cell on a pdf needs its box: mdify&#x27;s index.json gives every table_cell block a page + box (use a PageBox)</code></pre></div>
+</section>
+
+<section id="gallery"><h2>Gallery</h2>
+<p class="sub">One card per kind of source. Each picture is the real output of the three lines under it (cropped around the marks).</p>
+<div class="grid"><figure class="card"><a href="media/gallery-pdf.jpg"><img src="media/gallery-pdf.jpg"
+ width="1100" height="467" alt="PDF source, highlighted"></a>
+<figcaption><h3>PDF</h3><p>A datasheet PDF, page 2 of the J60 joint: the peak-torque row, spotlit. Geometry-anchored boxes (compact strings: PDF page + Media Fragments xywh), drawn into the page by pdfium.</p><pre class="code"><code>src = Source.from_file(&quot;j60-joint.pdf&quot;)
+hl = src.highlight([&quot;page=2&amp;xywh=percent:45.55,30.849,8.984,1.099&quot;, &quot;page=2&amp;xywh=percent:19.228,30.909,6.423,0.801&quot;, &quot;page=2&amp;xywh=percent:73.552,30.879,6.465,0.772&quot;], &quot;spotlight&quot;)
+hl.save(&quot;pdf.png&quot;)</code></pre></figcaption></figure><figure class="card"><a href="media/gallery-html.jpg"><img src="media/gallery-html.jpg"
+ width="958" height="501" alt="HTML page source, highlighted"></a>
+<figcaption><h3>HTML page</h3><p>CubeMars&#x27; AK80-9 product page, archived (scripts off, no network). A text quote pinned by its prefix — found exactly once in the page, else reported.</p><pre class="code"><code>src = Source.from_file(&quot;cubemars-ak80-9.html&quot;)
+hl = src.highlight(TextQuote(&quot;22&quot;, prefix=&quot;Peak torque (Nm)&quot;, label=&quot;peak&quot;), &quot;box&quot;, label=True)
+hl.save(&quot;html.png&quot;)</code></pre></figcaption></figure><figure class="card"><a href="media/gallery-markdown.jpg"><img src="media/gallery-markdown.jpg"
+ width="491" height="345" alt="Markdown source, highlighted"></a>
+<figcaption><h3>Markdown</h3><p>The same spec as a markdown table. TableCell counts rows from the header row; it becomes the cell&#x27;s exact character span.</p><pre class="code"><code>src = Source.from_file(&quot;cubemars-ak80-9-spec.md&quot;)
+hl = src.highlight([TableCell(19, 1), TableCell(19, 2)], &quot;highlight&quot;)
+hl.save(&quot;markdown.png&quot;)</code></pre></figcaption></figure><figure class="card"><a href="media/gallery-image.jpg"><img src="media/gallery-image.jpg"
+ width="1039" height="511" alt="Image / screenshot source, highlighted"></a>
+<figcaption><h3>Image / screenshot</h3><p>The GIM4305-10 page as a picture (mdify&#x27;s capture-time snapshot). No text layer, so the location is a box: the word box mdify measured for “3.47”.</p><pre class="code"><code>src = Source.from_file(&quot;steadywin-gim4305/snapshot.jpg&quot;)
+hl = src.highlight(PageBox(1, 0.7731, 0.4093, 0.0242, 0.0105), &quot;box&quot;)
+hl.save(&quot;image.png&quot;)</code></pre></figcaption></figure><figure class="card"><a href="media/gallery-table-cell.jpg"><img src="media/gallery-table-cell.jpg"
+ width="1025" height="498" alt="Table cell source, highlighted"></a>
+<figcaption><h3>Table cell</h3><p>The live GIM4305-10 page, saved by mdify capture: the GDS34 column&#x27;s stall torque, by its cell — not by searching for “3.47”, so a value that repeats can&#x27;t fool it.</p><pre class="code"><code>src = Source.from_bundle(&quot;steadywin-gim4305&quot;)  # mdify capture https://www.steadywin.cn/en/h-pd-9.html
+hl = src.highlight(TableCell(8, 4, table=33, label=&quot;stall torque, GDS34&quot;), &quot;spotlight&quot;, label=True)
+hl.save(&quot;table-cell.png&quot;)</code></pre></figcaption></figure></div></section>
+
+<footer>
+<p><b>Install</b> (Python ≥ 3.12; HTML and text also need <code>playwright install chromium</code>):</p>
+<pre class="code"><code>pip install &quot;source-highlighter @ git+https://github.com/zacharyyamaoka/source-highlighter&quot;</code></pre>
+<p>The interactive form is one framework-free ES module, <code>js/source-highlighter.js</code>. MIT licensed.
+Datasheet pages shown belong to their makers (SteadyWin, CubeMars, and the J60 joint's maker); they appear here as the sources being cited.
+This page is built by <code>scripts/build_site.py</code>; every output above was printed by the code beside it.</p>
+</footer>
+</main></body></html>
