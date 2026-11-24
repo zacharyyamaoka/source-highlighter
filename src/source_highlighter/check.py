@@ -10,7 +10,7 @@ answers per Reference in Wikipedia's url-status words:
 - unreachable (n of 3) — unreachable, not yet three times;
 - link-only — nothing stored and no exact live match.
 
-Each status carries the live link the browser highlights itself (a Text Fragment for HTML, #page=N for a PDF).
+Each status carries the live link the browser highlights itself (a Text Fragment for HTML, #page=N&search="…" for a PDF).
 The check never draws anything: the viewer marks a stored copy, always (§6).
 """
 
@@ -64,14 +64,32 @@ def text_fragment_link(url: str, quote: str) -> str:
     return f"{url.split('#')[0]}#:~:text={directive}"
 
 
+def pdf_open_link(url: str, page: int | None, quote: str | None) -> str:
+    """`url#page=N&search="…"&phrase=true`: the PDF opens at its page with the quote searched and highlighted.
+
+    WHY these parameters (prior-art scout, 2026-11-24): `page` and `search` are Adobe's PDF open parameters (RFC 8118
+    lists them); pdf.js — Firefox's viewer and any self-hosted one — honours both and highlights every match, with
+    `phrase=true` keeping the words together; Chrome's viewer gained `#search` on its main branch on 2026-11-13. No
+    browser draws a box from a URL (RFC 8118 `highlight=` is Acrobat-only), so the exact mark stays on the stored copy.
+    The quote is percent-encoded whole, quotes included, so `&`, `#` and `+` in it never break the fragment.
+    """
+    parts = [f"page={page}"] if page else []
+    if quote and quote.strip():
+        parts += [f"search={urllib.parse.quote(chr(34) + quote.strip() + chr(34), safe='')}", "phrase=true"]
+    return f"{url.split('#')[0]}#{'&'.join(parts)}" if parts else url
+
+
 def live_link(ref: dict, media_type: str | None) -> str | None:
     url = ref["source"].get("url")
     if not url:
         return None
     pdf = (media_type or ref["source"].get("media_type") or "") == "application/pdf" or url.lower().split("?")[0].endswith(".pdf")
     if pdf:
-        page = next((location["page"] for location in ref.get("locations") or [] if isinstance(location.get("page"), int)), None)
-        return f"{url.split('#')[0]}#page={page}" if page else url
+        located = next((location for location in ref.get("locations") or [] if isinstance(location.get("page"), int)), None)
+        page = located["page"] if located else None
+        quote = (located or {}).get("quote") or ref.get("quote") or next(
+            (location["quote"] for location in ref.get("locations") or [] if location.get("quote")), None)
+        return pdf_open_link(url, page, quote)
     quote = ref.get("quote") or next(
         (location["html"]["text_quote"]["exact"] for location in ref.get("locations") or [] if (location.get("html") or {}).get("text_quote", {}).get("exact")),
         None,

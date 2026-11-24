@@ -163,7 +163,9 @@ def test_each_case_gets_its_status_word_and_why(site, tmp_path):
         assert entry["checked_at"] == "2027-01-15T08:00:00Z"
     # the live side is a link the browser highlights itself
     assert statuses["unchanged"]["live_link"] == site + "/unchanged.html#:~:text=Rated%20torque%20%28Nm%29,9"
-    assert statuses["pdf-same"]["live_link"] == site + "/same.pdf#page=2"
+    # a PDF opens at its page with the cited words searched (#page=N&search="…"&phrase=true, test_pdf_open_link_*)
+    assert statuses["pdf-same"]["live_link"] == site + "/same.pdf#page=2&search=%22350.4W%22&phrase=true"
+    assert statuses["pdf-changed"]["live_link"] == site + "/changed.pdf#page=2"  # no quote: the page only
     assert statuses["note"]["live_link"] is None
 
 
@@ -219,3 +221,24 @@ def test_cli_check_writes_statuses(site, tmp_path, capsys):
     printed = json.loads(capsys.readouterr().out)
     assert printed == json.loads(out.read_text())
     assert {entry["status"] for entry in printed["statuses"].values()} == {"live"}
+
+
+def test_pdf_open_link_searches_the_quote_on_its_page():
+    """PDF open parameters (RFC 8118 / Adobe) + pdf.js's phrase=true; the quote is encoded whole so & # + survive."""
+    from source_highlighter.check import live_link, pdf_open_link
+
+    assert pdf_open_link("https://x.test/a.pdf#old", 2, "350.4W") == "https://x.test/a.pdf#page=2&search=%22350.4W%22&phrase=true"
+    assert pdf_open_link("https://x.test/a.pdf", 2, "Rated & peak #1 +5") == \
+        "https://x.test/a.pdf#page=2&search=%22Rated%20%26%20peak%20%231%20%2B5%22&phrase=true"
+    assert pdf_open_link("https://x.test/a.pdf", None, "88.5%") == "https://x.test/a.pdf#search=%2288.5%25%22&phrase=true"
+    assert pdf_open_link("https://x.test/a.pdf", 3, None) == "https://x.test/a.pdf#page=3"
+    assert pdf_open_link("https://x.test/a.pdf", None, "  ") == "https://x.test/a.pdf"
+    # the page + quote Location's own words win over the reference's quote
+    ref = {"source": {"url": "https://x.test/a.pdf"}, "locations": [{"page": 2, "quote": "349.2W"}], "quote": "Rated power 349.2W"}
+    assert live_link(ref, None) == "https://x.test/a.pdf#page=2&search=%22349.2W%22&phrase=true"
+    # what pdf.js reads back from that fragment: the words, quotes stripped, as one phrase
+    import urllib.parse
+
+    fragment = urllib.parse.urlsplit(live_link(ref, None)).fragment
+    params = dict(urllib.parse.parse_qsl(fragment))
+    assert params["search"].replace('"', "") == "349.2W" and params["phrase"] == "true" and params["page"] == "2"
