@@ -12,7 +12,7 @@
     "vendor/",
     "like-obsidian/"
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "peerDependencies": {
     "pdfjs-dist": ">=4"
