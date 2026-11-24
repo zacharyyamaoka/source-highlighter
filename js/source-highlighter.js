@@ -618,7 +618,7 @@ a.sh-mark { cursor: pointer; }
  *   container width); pdfjs: the pdfjs-dist module or a URL to pdf.mjs (PDFs only); markdown: the viewer module or
  *   its URL (rendered markdown only); width: layout width for html (default 1280), text and markdown (default: the
  *   container width).
- * Returns {ready, update(locations, style), focus(id, {zoom}), destroy()}; `ready` resolves to
+ * Returns {ready, update(locations, style), focus(id, {zoom}), destroy(), zoom, pageCount, result}; `ready` resolves to
  * {marks, unresolved} once the source is on screen and the marks are drawn.
  *
  * Clicks (the drop-in viewer): a click on a mark dispatches a bubbling, cancelable `highlight-click` CustomEvent
@@ -707,6 +707,7 @@ export function highlight(container, options) {
       const natural = pdfPage.getViewport({ scale: 1 }); // 1 CSS px per PDF point, rotation applied
       const page = addPage(natural.width, natural.height);
       page.pageNumber = pageNumber;
+      page.element.dataset.sourcePage = String(pageNumber); // the PDF's own page number (data-page counts drawn pages)
       page.pdfPage = pdfPage;
       page.naturalViewport = natural;
       const pixelRatio = window.devicePixelRatio || 1;
@@ -978,6 +979,12 @@ export function highlight(container, options) {
         const found = findPage(location.page);
         if (found.reason) return found;
         pages = [found.page];
+      }
+      // WHY say it: a drawing exported as vector art, or a scan, has no text to find — "not in the source" would read
+      // as if the words were missing, when only a page box can mark such a page (the J60 sheet, JMC's drawings).
+      if (pages.every((page) => !squashSpace(pdfPageText(page).text))) {
+        const what = location.page !== undefined ? `page ${location.page} has` : "this PDF has";
+        return { reason: `${what} no text layer (a drawing or a scan): only a page box can mark it` };
       }
       const decided = decideQuote(quote, pages.map((page) => ({ where: page, candidates: quoteCandidates(pdfPageText(page).text, quote, state.matcher) })), loaded);
       if (decided.reason) return { reason: location.page !== undefined ? `${decided.reason} on page ${location.page}` : decided.reason };
@@ -1560,6 +1567,15 @@ export function highlight(container, options) {
     ready: chain,
     get zoom() {
       return state.zoom;
+    },
+    /** How many pages the source has (a PDF's page count; 1 otherwise), drawn or not; null before it has loaded. */
+    get pageCount() {
+      if (state.kind === "pdf") return state.pdf?.numPages ?? null;
+      return state.pages.length ? 1 : null;
+    },
+    /** The latest {marks, unresolved}: `ready` holds the first drawing's, this one follows update(), focus({zoom}) and redraws. */
+    get result() {
+      return state.result;
     },
     update(locations, style) {
       chain = chain.then(async () => {

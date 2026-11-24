@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Source</title>
+<link rel="stylesheet" href="open.css">
+<!--
+  Open a stored source at a Location, with no server: CONTRACT §7.
+
+    open.html?src=<stored copy>&where=<source_msgs selector>[&where=…][&quote=<the source's words>]
+             [&label=<what the value is>][&url=<the live page>][&retrieved=<access date>][&sha256=<of the stored copy>]
+             [&kind=pdf|image|html|text|markdown][&page=N][&style=…][&zoom=fit|N][&pdfjs=<pdf.min.mjs>][&embed=1]
+
+  It lands scrolled to the place with the mark drawn: a box for a page box, the quote's words for a quote, both when both.
+-->
+</head>
+<body class="o-page o-folded">
+<header class="o-head" hidden>
+  <div class="o-what">
+    <b class="o-label"></b>
+    <q class="o-quote" hidden></q>
+  </div>
+  <div class="o-state">
+    <span class="o-status" role="status" aria-live="polite"></span>
+    <nav class="o-pages" aria-label="Pages" hidden>
+      <button type="button" class="o-btn o-prev" title="Previous page" aria-label="Previous page">‹</button>
+      <span class="o-pos"></span>
+      <button type="button" class="o-btn o-next" title="Next page" aria-label="Next page">›</button>
+    </nav>
+    <span class="o-links"></span>
+    <button type="button" class="o-btn o-details-toggle" aria-expanded="false" title="Show or hide the details">Details</button>
+  </div>
+</header>
+<main class="o-body">
+  <div class="o-stage" tabindex="-1"><div class="o-host"></div></div>
+  <div class="o-split" role="separator" aria-orientation="vertical" title="Drag to resize the details"></div>
+  <aside class="o-details" aria-label="Details">
+    <section><h4>Where</h4><ul class="o-where"></ul></section>
+    <section><h4>Source</h4><dl class="o-source"></dl></section>
+    <section><h4>View</h4>
+      <label class="o-field">Mark <select class="o-style" aria-label="Mark style"><option value="">as cited (box / highlight)</option><option>highlight</option><option>box</option><option>underline</option><option>spotlight</option></select></label>
+      <label class="o-field">Zoom <select class="o-zoom" aria-label="Zoom"><option value="">readable</option><option value="fit">fit width</option><option value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
+    </section>
+  </aside>
+</main>
+<a class="o-open-full" target="_blank" rel="noopener" hidden>Open ↗</a>
+<script>
+// WHY a classic script first: Chromium refuses ES modules on a page opened from a file:// URL (it counts the folder as
+// another origin). This part has no imports, so it still runs there and says plainly what to do instead of a blank page.
+window.__shOpenBlocked = function () {
+  if (document.body.dataset.ready) return;
+  var params = new URLSearchParams(location.search);
+  var src = params.get("src");
+  var page = null;
+  params.getAll("where").forEach(function (where) {
+    var match = /(?:^|&)page=(\d+)/.exec(where);
+    if (match && page === null) page = match[1];
+  });
+  var box = document.createElement("div");
+  box.className = "o-empty";
+  var inner = document.createElement("div");
+  inner.className = "o-empty-in";
+  var lines = ["This page was opened from a file, and this browser does not let it read other files, so it cannot mark the place."];
+  inner.appendChild(Object.assign(document.createElement("b"), { textContent: lines[0] }));
+  if (src) {
+    var direct = new URL(src, location.href);
+    if (page) direct.hash = "page=" + page;
+    var p = document.createElement("p");
+    p.textContent = "Open the stored copy in your browser's own viewer: ";
+    var a = Object.assign(document.createElement("a"), { href: direct.href, textContent: decodeURIComponent(direct.pathname.split("/").pop()) + (page ? ", page " + page : "") + " ↗", target: "_blank", rel: "noopener" });
+    p.appendChild(a);
+    inner.appendChild(p);
+  }
+  // The smallest folder holding this page and the source: serve it, then open the same page from the server.
+  var here = location.pathname.split("/").slice(0, -1);
+  var there = src ? new URL(src, location.href).pathname.split("/").slice(0, -1) : here;
+  var common = [];
+  for (var i = 0; i < Math.min(here.length, there.length) && here[i] === there[i]; i += 1) common.push(here[i]);
+  var folder = decodeURIComponent(common.join("/") || "/");
+  var page_path = location.pathname.slice(common.join("/").length) + location.search + location.hash;
+  var serve = document.createElement("p");
+  serve.textContent = "Or serve the folder and open this page from it:";
+  var code = Object.assign(document.createElement("code"), { textContent: "python3 -m http.server 8000 --bind 127.0.0.1 --directory " + JSON.stringify(folder) });
+  var then = Object.assign(document.createElement("code"), { textContent: "http://127.0.0.1:8000" + page_path });
+  inner.appendChild(serve);
+  inner.appendChild(code);
+  inner.appendChild(then);
+  box.appendChild(inner);
+  document.querySelector(".o-host").replaceChildren(box);
+  document.body.dataset.ready = "blocked";
+};
+</script>
+<script type="module" src="open.js" onerror="__shOpenBlocked()"></script>
+</body>
+</html>

@@ -135,11 +135,14 @@ def make_handler(viewer: Viewer):
         def do_GET(self):
             path = urllib.parse.unquote(urllib.parse.urlsplit(self.path).path)
             try:
-                if path in ("/", "/index.html"):
+                if path in ("/", "/index.html", "/lens.html"):
                     self._file(viewer_dir / "lens.html")
+                elif path == "/open.html":
+                    # the static entry point (CONTRACT §7) works here too: open.html?src=stored/<id>/<level>&where=…
+                    self._file(viewer_dir / "open.html")
                 elif re.fullmatch(r"/[a-z]+\.(js|css)", path):
                     self._file(viewer_dir / path[1:])
-                elif path == "/source-highlighter.js" or re.fullmatch(r"/vendor/[\w.-]+\.js", path):
+                elif path in ("/source-highlighter.js", "/source-msgs.js") or re.fullmatch(r"/vendor/[\w.-]+\.js", path):
                     self._file(js_dir / path[1:])
                 elif re.fullmatch(r"/pdfjs/pdf(\.worker)?\.min\.mjs", path):
                     pdfjs = _pdfjs_dir()
