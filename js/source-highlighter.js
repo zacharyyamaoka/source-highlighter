@@ -64,8 +64,10 @@ function archivedSrcdoc(html) {
 // Attributes that make a browser fetch (or run) something. Renamed, not deleted, so the element and its box stay.
 const FETCHING_ATTRIBUTES = /^(src|srcset|poster|background|data|lowsrc|on[a-z]+)$/i;
 const FETCHING_HREF_TAGS = /^(link|image|use|feimage)$/i;
-const TAG = /<([a-zA-Z][^\s/>]*)((?:\s+[^\s"'=<>/]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?)*)(\s*\/?)>/g;
-const ATTRIBUTE = /(\s+)([^\s"'=<>/]+)(\s*=\s*(?:"[^"]*"|'([^']*)'|[^\s"'>]+))?/g;
+// WHY an attribute may follow a quoted value with no space (`height='62'width='120' src=…`): a parse error every browser
+// forgives, and real pages write it (SteadyWin's product page, 2026-11-24); a tag the rewrite skipped kept its src.
+const TAG = /<([a-zA-Z][^\s/>]*)((?:(?:\s+|(?<=["']))[^\s"'=<>/]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?)*)(\s*\/?)>/g;
+const ATTRIBUTE = /(\s+|(?<=["']))([^\s"'=<>/]+)(\s*=\s*(?:"[^"]*"|'([^']*)'|[^\s"'>]+))?/g;
 const CSS_URL = /url\(\s*(["']?)(?!data:|#)[^)]*\1\s*\)/gi;
 
 /**
