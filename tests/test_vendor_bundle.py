@@ -48,6 +48,7 @@ def test_the_bundle_is_the_pinned_files_and_nothing_else(bundle):
     assert record["commit"] == subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     assert "pdfjs-dist 6.4.299, Apache-2.0" in record["third_party"]["pdfjs/"]
     assert record["entry"].startswith("open.html?src=")
+    assert "/home/" not in (bundle / "VENDOR.json").read_text(encoding="utf-8")  # a published folder names no machine path
     assert vendor("--check", str(bundle)).returncode == 0
 
 

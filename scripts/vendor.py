@@ -108,7 +108,7 @@ def collect(repo: pathlib.Path, ref: str | None, worktree: bool, with_markdown: 
                 files[f"like-obsidian/{path.name}"] = path.read_bytes()
         lockfile = (repo / "js" / "pnpm-lock.yaml").read_text(encoding="utf-8")
         dirty = bool(git(repo, "status", "--porcelain", "--", *[src for src, _ in pairs]))
-        built = "the working tree of " + str(repo) + (" (with uncommitted changes)" if dirty else " (clean)")
+        built = "the working tree" + (" (with uncommitted changes)" if dirty else " (clean)")
     else:
         with tempfile.TemporaryDirectory(prefix="source-highlighter-vendor-") as work_name:
             work = pathlib.Path(work_name)
@@ -126,10 +126,11 @@ def collect(repo: pathlib.Path, ref: str | None, worktree: bool, with_markdown: 
             lockfile = (work / "js" / "pnpm-lock.yaml").read_text(encoding="utf-8")
         dirty = False
         built = f"git archive of {commit[:12]}"
+    # WHY no local path: the folder is published as is, and a site should name no path on this machine (re-vendor with
+    # /home/bam/source-highlighter/scripts/vendor.py, the README says where).
     record = {
         "what": WHAT,
-        "repo": str(repo),
-        "remote": REMOTE,
+        "repo": REMOTE,
         "ref": ref or ("HEAD" if worktree else "main"),
         "commit": commit,
         "commit_date": git(repo, "log", "-1", "--format=%cI", commit),
