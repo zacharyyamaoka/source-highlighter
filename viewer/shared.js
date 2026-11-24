@@ -44,13 +44,68 @@ const hostOf = (url) => {
   }
 };
 
-/** The reference set and the server's state ({files, statuses, checked_at, vault, pdfjs}). */
-export async function loadSet(base, refsUrl) {
-  const [refs, state] = await Promise.all([
-    fetch(refsUrl).then((response) => (response.ok ? response.json() : Promise.reject(new Error(`${refsUrl}: HTTP ${response.status}`)))),
-    fetch(new URL("api/state", base)).then((response) => response.json()),
-  ]);
-  return { refs, state, byId: Object.fromEntries(refs.map((ref) => [ref.id, ref])) };
+/** JSON at `url`, or null when it is missing, not JSON, or unreachable (a static host, a file:// page). */
+async function jsonOrNull(url) {
+  try {
+    const response = await fetch(url);
+    return response.ok ? await response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The state of a set with no server: what refs.json names, each stored file at its URL (relative to refs.json, or
+ * absolute), not stat'ed (`bytes: null`); statuses from the `check --out` file when one sits beside refs.json.
+ */
+export function staticState(refs, refsUrl, statuses) {
+  const files = {};
+  for (const ref of refs) {
+    const levels = {};
+    for (const level of LEVELS) {
+      const stored = ref.source?.stored?.[level];
+      if (stored) levels[level] = { kept: true, bytes: null, url: new URL(stored, refsUrl).href };
+    }
+    if (ref.source?.vault) levels.vault = { kept: true, bytes: null, url: new URL(ref.source.vault, refsUrl).href };
+    files[ref.id] = levels;
+  }
+  return { files, statuses: statuses?.statuses || {}, checked_at: statuses?.checked_at || null, vault: null, static: true };
+}
+
+/**
+ * The reference set and its state ({files, statuses, checked_at, vault}). A set declared static (`probe: false`)
+ * reads only what it names: `stateUrl`, a state.json (`source-highlighter state refs.json`) or a statuses.json
+ * (`check --out`), else refs.json alone (staticState). Otherwise it asks the view server's `api/state`, and with no
+ * server falls back to state.json, then statuses.json, beside refs.json. WHY tolerate every one missing: the same
+ * Lens and Peek run on the view server, from a static host and from a file:// folder (CONTRACT §7); WHY not probe a
+ * declared static set: each missing optional file is a 404 line in the reader's console.
+ */
+export async function loadSet(base, refsUrl, { stateUrl = null, probe = true } = {}) {
+  const refsHref = new URL(refsUrl, document.baseURI).href;
+  const refs = await fetch(refsHref).then((response) => (response.ok ? response.json() : Promise.reject(new Error(`${refsHref}: HTTP ${response.status}`))));
+  let state = probe && !stateUrl ? await jsonOrNull(new URL("api/state", base)) : null;
+  if (!state) {
+    let written = null;
+    if (stateUrl) written = await jsonOrNull(new URL(stateUrl, document.baseURI));
+    else if (probe) written = (await jsonOrNull(new URL("state.json", refsHref))) || (await jsonOrNull(new URL("statuses.json", refsHref)));
+    state = staticState(refs, refsHref, written);
+    if (written?.files) {
+      // A written state.json knows which files exist and their sizes; its paths count from refs.json, as refs.json's do.
+      for (const [id, levels] of Object.entries(written.files)) {
+        for (const [level, file] of Object.entries(levels)) {
+          const url = state.files[id]?.[level]?.url;
+          state.files[id] = state.files[id] || {};
+          state.files[id][level] = { ...file, url };
+        }
+      }
+    }
+  }
+  return { refs, state, refsUrl: refsHref, byId: Object.fromEntries(refs.map((ref) => [ref.id, ref])) };
+}
+
+/** Where a stored copy is fetched from: its URL in a static set, else the view server's /stored/<id>/<level>. */
+export function storedUrl(ref, level, base, state) {
+  return state?.files?.[ref.id]?.[level]?.url || new URL(`stored/${encodeURIComponent(ref.id)}/${level}`, base).href;
 }
 
 /**
@@ -109,8 +164,8 @@ export function chain(ref, state, showing) {
  * other levels (a reference may carry html Locations for its page and boxes for its screenshot). A reference with
  * none for this level, but a quote, is found by its quote (§5 quote-only).
  */
-export function sourceFor(ref, level, base) {
-  const url = new URL(`stored/${encodeURIComponent(ref.id)}/${level}`, base).href;
+export function sourceFor(ref, level, base, state = null) {
+  const url = storedUrl(ref, level, base, state);
   const all = (ref.locations || []).map((location, index) => ({ ...location, id: location.id ?? `loc-${index + 1}` }));
   const isKind = (location, ...keys) => keys.some((key) => location[key] !== undefined);
   let source;
@@ -136,10 +191,10 @@ export function sourceFor(ref, level, base) {
  * Draw `ref` at `level` into `host` (a scroll container) and bring the first mark to its middle.
  * Returns {instance, ready: Promise<{marks, unresolved}>}.
  */
-export function drawRef(host, ref, level, { base, style = "highlight", zoom = "fit", onlyPage = false } = {}) {
+export function drawRef(host, ref, level, { base, state = null, style = "highlight", zoom = "fit", onlyPage = false, pdfjs = null } = {}) {
   host.replaceChildren();
   delete host.dataset.ready;
-  const { source, locations } = sourceFor(ref, level, base);
+  const { source, locations } = sourceFor(ref, level, base, state);
   const page = onlyPage ? locations.find((location) => Number.isInteger(location.page))?.page : undefined;
   const instance = highlight(host, {
     source,
@@ -147,7 +202,7 @@ export function drawRef(host, ref, level, { base, style = "highlight", zoom = "f
     style,
     zoom,
     page,
-    pdfjs: new URL("pdfjs/pdf.min.mjs", base).href,
+    pdfjs: pdfjs || new URL("pdfjs/pdf.min.mjs", base).href,
   });
   const ready = instance.ready.then((result) => {
     const first = host.querySelector(".sh-mark");
@@ -187,7 +242,7 @@ export function links(ref, state, base, showing) {
   const level = showing || shownLevel(ref, state);
   if (level) {
     const stored = el("a", "sh-v-stored", ref.source.vault ? "note ↗" : `stored ↗ ${day(ref.source.retrieved_at) || level}`);
-    stored.href = new URL(`stored/${encodeURIComponent(ref.id)}/${level}`, base).href;
+    stored.href = storedUrl(ref, level, base, state);
     stored.target = "_blank";
     stored.rel = "noopener";
     stored.title = `The stored ${level} this mark is drawn on`;

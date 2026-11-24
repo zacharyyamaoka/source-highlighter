@@ -6,7 +6,10 @@
 // Hovering a citation shows a crop of the stored copy at the mark, with its status and both links; clicking pins a
 // panel (moved by its header, resized by its corner, both remembered) with the whole source; "Open full" goes to
 // Lens. The host page is left alone except a dotted underline and a superscript. data-refs resolves against the
-// host page; the stored files and statuses come from the viewer server peek.js was loaded from.
+// host page; the stored files and statuses come from the viewer server peek.js was loaded from — or, with no server
+// (a static host, a file:// folder; say so with data-static), from refs.json itself: stored paths count from
+// refs.json, an optional data-state="state.json" (or a check --out statuses.json) adds sizes and statuses, and
+// data-pdfjs="…/pdf.min.mjs" points at another pdf.js.
 
 import { drawRef, el, emptyState, links, loadSet, pill, remember, shownLevel, statusOf, draggable } from "./shared.js";
 
@@ -14,6 +17,9 @@ const base = new URL(".", import.meta.url);
 const script = [...document.querySelectorAll("script[src]")].find((node) => new URL(node.src, document.baseURI).href === import.meta.url)
   || document.querySelector("script[data-refs]");
 const refsUrl = script?.dataset.refs ? new URL(script.dataset.refs, document.baseURI) : new URL("refs.json", base);
+// A static set (no view server, CONTRACT §7) may name its state.json and its pdf.js; both are optional.
+const stateUrl = script?.dataset.state ? new URL(script.dataset.state, document.baseURI) : null;
+const pdfjs = script?.dataset.pdfjs ? new URL(script.dataset.pdfjs, document.baseURI).href : null;
 
 const PANEL_KEY = "sh-peek:panel";
 const PANEL_MIN = { w: 320, h: 240 };
@@ -29,7 +35,8 @@ for (const name of ["common.css", "peek.css"]) {
   document.head.append(link);
 }
 
-const set = await loadSet(base, refsUrl);
+// data-static (or data-state) declares a set with no view server: nothing else is asked for.
+const set = await loadSet(base, refsUrl, { stateUrl, probe: script?.dataset.static === undefined && !stateUrl });
 const number = (id) => set.refs.findIndex((ref) => ref.id === id) + 1;
 
 let card = null;
@@ -104,7 +111,7 @@ function peek(id, anchor) {
   });
   document.body.append(card);
   place(card, anchor);
-  if (level) cardView = drawRef(crop, ref, level, { base, style: "highlight", zoom: CROP_ZOOM[level], onlyPage: true });
+  if (level) cardView = drawRef(crop, ref, level, { base, state: set.state, pdfjs, style: "highlight", zoom: CROP_ZOOM[level], onlyPage: true });
   else crop.append(emptyState(ref, set.state, base));
   return cardView?.ready;
 }
@@ -195,13 +202,16 @@ function pinRef(id) {
   for (const cite of document.querySelectorAll(".shp-cite")) cite.classList.toggle("shp-on", cite.dataset.ref === id);
   pin.querySelector(".shp-num").textContent = String(number(id));
   pin.querySelector(".shp-pin-head b").textContent = ref.label || id;
-  pin.querySelector(".shp-full").href = new URL(`#ref=${encodeURIComponent(id)}`, base).href;
+  // Lens on the view server is "/"; in a static folder it is lens.html, told where the set is.
+  pin.querySelector(".shp-full").href = set.state.static
+    ? new URL(`lens.html?refs=${encodeURIComponent(set.refsUrl)}${stateUrl ? `&state=${encodeURIComponent(stateUrl.href)}` : ""}#ref=${encodeURIComponent(id)}`, base).href
+    : new URL(`#ref=${encodeURIComponent(id)}`, base).href;
   const level = shownLevel(ref, set.state);
   pin.querySelector(".shp-pin-meta").replaceChildren(pill(statusOf(ref, set.state)), links(ref, set.state, base, level));
   pinView?.instance.destroy();
   pinView = null;
   const body = pin.querySelector(".shp-pin-body");
-  if (level) pinView = drawRef(body, ref, level, { base, style: "highlight", zoom: PIN_ZOOM[level] });
+  if (level) pinView = drawRef(body, ref, level, { base, state: set.state, pdfjs, style: "highlight", zoom: PIN_ZOOM[level] });
   else body.replaceChildren(emptyState(ref, set.state, base));
   return pinView?.ready;
 }

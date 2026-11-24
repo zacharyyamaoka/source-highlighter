@@ -1,7 +1,9 @@
 """`source-highlighter <source> --locations locations.json --style spotlight --out marked.png`
 
-Also `source-highlighter check refs.json [--out statuses.json]` (the CONTRACT §6 status of each Reference) and
-`source-highlighter view refs.json [--port 0]` (the standalone viewer, on 127.0.0.1).
+Also `source-highlighter check refs.json [--out statuses.json]` (the CONTRACT §6 status of each Reference),
+`source-highlighter view refs.json [--port 0]` (the standalone viewer, on 127.0.0.1) and
+`source-highlighter state refs.json --out state.json` (what the viewer server's /api/state says, as a file, for a
+static folder with no server: CONTRACT §7).
 """
 
 from __future__ import annotations
@@ -21,6 +23,8 @@ def main(argv: list[str] | None = None) -> int:
         return _check(argv[1:])
     if argv and argv[0] == "view":
         return _view(argv[1:])
+    if argv and argv[0] == "state":
+        return _state(argv[1:])
     return _render(argv)
 
 
@@ -64,6 +68,35 @@ def _view(argv: list[str]) -> int:
     except (OSError, ValueError) as error:
         print(f"source-highlighter view: {error}", file=sys.stderr)
         return 1
+
+
+def _state(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="source-highlighter state",
+        description="Write what the viewer server's /api/state says (each stored file kept or not, its size, and the "
+        "statuses) as a JSON file, so Lens and Peek show sizes and statuses from a static folder with no server "
+        "(CONTRACT §7). No machine paths are written.",
+    )
+    parser.add_argument("refs", help="a reference set: a JSON list of References (CONTRACT §5)")
+    parser.add_argument("--statuses", help="statuses from `source-highlighter check` (default: statuses.json beside the refs, if any)")
+    parser.add_argument("--vault", help="the vault root that source.vault paths are relative to")
+    parser.add_argument("--out", help="write it here (default: print it)")
+    args = parser.parse_args(argv)
+    from .view import Viewer
+
+    try:
+        state = Viewer(Path(args.refs), Path(args.statuses) if args.statuses else None, Path(args.vault) if args.vault else None).state()
+    except (OSError, ValueError) as error:
+        print(f"source-highlighter state: {error}", file=sys.stderr)
+        return 1
+    # WHY drop vault and pdfjs: the folder is published as is, and the vault root is a path on this machine.
+    static = {"files": state["files"], "statuses": state["statuses"], "checked_at": state["checked_at"]}
+    text = json.dumps(static, indent=1, ensure_ascii=False) + "\n"
+    if args.out:
+        Path(args.out).write_text(text, encoding="utf-8")
+    else:
+        print(text, end="")
+    return 0
 
 
 def _render(argv: list[str]) -> int:

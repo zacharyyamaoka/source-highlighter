@@ -1,9 +1,10 @@
 // Lens: one Reference, full page (V1 of the 2026-11-05 babble). The stored copy fills the view with the cited
 // place marked and in the middle; the header carries the one answer (label, quote, status, both links); Details
 // folds out with the status from `source-highlighter check`, the fallback chain (V5) and the Locations.
-// Deep link: #ref=<id>. ‹ › and ← → walk the set.
+// Deep link: #ref=<id>. ‹ › and ← → walk the set. With no view server (a static folder, CONTRACT §7) it is lens.html,
+// reading refs.json beside it or ?refs=<url> (and an optional ?state=<state.json>, ?pdfjs=<pdf.min.mjs>).
 
-import { bytes, chain, drawRef, el, emptyState, links, loadSet, pill, remember, shownLevel, statusOf, draggable } from "./shared.js";
+import { bytes, chain, drawRef, el, emptyState, links, loadSet, pill, remember, shownLevel, statusOf, storedUrl, draggable } from "./shared.js";
 
 const base = new URL(".", import.meta.url);
 const $ = (selector) => document.querySelector(selector);
@@ -92,7 +93,7 @@ function open(id, chosenLevel) {
     stage.replaceChildren(emptyState(ref, set.state, base));
     $(".l-locations").append(el("li", "l-faint", ref.locations?.length ? "nothing stored to find them on" : "none"));
   } else {
-    view = drawRef(stage, ref, level, { base, style, zoom: ZOOM[level] });
+    view = drawRef(stage, ref, level, { base, state: set.state, pdfjs, style, zoom: ZOOM[level] });
     view.ready.then((result) => listLocations(result)).catch(() => {});
   }
   try {
@@ -117,7 +118,7 @@ function bothLinks(ref, status) {
     if (node.level === "live" || !node.kept) continue;
     const item = el("li");
     const stored = el("a", "", `stored ${node.level}${ref.source.retrieved_at ? ` · ${ref.source.retrieved_at.slice(0, 10)}` : ""}`);
-    stored.href = new URL(`stored/${encodeURIComponent(ref.id)}/${node.level}`, base).href;
+    stored.href = storedUrl(ref, node.level, base, set.state);
     stored.target = "_blank";
     stored.rel = "noopener";
     item.append(el("span", "l-faint", "Stored copy · "), stored);
@@ -186,7 +187,13 @@ window.addEventListener("hashchange", () => {
   if (fromHash() && fromHash() !== current) open(fromHash());
 });
 
-set = await loadSet(base, new URL("refs.json", base));
+const query = new URLSearchParams(location.search);
+const pdfjs = query.get("pdfjs") ? new URL(query.get("pdfjs"), location.href).href : null;
+// ?refs= means a static set (no view server): only what the link names is read.
+set = await loadSet(base, query.get("refs") ? new URL(query.get("refs"), location.href) : new URL("refs.json", base), {
+  stateUrl: query.get("state") ? new URL(query.get("state"), location.href) : null,
+  probe: !query.get("refs"),
+});
 for (const [index, ref] of set.refs.entries()) {
   const option = el("option", "", `${index + 1}. ${ref.label || ref.id}`);
   option.value = ref.id;
