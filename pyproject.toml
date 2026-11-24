@@ -37,6 +37,7 @@ packages = ["src/source_highlighter"]
 # so both forms share a single implementation. The wheel carries a copy; a checkout reads js/ directly.
 [tool.hatch.build.targets.wheel.force-include]
 "js/source-highlighter.js" = "source_highlighter/js/source-highlighter.js"
+"js/source-msgs.js" = "source_highlighter/js/source-msgs.js"
 "js/vendor" = "source_highlighter/js/vendor"
 "js/like-obsidian" = "source_highlighter/js/like-obsidian"
 "viewer" = "source_highlighter/viewer"

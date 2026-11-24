@@ -5,10 +5,12 @@
   "type": "module",
   "main": "./source-highlighter.js",
   "exports": {
-    ".": "./source-highlighter.js"
+    ".": "./source-highlighter.js",
+    "./source-msgs": "./source-msgs.js"
   },
   "files": [
     "source-highlighter.js",
+    "source-msgs.js",
     "vendor/",
     "like-obsidian/"
   ],
