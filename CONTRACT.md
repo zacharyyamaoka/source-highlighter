@@ -127,7 +127,7 @@ Its result uses Wikipedia's `url-status` words, the existing practice (prior art
 
 | status | means | the viewer shows |
 |---|---|---|
-| `live` | the live page or file **exactly** matches what was cited: the same sha256 for a file; for a web page every location resolves by §2 and the `quote` is found exactly once | the stored copy marked, plus *live · unchanged since <retrieved_at>* and a live link that the browser itself highlights (a Text Fragment `#:~:text=` for HTML, `#page=N` for a PDF) |
+| `live` | the live page or file **exactly** matches what was cited: the same sha256 for a file; for a web page every location resolves by §2 and the `quote` is found exactly once | the stored copy marked, plus *live · unchanged since <retrieved_at>* and a live link that the browser itself highlights (a Text Fragment `#:~:text=` for HTML; for a PDF `#page=N&search="<quote>"&phrase=true`, added 2026-11-24: Adobe's open parameters, which pdf.js honours and highlights, and Chrome's viewer from its 2026-11-13 main-branch commit) |
 | `deviated` | reachable but no longer an exact match (the quote is gone, appears twice, or the file changed) | the best stored copy (html → snapshot → archive → pdf) marked, *page changed since <retrieved_at>*, and what changed when it can tell |
 | `dead` | unreachable after three checks at least a day apart (InternetArchiveBot's rule); one or two failures read *unreachable (n of 3)*, and a robots.txt refusal reads *not checked* and never counts | the stored copy marked, *page unreachable* |
 | `link-only` | nothing stored and no exact live match | the URL and quote, *nothing stored; can't show where* — never a guessed mark |
@@ -137,3 +137,46 @@ Its result uses Wikipedia's `url-status` words, the existing practice (prior art
   from what was cited.
 - **Always both links** (Robust Links / Perma.cc practice): the original URL and the dated stored copy.
 - Modes `auto` (default), `live`, `stored`.
+
+## 7. Open a source at a Location with no server (added 2026-11-24)
+
+`open.html` opens one stored copy at its place from a plain URL — on any static host, or from a `file://` folder in a
+browser that lets a page read the files beside it. It is the "see it in the raw source" button RobotParts' datasheet
+cells and any other static page link to. WHY (Zach, 2026-11-24): "when I click that I want to basically be taken
+directly not just to the page, but see highlighted the exact text that you got that information from."
+
+```
+open.html?src=<stored copy>&where=<place>[&where=<place>…][&quote=<the source's words>][&label=<what the value is>]
+         [&url=<the original>][&retrieved=<access date>][&sha256=<of the stored copy>]
+         [&kind=pdf|image|html|text|markdown][&page=N][&style=<§3 style>][&zoom=fit|N][&pdfjs=<pdf.min.mjs URL>][&embed=1]
+```
+
+| Parameter | Meaning |
+|---|---|
+| `src` (required) | the stored copy, a URL relative to `open.html` (or absolute; another origin needs CORS) |
+| `where` (repeatable) | a place: a source_msgs compact selector (PEP 0001 §6 — `page=2&xywh=percent:61,40,7,2`, `page=2&text=350.4W`, `text=Rated%20torque-,9,-Outer`, `table=1&row=7&col=3`, …; robot_models' `Stated.where` / `.anchor` as stored), percent-encoded as one query value; or a §2 Location as JSON — an html Location carrying `source_range` + `xpath` + `text_quote` has no single compact string |
+| `quote` | the source's own words for the value, shown in the header verbatim; on a PDF, HTML or text source also found and highlighted (on the page of the first `where` that names one); on an image shown only — an image has no text |
+| `label`, `url`, `retrieved`, `sha256` | what the value is; the original URL (the live link, highlighted by the browser as in §6); the access date (the stored link's date); the stored copy's sha256, checked in the browser — other bytes are said, amber |
+| `kind`, `page`, `style`, `zoom`, `pdfjs`, `embed` | the source kind when `src` has no telling extension; the PDF page to show; one §3 style for every mark; `fit` or a number; another pdf.js (default `pdfjs/pdf.min.mjs` beside the page); `embed=1`: only the source with the mark in the middle and an "Open ↗" link, for a preview inside another page |
+
+- **What is drawn:** a page box or a whole page as `box`, anything text-anchored (a quote, an html range, a markdown span)
+  as `highlight` — so a value with a measured box and its words shows both. `style=` overrides both.
+- **Where it lands:** a PDF draws only the cited page (‹ › and ← → walk the others; the answer stays about the cited
+  page), or every page when the places name several pages or none; the first mark is scrolled to the middle of the
+  view, at a readable zoom (a PDF between 100 % and 200 %).
+- **Truth (§2):** a place that does not resolve exactly once is listed as *not located: <why>* and nothing is drawn for
+  it; the status says how many were marked, approximately or not at all. Never a guessed mark. A PDF page with no text
+  layer (a drawing exported as vector art, a scan) says so — only a page box can mark it; beside a box that marked
+  the place, its quote is shown, not searched, like a quote on an image.
+- **No server:** no `/api/*`, no build step. From `file://`, Chromium reads nothing beside the page unless started with
+  `--allow-file-access-from-files`; without it the page says so and offers the stored copy in the browser's own
+  viewer at its page, and the one-line command that serves the folder.
+- **Lens and Peek** run from the same folder: `lens.html?refs=<refs.json>#ref=<id>` and
+  `<script type="module" src="…/peek.js" data-refs="refs.json" data-static>`; stored paths in refs.json count from
+  refs.json. `source-highlighter state refs.json --out state.json` writes what the view server's `/api/state` says
+  (sizes, statuses; no machine paths) for `?state=` / `data-state=`. Without `data-static` Peek asks for a view server
+  first and falls back to the folder.
+- **Vendoring:** `python3 scripts/vendor.py --ref main --into <app>/static/source-highlighter` writes one flat folder
+  (the module, `source-msgs.js`, `open.*`, Lens, Peek, pdf.js unless `--without-pdfjs`, `LICENSE`) from a `git archive`
+  of the commit, with `VENDOR.json` naming the commit and every file's sha256; `--check <folder>` re-hashes it.
+

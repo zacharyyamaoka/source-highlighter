@@ -105,6 +105,28 @@ inside its edge, never filled). A `{page, box}` or `{page}` may carry the `sha25
 more places it is reported as ambiguous, never picked from. Marks of a found quote carry `found: {exact, errors,
 text}`. `focus(id)` scrolls the mark to the middle of its own scroll boxes and window, never a parent frame's.
 
+## Open a source at a Location, from a plain URL (CONTRACT §7)
+
+```
+open.html?src=sources/lrs-350.pdf&where=page%3D2%26text%3D349.2W&label=Rated%20power&url=https%3A%2F%2Fwww.meanwell.com%2FLRS-350-SPEC.PDF
+```
+
+One static page, no server: it opens the stored copy, lands on the cited page scrolled to the place, and draws a box
+for a page box and a highlight over the quote's words — both when both. `where` takes source_msgs compact selectors
+(robot_models' `Stated.where` as stored) or a §2 Location as JSON; `quote` adds the source's own words; anything it
+cannot place is said in plain words, never guessed. `embed=1` is the chrome-less preview for an iframe. Put it in an
+app with one command (a flat, pinned folder: the module, `source-msgs.js` — the selectors in JS —, `open.*`, Lens,
+Peek, pdf.js, `LICENSE`; `VENDOR.json` holds the commit and every file's sha256):
+
+```bash
+python3 /home/bam/source-highlighter/scripts/vendor.py --ref main --into /path/to/app/static/source-highlighter
+```
+
+`--check <folder>` re-hashes a vendored copy; `--without-pdfjs` leaves pdf.js out (links then pass `pdfjs=`). Lens and
+Peek run from the same folder with no server (`lens.html?refs=…`, `peek.js … data-static`; `source-highlighter state`
+writes sizes and statuses as a file). From `file://` Chromium needs `--allow-file-access-from-files`; without it the
+page says so and offers the stored copy at its page plus the command that serves the folder.
+
 ## Check a reference set (CONTRACT §6)
 
 ```bash
@@ -114,7 +136,7 @@ uv run source-highlighter check refs.json --out statuses.json
 Each Reference gets `live` (same sha256; or, for a page, every html Location resolves and the quote is found
 exactly once), `deviated` (and why), `unreachable (n of 3)` → `dead` (three failures at least a day apart, carried
 in the `--out` file), or `link-only` (nothing stored, no exact live match), with `checked_at` and the live link
-the browser highlights itself (`#:~:text=` for HTML, `#page=N` for a PDF). Polite: robots.txt and one request per
+the browser highlights itself (`#:~:text=` for HTML, `#page=N&search="<quote>"&phrase=true` for a PDF). Polite: robots.txt and one request per
 second per host (rules copied from markdownify's `fetch.py`), one request per URL. `--vault DIR` resolves
 `source.vault` notes. Stored paths in refs.json may be absolute or relative to the refs.json.
 
@@ -208,6 +230,7 @@ The Pages workflow runs the whole suite on every push and the landing page shows
 | Hypothesis [`matchQuote`](https://github.com/hypothesis/client/blob/main/src/annotator/anchoring/match-quote.ts) (vendored, wrapped so ambiguity is reported) | scoring approximate quote matches | BSD-2-Clause |
 | [like_obsidian_md_viewer](https://github.com/zacharyyamaoka/like_obsidian_md_viewer) (Zach's fork of [atomic-editor](https://github.com/kenforthewin/atomic-editor); CodeMirror 6), built and vendored | rendered markdown | MIT |
 | [Text Fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) | the live link: the browser highlights the quote itself | web platform |
+| [PDF open parameters](https://www.rfc-editor.org/rfc/rfc8118.html) `#page=N&search=` (+ pdf.js `phrase=true`) | the live link to a PDF: opened at its page, the quote searched and highlighted | standard |
 | numpy, pdfplumber, pytest (dev only) | pixel measurements, fixture generation, tests | BSD-3 / MIT / MIT |
 
 PyMuPDF (AGPL) is deliberately not used. rough-notation (MIT) would give box/underline a hand-drawn look; v0
