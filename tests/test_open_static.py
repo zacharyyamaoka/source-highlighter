@@ -468,10 +468,30 @@ def test_a_drawing_with_no_text_layer_is_marked_by_its_box(chromium, http_base, 
                      storage={"sh-open:details": "open"})
     measured = page.evaluate(MEASURE)
     assert measured["status"] == "marked" and measured["statusText"] == "Marked on page 2" and len(measured["marks"]) == 1
-    assert "page 2 has no text layer (a drawing or a scan): only a page box can mark it" in measured["where"][1]
+    assert "page 2 has no text layer: a drawing or a scan — only a page box can mark it" in measured["where"][1]
     assert "not located" not in measured["where"][1]
     shot(page, "pdf-drawing-box")
     page.context.close()
     page = open_view(chromium, http_base, {"src": "../sources/j60-joint.pdf", "where": "page=2&text=19.94N.m"})
-    assert page.evaluate(MEASURE)["statusText"] == "Not located: page 2 has no text layer (a drawing or a scan): only a page box can mark it"
+    assert page.evaluate(MEASURE)["statusText"] == "Not located: page 2 has no text layer: a drawing or a scan — only a page box can mark it"
+    page.context.close()
+
+
+def test_a_drawing_whose_text_is_only_its_dimensions(chromium, http_base, site):
+    """Like JMC's 60ASM400 drawing (11 characters of text: its dimension numbers, the spec block drawn as paths): a
+    text layer shorter than the quote cannot hold it, and the reason says so rather than "not in the source"."""
+    printer = chromium.new_page()
+    printer.set_content("<p style='font:12px sans-serif'>60.00</p><svg width='300' height='80'><path d='M10 10 H 290 V 70 H 10 Z' fill='none' stroke='black'/></svg>")
+    (site / "sources" / "drawing.pdf").write_bytes(printer.pdf(width="300px", height="200px"))
+    printer.close()
+    page = open_view(chromium, http_base, {"src": "../sources/drawing.pdf", "where": ["page=1&xywh=percent:5,30,80,40"], "quote": "Rated Torque (N.M)"})
+    measured = page.evaluate(MEASURE)
+    assert measured["status"] == "marked" and len(measured["marks"]) == 1  # the box is the answer; the words are shown
+    page.context.close()
+    page = open_view(chromium, http_base, {"src": "../sources/drawing.pdf", "where": "page=1&text=Rated%20Torque%20(N.M)"})
+    assert page.evaluate(MEASURE)["statusText"] == (
+        "Not located: page 1 has almost no text layer (5 characters, fewer than the quote): a drawing or a scan — only a page box can mark it")
+    page.context.close()
+    page = open_view(chromium, http_base, {"src": "../sources/drawing.pdf", "where": "page=1&text=Rated"})
+    assert page.evaluate(MEASURE)["statusText"] == 'Not located: "Rated" is not in the source on page 1'  # it could be there: not excused
     page.context.close()

@@ -981,10 +981,15 @@ export function highlight(container, options) {
         pages = [found.page];
       }
       // WHY say it: a drawing exported as vector art, or a scan, has no text to find — "not in the source" would read
-      // as if the words were missing, when only a page box can mark such a page (the J60 sheet, JMC's drawings).
-      if (pages.every((page) => !squashSpace(pdfPageText(page).text))) {
+      // as if the words were missing, when only a page box can mark such a page (the J60 sheet has none; JMC's
+      // 60ASM400 drawing holds 11 characters, its dimension numbers). A text layer shorter than the quote cannot hold
+      // it, so that is no guess.
+      const textSizes = pages.map((page) => squashWithMap(pdfPageText(page).text).squashed.length);
+      if (textSizes.every((size) => size < squashWithMap(quote).squashed.length)) {
         const what = location.page !== undefined ? `page ${location.page} has` : "this PDF has";
-        return { reason: `${what} no text layer (a drawing or a scan): only a page box can mark it` };
+        const most = Math.max(...textSizes);
+        const layer = most === 0 ? "no text layer" : `almost no text layer (${most} character${most === 1 ? "" : "s"}, fewer than the quote)`;
+        return { reason: `${what} ${layer}: a drawing or a scan — only a page box can mark it` };
       }
       const decided = decideQuote(quote, pages.map((page) => ({ where: page, candidates: quoteCandidates(pdfPageText(page).text, quote, state.matcher) })), loaded);
       if (decided.reason) return { reason: location.page !== undefined ? `${decided.reason} on page ${location.page}` : decided.reason };

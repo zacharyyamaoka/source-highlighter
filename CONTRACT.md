@@ -166,8 +166,9 @@ open.html?src=<stored copy>&where=<place>[&where=<place>…][&quote=<the source'
   view, at a readable zoom (a PDF between 100 % and 200 %).
 - **Truth (§2):** a place that does not resolve exactly once is listed as *not located: <why>* and nothing is drawn for
   it; the status says how many were marked, approximately or not at all. Never a guessed mark. A PDF page with no text
-  layer (a drawing exported as vector art, a scan) says so — only a page box can mark it; beside a box that marked
-  the place, its quote is shown, not searched, like a quote on an image.
+  layer, or one shorter than the quote (a drawing exported as vector art, a scan), says so — only a page box can mark
+  it; beside a box that marked the place, its quote is shown, not searched, like a quote on an image. A caller holding
+  a box because the words cannot be found (robot_models writes `where` only then) passes them as `label`, not `quote`.
 - **No server:** no `/api/*`, no build step. From `file://`, Chromium reads nothing beside the page unless started with
   `--allow-file-access-from-files`; without it the page says so and offers the stored copy in the browser's own
   viewer at its page, and the one-line command that serves the folder.
