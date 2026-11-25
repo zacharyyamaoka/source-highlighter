@@ -17,11 +17,8 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  test-and-deploy:
+  test-and-build:
     runs-on: ubuntu-24.04
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -47,11 +44,19 @@ jobs:
       - name: Stage the live gallery
         run: uv run python scripts/build_site.py --stage
       - uses: actions/configure-pages@v6
-      # WHY v5/v5/v6 (2026-11-25): on 2026-11-24 upload-pages-artifact@v3 uploaded the artifact but deploy-pages@v4
-      # found 0 artifacts in the run — the old pair no longer agrees with the artifact backend. Move the trio together.
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
           include-hidden-files: true
+  # WHY a separate deploy job (2026-11-25): with upload and deploy in one job, deploy-pages listed the run's artifacts
+  # ~1 s after the upload finalized and found 0 (runs 45447437398, 45580157872), though the API shows the artifact.
+  # GitHub's artifact list is eventually consistent; the stock two-job pattern gives it the job hand-off to catch up.
+  deploy:
+    needs: test-and-build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5
